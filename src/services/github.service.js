@@ -66,6 +66,13 @@ async function fetchUserRepos(username) {
   return repos;
 }
 
+/**
+ * Calculate total stars from repos
+ */
+function calculateTotalStars(repos) {
+  return repos.reduce((total, repo) => total + (repo.stargazers_count || 0), 0);
+}
+
 export async function getGitHubUserData(username) {
   // Check cache first
   const cached = githubCache.get(username);
