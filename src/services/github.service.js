@@ -35,6 +35,37 @@ async function fetchUserProfile(username) {
   return response.json();
 }
 
+/**
+ * Fetch public repos for a user
+ */
+async function fetchUserRepos(username) {
+  const repos = [];
+  let page = 1;
+  const perPage = 100;
+
+  while (true) {
+    const response = await fetch(
+      `${GITHUB_API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`,
+      { headers: getHeaders() }
+    );
+
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    repos.push(...data);
+
+    if (data.length < perPage) {
+      break;
+    }
+
+    page++;
+  }
+
+  return repos;
+}
+
 export async function getGitHubUserData(username) {
   // Check cache first
   const cached = githubCache.get(username);
