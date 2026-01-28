@@ -1,4 +1,13 @@
 import { Router } from 'express';
+import {
+  renderBackground,
+  renderHeader,
+  renderCardWithStats,
+  calculateCardWidth,
+  calculateCardX,
+  wrapSvg,
+  LAYOUT,
+} from '../renderers/svg.renderer.js';
 import { getGitHubUserData } from '../services/github.service.js';
 
 const router = Router();
@@ -33,6 +42,21 @@ router.get('/', async (req, res) => {
 
   const { data } = result;
 
+  const width = LAYOUT.width;
+  const height = 480;
+
+  // Row 1: Three stat cards
+  const cardWidth = calculateCardWidth(3);
+  const cardHeight = 140;
+  const row1Y = 80;
+
+  // Row 2: Contribution chart (left) + placeholder (right)
+  const row2Y = row1Y + cardHeight + LAYOUT.cardGap;
+  const chartWidth = calculateCardWidth(2) + LAYOUT.cardGap / 2;
+  const row2CardWidth = calculateCardWidth(2) - LAYOUT.cardGap / 2;
+  const row2Height = 200;
+
+  // Card 1: GitHub Stats (real data)
   const githubStats = [
     { label: 'Followers', value: formatNumber(data.followers) },
     { label: 'Repositories', value: formatNumber(data.publicRepos) },
