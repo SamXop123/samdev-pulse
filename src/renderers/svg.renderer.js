@@ -27,3 +27,19 @@ export function renderBackground(width, height) {
   return `<rect x="0" y="0" width="${width}" height="${height}" rx="${LAYOUT.borderRadius}" ry="${LAYOUT.borderRadius}" fill="${colors.background}" stroke="${colors.border}" stroke-width="2"/>`;
 }
 
+/**
+ * Calculate card width for a row with n cards
+ */
+export function calculateCardWidth(numCards) {
+  const availableWidth = LAYOUT.width - (LAYOUT.padding * 2);
+  const totalGaps = (numCards - 1) * LAYOUT.cardGap;
+  return (availableWidth - totalGaps) / numCards;
+}
+
+/**
+ * Calculate card x position for index in row
+ */
+export function calculateCardX(index, cardWidth) {
+  return LAYOUT.padding + (index * (cardWidth + LAYOUT.cardGap));
+}
+
