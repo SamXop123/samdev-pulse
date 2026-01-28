@@ -32,6 +32,23 @@ function smoothPath(points) {
 }
 
 /**
+ * Scale data points to fit within chart dimensions
+ */
+function scaleData(data, width, height, padding) {
+  const maxVal = Math.max(...data);
+  const minVal = Math.min(...data);
+  const range = maxVal - minVal || 1;
+
+  const chartWidth = width - padding * 2;
+  const chartHeight = height - padding * 2;
+
+  return data.map((val, i) => ({
+    x: padding + (i / (data.length - 1)) * chartWidth,
+    y: padding + chartHeight - ((val - minVal) / range) * chartHeight,
+  }));
+}
+
+/**
  * Generate fake contribution data
  */
 export function generateFakeContributionData(days = 30) {
