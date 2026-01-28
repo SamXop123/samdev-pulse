@@ -85,6 +85,14 @@ router.get('/', async (req, res) => {
   const content = [
     renderBackground(width, height),
     renderHeader({ x: LAYOUT.padding, y: 48, title: `${data.name}'s Dashboard` }),
+    
+    // Row 1: Stat cards
+    renderCardWithStats({ x: calculateCardX(0, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'GitHub Stats', stats: githubStats }),
+
+    renderCardWithStats({ x: calculateCardX(1, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'Streak Stats', stats: streakStats }),
+
+    renderCardWithStats({ x: calculateCardX(2, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'Competitive Coding', stats: codingStats }),
+
 });
 
 export default router;
