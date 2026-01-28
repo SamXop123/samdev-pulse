@@ -93,9 +93,15 @@ router.get('/', async (req, res) => {
 
     renderCardWithStats({ x: calculateCardX(2, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'Competitive Coding', stats: codingStats }),
 
+    // Row 2: Contribution chart
+    renderContributionChart({ x: LAYOUT.padding, y: row2Y, width: chartWidth, height: row2Height, title: 'Contribution Activity', data: contributionData }),
   ].join('\n');
 
   const svg = wrapSvg(content, width, height);
+
+  res.setHeader('Content-Type', 'image/svg+xml');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.send(svg);
 });
 
 export default router;
