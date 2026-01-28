@@ -101,6 +101,27 @@ export function renderLineChart({ x, y, width, height, data, showArea = true, sh
 }
 
 /**
+ * Render a contribution chart card
+ */
+export function renderContributionChart({ x, y, width, height, title, data }) {
+  const { colors } = currentTheme;
+  const titleY = y + 24;
+  const chartX = 0;
+  const chartY = 36;
+  const chartWidth = width - 32;
+  const chartHeight = height - 52;
+
+  return `
+  <g>
+    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="12" ry="12" fill="${colors.cardBackground}" stroke="${colors.border}" stroke-width="1"/>
+    <text x="${x + 16}" y="${titleY}" font-family="Segoe UI, Ubuntu, sans-serif" font-size="14" font-weight="600" fill="${colors.secondaryText}">${title}</text>
+    <g transform="translate(${x + 16}, ${y})">
+      ${renderLineChart({ x: chartX, y: chartY, width: chartWidth, height: chartHeight, data, showArea: true, showLine: true, showDots: false })}
+    </g>
+  </g>`;
+}
+
+/**
  * Generate fake contribution data
  */
 export function generateFakeContributionData(days = 30) {
