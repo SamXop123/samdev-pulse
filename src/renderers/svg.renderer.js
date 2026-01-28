@@ -55,6 +55,33 @@ export function renderStatItem({ x, y, label, value }) {
 }
 
 /**
+ * Render a card with stats
+ */
+export function renderCardWithStats({ x, y, width, height, title, stats }) {
+  const { colors } = currentTheme;
+  const titleY = y + 24;
+  const statsStartY = y + 70;
+  const statSpacing = width / stats.length;
+
+  const statsContent = stats.map((stat, index) => {
+    const statX = x + 16 + (index * statSpacing);
+    return renderStatItem({
+      x: statX,
+      y: statsStartY,
+      label: stat.label,
+      value: stat.value,
+    });
+  }).join('');
+
+  return `
+  <g>
+    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}" stroke="${colors.border}" stroke-width="1"/>
+    <text x="${x + 16}" y="${titleY}" font-family="Segoe UI, Ubuntu, sans-serif" font-size="14" font-weight="600" fill="${colors.secondaryText}">${title}</text>
+    ${statsContent}
+  </g>`;
+}
+
+/**
  * Render header section with title
  */
 export function renderHeader({ x, y, title }) {
