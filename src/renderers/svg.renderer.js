@@ -19,3 +19,11 @@ export function getTheme() {
   return currentTheme;
 }
 
+/**
+ * Render the main background with rounded border
+ */
+export function renderBackground(width, height) {
+  const { colors } = currentTheme;
+  return `<rect x="0" y="0" width="${width}" height="${height}" rx="${LAYOUT.borderRadius}" ry="${LAYOUT.borderRadius}" fill="${colors.background}" stroke="${colors.border}" stroke-width="2"/>`;
+}
+
