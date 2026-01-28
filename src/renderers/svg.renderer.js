@@ -55,6 +55,14 @@ export function renderStatItem({ x, y, label, value }) {
 }
 
 /**
+ * Render header section with title
+ */
+export function renderHeader({ x, y, title }) {
+  const { colors } = currentTheme;
+  return `<text x="${x}" y="${y}" font-family="Segoe UI, Ubuntu, sans-serif" font-size="24" font-weight="600" fill="${colors.primaryText}">${title}</text>`;
+}
+
+/**
  * Calculate card width for a row with n cards
  */
 export function calculateCardWidth(numCards) {
