@@ -8,6 +8,7 @@ import {
   wrapSvg,
   LAYOUT,
 } from '../renderers/svg.renderer.js';
+import { renderContributionChart, generateFakeContributionData } from '../renderers/chart.renderer.js';
 import { getGitHubUserData } from '../services/github.service.js';
 
 const router = Router();
@@ -62,6 +63,23 @@ router.get('/', async (req, res) => {
     { label: 'Repositories', value: formatNumber(data.publicRepos) },
     { label: 'Stars', value: formatNumber(data.totalStars) },
   ];
+
+  // Card 2: Streak Stats (placeholder data)
+  const streakStats = [
+    { label: 'Current', value: '14' },
+    { label: 'Longest', value: '45' },
+    { label: 'Total Days', value: '230' },
+  ];
+
+  // Card 3: Competitive Coding (placeholder data)
+  const codingStats = [
+    { label: 'Problems', value: '127' },
+    { label: 'Contests', value: '12' },
+    { label: 'Rating', value: '1650' },
+  ];
+
+  // Generate fake contribution data
+  const contributionData = generateFakeContributionData(30);
 
 });
 
