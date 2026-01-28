@@ -93,6 +93,9 @@ router.get('/', async (req, res) => {
 
     renderCardWithStats({ x: calculateCardX(2, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'Competitive Coding', stats: codingStats }),
 
+  ].join('\n');
+
+  const svg = wrapSvg(content, width, height);
 });
 
 export default router;
