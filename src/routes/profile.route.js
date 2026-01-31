@@ -63,6 +63,8 @@ router.get('/', async (req, res) => {
 
   // Check if LeetCode is explicitly disabled
   const leetcodeDisabled = leetcode === 'false';
+  const shouldRenderLeetCode = Boolean(leetcode && !leetcodeDisabled);
+  const showRepositoryStats = !shouldRenderLeetCode;
 
   // Validate and set alignment (left, center, right - defaults to left)
   const validAlignments = ['left', 'center', 'right'];
@@ -82,13 +84,10 @@ router.get('/', async (req, res) => {
   const contributionData = contributionResult.success ? contributionResult.data : null;
 
   // Fetch LeetCode data if username provided and not disabled (non-blocking)
-  const leetcodeResult = (leetcode && !leetcodeDisabled) ? await getLeetCodeData(leetcode) : null;
+  const leetcodeResult = shouldRenderLeetCode ? await getLeetCodeData(leetcode) : null;
   const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
 
   const width = LAYOUT.width;
-  const height = 620; // Increased to fit trophy row
-
-  // Row 1: Three stat cards
   const cardWidth = calculateCardWidth(3);
   const cardHeight = 140;
   const row1Y = 95;
@@ -103,6 +102,7 @@ router.get('/', async (req, res) => {
   const row3Y = row2Y + row2Height + LAYOUT.cardGap;
   const row3Height = 165;
   const fullWidth = width - (LAYOUT.padding * 2);
+  const height = row3Y + row3Height + LAYOUT.padding;
 
   // Card 1: GitHub Activity - ALWAYS Card 1
   const card1Title = 'GitHub Activity';
@@ -123,8 +123,7 @@ router.get('/', async (req, res) => {
   let card3Title;
   let card3Stats;
 
-  if (leetcodeDisabled) {
-    // When leetcode=false: Show Repository Stats
+  if (showRepositoryStats) {
     card3Title = 'Repository Stats';
     card3Stats = [
       { label: 'Repositories', value: formatNumber(data.publicRepos) },
