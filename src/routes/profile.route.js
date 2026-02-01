@@ -105,15 +105,18 @@ router.get('/', async (req, res) => {
     { label: 'Total Days', value: contributionData ? formatNumber(contributionData.totalContributionDays) : '-' },
   ];
 
-  // Card 3: Competitive Coding (placeholder data)
+  // Card 3: Competitive Coding (LeetCode data or placeholder)
   const codingStats = [
-    { label: 'Problems', value: '127' },
-    { label: 'Contests', value: '12' },
-    { label: 'Rating', value: '1650' },
+    { label: 'Problems', value: leetcodeData ? formatNumber(leetcodeData.totalSolved) : '-' },
+    { label: 'Easy/Med/Hard', value: leetcodeData ? `${leetcodeData.easySolved}/${leetcodeData.mediumSolved}/${leetcodeData.hardSolved}` : '-' },
+    { label: 'Ranking', value: leetcodeData ? formatNumber(leetcodeData.ranking) : '-' },
   ];
 
-  // Generate fake contribution data
-  const contributionData = generateFakeContributionData(30);
+  // Generate fake contribution data for chart
+  const chartData = generateFakeContributionData(30);
+
+  // Calculate top languages from repos
+  const topLanguages = getTopLanguages(data.repos, 5);
 
   // Build SVG content
   const content = [
@@ -125,16 +128,18 @@ router.get('/', async (req, res) => {
 
     renderCardWithStats({ x: calculateCardX(1, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'Streak Stats', stats: streakStats }),
 
-    renderCardWithStats({ x: calculateCardX(2, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'Competitive Coding', stats: codingStats }),
+    renderCardWithStats({ x: calculateCardX(2, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: leetcodeData ? 'LeetCode Stats' : 'Competitive Coding', stats: codingStats }),
 
-    // Row 2: Contribution chart
-    renderContributionChart({ x: LAYOUT.padding, y: row2Y, width: chartWidth, height: row2Height, title: 'Contribution Activity', data: contributionData }),
+    // Row 2: Contribution chart (left) + Top Languages donut (right)
+    renderContributionChart({ x: LAYOUT.padding, y: row2Y, width: chartWidth, height: row2Height, title: 'Contribution Activity', data: chartData }),
+
+    renderDonutChart({ x: LAYOUT.padding + chartWidth + LAYOUT.cardGap, y: row2Y, width: row2CardWidth, height: row2Height, title: 'Top Languages', data: topLanguages }),
   ].join('\n');
 
   const svg = wrapSvg(content, width, height);
 
   res.setHeader('Content-Type', 'image/svg+xml');
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Cache-Control', 'public, max-age=1800');
   res.send(svg);
 });
 
