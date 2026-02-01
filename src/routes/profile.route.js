@@ -112,8 +112,16 @@ router.get('/', async (req, res) => {
     { label: 'Ranking', value: leetcodeData ? formatNumber(leetcodeData.ranking) : '-' },
   ];
 
-  // Generate fake contribution data for chart
-  const chartData = generateFakeContributionData(30);
+  // Use real contribution data for chart (last 30 days), fallback to fake data if unavailable
+  let chartData;
+  if (contributionData && contributionData.days && contributionData.days.length > 0) {
+    // Get last 30 days of real contribution data
+    const recentDays = contributionData.days.slice(-30);
+    chartData = recentDays.map(day => day.count);
+  } else {
+    // Fallback to fake data if real data unavailable
+    chartData = generateFakeContributionData(30);
+  }
 
   // Calculate top languages from repos
   const topLanguages = getTopLanguages(data.repos, 5);
@@ -121,8 +129,14 @@ router.get('/', async (req, res) => {
   // Build SVG content
   const content = [
     renderBackground(width, height),
-    renderHeader({ x: LAYOUT.padding, y: 48, title: `${data.name}'s Dashboard` }),
-    
+    renderHeader({
+      x: LAYOUT.padding,
+      y: 52,
+      title: `${data.name || username}'s Dashboard`,
+      subtitle: data.bio ? (data.bio.length > 60 ? data.bio.slice(0, 60) + '...' : data.bio) : `@${username}`,
+      avatarUrl: data.avatarUrl
+    }),
+
     // Row 1: Stat cards
     renderCardWithStats({ x: calculateCardX(0, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'GitHub Stats', stats: githubStats }),
 
