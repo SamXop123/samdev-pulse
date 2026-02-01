@@ -135,3 +135,107 @@ export function generateFakeContributionData(days = 30) {
   return data;
 }
 
+/**
+ * Create an SVG arc path for a donut slice
+ */
+function describeArc(cx, cy, outerR, innerR, startAngle, endAngle) {
+  const gap = 0.02; // Small gap between slices in radians
+  const adjustedStart = startAngle + gap;
+  const adjustedEnd = endAngle - gap;
+
+  if (adjustedEnd <= adjustedStart) {
+    return '';
+  }
+
+  const startOuter = {
+    x: cx + outerR * Math.cos(adjustedStart),
+    y: cy + outerR * Math.sin(adjustedStart),
+  };
+  const endOuter = {
+    x: cx + outerR * Math.cos(adjustedEnd),
+    y: cy + outerR * Math.sin(adjustedEnd),
+  };
+  const startInner = {
+    x: cx + innerR * Math.cos(adjustedEnd),
+    y: cy + innerR * Math.sin(adjustedEnd),
+  };
+  const endInner = {
+    x: cx + innerR * Math.cos(adjustedStart),
+    y: cy + innerR * Math.sin(adjustedStart),
+  };
+
+  const largeArc = adjustedEnd - adjustedStart > Math.PI ? 1 : 0;
+
+  return [
+    `M ${startOuter.x} ${startOuter.y}`,
+    `A ${outerR} ${outerR} 0 ${largeArc} 1 ${endOuter.x} ${endOuter.y}`,
+    `L ${startInner.x} ${startInner.y}`,
+    `A ${innerR} ${innerR} 0 ${largeArc} 0 ${endInner.x} ${endInner.y}`,
+    `Z`,
+  ].join(' ');
+}
+
+/**
+ * Render a donut chart with legend
+ * @param {Object} options
+ * @param {number} options.x - X position
+ * @param {number} options.y - Y position
+ * @param {number} options.width - Width of the card
+ * @param {number} options.height - Height of the card
+ * @param {string} options.title - Card title
+ * @param {Array} options.data - Array of { label, value, percentage }
+ */
+export function renderDonutChart({ x, y, width, height, title, data }) {
+  const { colors, chartColors } = getTheme();
+  const titleY = y + 24;
+
+  // Donut dimensions
+  const chartAreaWidth = width * 0.45;
+  const centerX = x + chartAreaWidth / 2 + 16;
+  const centerY = y + height / 2 + 10;
+  const outerRadius = Math.min(chartAreaWidth, height - 60) / 2 - 8;
+  const innerRadius = outerRadius * 0.55;
+
+  // Calculate total for percentages
+  const total = data.reduce((sum, item) => sum + item.value, 0);
+
+  // Build pie slices
+  let currentAngle = -Math.PI / 2; // Start from top
+  const slices = [];
+
+  data.forEach((item, i) => {
+    const sliceAngle = (item.value / total) * Math.PI * 2;
+    const path = describeArc(centerX, centerY, outerRadius, innerRadius, currentAngle, currentAngle + sliceAngle);
+
+    if (path) {
+      slices.push(`<path d="${path}" fill="${chartColors[i % chartColors.length]}" />`);
+    }
+
+    currentAngle += sliceAngle;
+  });
+
+  // Build legend
+  const legendX = x + chartAreaWidth + 24;
+  const legendStartY = y + 50;
+  const legendItemHeight = 24;
+
+  const legendItems = data.map((item, i) => {
+    const itemY = legendStartY + i * legendItemHeight;
+    const percentage = ((item.value / total) * 100).toFixed(1);
+
+    return `
+      <circle cx="${legendX}" cy="${itemY}" r="5" fill="${chartColors[i % chartColors.length]}"/>
+      <text x="${legendX + 14}" y="${itemY + 4}" font-family="Segoe UI, Ubuntu, sans-serif" font-size="12" fill="${colors.primaryText}">${item.label}</text>
+      <text x="${legendX + 14}" y="${itemY + 16}" font-family="Segoe UI, Ubuntu, sans-serif" font-size="10" fill="${colors.secondaryText}">${percentage}%</text>
+    `;
+  }).join('');
+
+  return `
+  <g>
+    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="12" ry="12" fill="${colors.cardBackground}" stroke="${colors.border}" stroke-width="1"/>
+    <text x="${x + 16}" y="${titleY}" font-family="Segoe UI, Ubuntu, sans-serif" font-size="14" font-weight="600" fill="${colors.secondaryText}">${title}</text>
+    ${slices.join('\n    ')}
+    ${legendItems}
+  </g>`;
+}
+
