@@ -91,11 +91,11 @@ router.get('/', async (req, res) => {
   const row2CardWidth = calculateCardWidth(2) - LAYOUT.cardGap / 2;
   const row2Height = 200;
 
-  // Card 1: GitHub Stats (real data)
+  // Card 1: GitHub Stats (real data) - Commits, PRs, Issues
   const githubStats = [
-    { label: 'Followers', value: formatNumber(data.followers) },
-    { label: 'Repositories', value: formatNumber(data.publicRepos) },
-    { label: 'Stars', value: formatNumber(data.totalStars) },
+    { label: 'Commits', value: contributionData ? formatNumber(contributionData.totalCommits) : formatNumber(0) },
+    { label: 'PRs Merged', value: contributionData ? formatNumber(contributionData.prsMerged) : '-' },
+    { label: 'Issues', value: contributionData ? formatNumber(contributionData.issuesClosed) : '-' },
   ];
 
   // Card 2: Streak Stats (real data from GraphQL)
