@@ -2,6 +2,11 @@
 
 import darkTheme from '../themes/dark.theme.js';
 import lightTheme from '../themes/light.theme.js';
+import draculaTheme from '../themes/dracula.theme.js';
+import nordTheme from '../themes/nord.theme.js';
+import monokaiTheme from '../themes/monokai.theme.js';
+import gruvboxTheme from '../themes/gruvbox.theme.js';
+import tokyonightTheme from '../themes/tokyonight.theme.js';
 
 const LAYOUT = {
   width: 960,
@@ -15,6 +20,11 @@ const LAYOUT = {
 const themes = {
   dark: darkTheme,
   light: lightTheme,
+  dracula: draculaTheme,
+  nord: nordTheme,
+  monokai: monokaiTheme,
+  gruvbox: gruvboxTheme,
+  tokyonight: tokyonightTheme,
 };
 
 // Current active theme
