@@ -1,8 +1,6 @@
 // Chart Renderer - Reusable SVG chart components
 
-import darkTheme from '../themes/dark.theme.js';
-
-let currentTheme = darkTheme;
+import { getTheme } from './svg.renderer.js';
 
 /**
  * Generate a smooth SVG path using cardinal spline interpolation
@@ -52,7 +50,7 @@ function scaleData(data, width, height, padding) {
  * Render a line/area chart
  */
 export function renderLineChart({ x, y, width, height, data, showArea = true, showLine = true, showDots = false }) {
-  const { colors } = currentTheme;
+  const { colors } = getTheme();
   const padding = 8;
 
   const points = scaleData(data, width, height, padding);
@@ -104,7 +102,7 @@ export function renderLineChart({ x, y, width, height, data, showArea = true, sh
  * Render a contribution chart card
  */
 export function renderContributionChart({ x, y, width, height, title, data }) {
-  const { colors } = currentTheme;
+  const { colors } = getTheme();
   const titleY = y + 24;
   const chartX = 0;
   const chartY = 36;
