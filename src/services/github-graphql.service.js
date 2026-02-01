@@ -21,12 +21,17 @@ function getHeaders() {
 }
 
 /**
- * GraphQL query for contribution calendar
+ * GraphQL query for contribution calendar and additional stats
  */
 const CONTRIBUTION_QUERY = `
 query($username: String!) {
   user(login: $username) {
     contributionsCollection {
+      totalCommitContributions
+      totalPullRequestContributions
+      totalPullRequestReviewContributions
+      totalIssueContributions
+      restrictedContributionsCount
       contributionCalendar {
         totalContributions
         weeks {
@@ -37,14 +42,20 @@ query($username: String!) {
         }
       }
     }
+    pullRequests(states: MERGED) {
+      totalCount
+    }
+    issues(states: CLOSED) {
+      totalCount
+    }
   }
 }
 `;
 
 /**
- * Fetch contribution calendar from GitHub GraphQL API
+ * Fetch contribution data from GitHub GraphQL API
  */
-async function fetchContributionCalendar(username) {
+async function fetchContributionData(username) {
   if (!process.env.GITHUB_TOKEN) {
     throw new Error('GITHUB_TOKEN required for contribution data');
   }
@@ -77,7 +88,7 @@ async function fetchContributionCalendar(username) {
     throw new Error(json.errors[0]?.message || 'GraphQL query failed');
   }
 
-  return json.data?.user?.contributionsCollection?.contributionCalendar;
+  return json.data?.user;
 }
 
 /**
@@ -176,7 +187,9 @@ function calculateTotalContributionDays(days) {
 /**
  * Normalize contribution data into a clean object
  */
-function normalizeContributionData(calendar) {
+function normalizeContributionData(userData) {
+  const collection = userData?.contributionsCollection;
+  const calendar = collection?.contributionCalendar;
   const days = flattenContributionDays(calendar);
 
   return {
@@ -184,6 +197,12 @@ function normalizeContributionData(calendar) {
     currentStreak: calculateCurrentStreak(days),
     longestStreak: calculateLongestStreak(days),
     totalContributionDays: calculateTotalContributionDays(days),
+    // Additional stats
+    totalCommits: collection?.totalCommitContributions || 0,
+    totalPRs: collection?.totalPullRequestContributions || 0,
+    totalIssues: collection?.totalIssueContributions || 0,
+    prsMerged: userData?.pullRequests?.totalCount || 0,
+    issuesClosed: userData?.issues?.totalCount || 0,
     days,
   };
 }
@@ -201,9 +220,9 @@ export async function getContributionData(username) {
   }
 
   try {
-    const calendar = await fetchContributionCalendar(username);
+    const userData = await fetchContributionData(username);
 
-    if (!calendar) {
+    if (!userData) {
       return {
         success: false,
         error: 'User not found or no contribution data',
@@ -212,7 +231,7 @@ export async function getContributionData(username) {
 
     const result = {
       success: true,
-      data: normalizeContributionData(calendar),
+      data: normalizeContributionData(userData),
     };
 
     // Store in cache
