@@ -52,13 +52,20 @@ function getTopLanguages(repos, max = 5) {
   return sorted;
 }
 
-// GET /api/profile?username=octocat&theme=dark&leetcode=username
+// GET /api/profile?username=octocat&theme=dark&leetcode=username (or leetcode=false to disable)
 router.get('/', async (req, res) => {
-  const { theme, leetcode } = req.query;
+  const { theme, leetcode, align } = req.query;
   const username = req.query.username || DEFAULT_USERNAME;
 
   // Set theme (defaults to dark)
   setTheme(theme || 'dark');
+
+  // Check if LeetCode is explicitly disabled
+  const leetcodeDisabled = leetcode === 'false';
+
+  // Validate and set alignment (left, center, right - defaults to left)
+  const validAlignments = ['left', 'center', 'right'];
+  const headerAlign = validAlignments.includes(align) ? align : 'left';
 
   // Fetch GitHub data
   const result = await getGitHubUserData(username);
@@ -73,8 +80,8 @@ router.get('/', async (req, res) => {
   const contributionResult = await getContributionData(username);
   const contributionData = contributionResult.success ? contributionResult.data : null;
 
-  // Fetch LeetCode data if username provided (non-blocking)
-  const leetcodeResult = leetcode ? await getLeetCodeData(leetcode) : null;
+  // Fetch LeetCode data if username provided and not disabled (non-blocking)
+  const leetcodeResult = (leetcode && !leetcodeDisabled) ? await getLeetCodeData(leetcode) : null;
   const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
 
   const width = LAYOUT.width;
@@ -83,7 +90,7 @@ router.get('/', async (req, res) => {
   // Row 1: Three stat cards
   const cardWidth = calculateCardWidth(3);
   const cardHeight = 140;
-  const row1Y = 80;
+  const row1Y = 95;
 
   // Row 2: Contribution chart (left) + placeholder (right)
   const row2Y = row1Y + cardHeight + LAYOUT.cardGap;
@@ -91,48 +98,77 @@ router.get('/', async (req, res) => {
   const row2CardWidth = calculateCardWidth(2) - LAYOUT.cardGap / 2;
   const row2Height = 200;
 
-  // Card 1: GitHub Stats (real data) - Commits, PRs, Issues
-  const githubStats = [
-    { label: 'Commits', value: contributionData ? formatNumber(contributionData.totalCommits) : formatNumber(0) },
-    { label: 'PRs Merged', value: contributionData ? formatNumber(contributionData.prsMerged) : '-' },
-    { label: 'Issues', value: contributionData ? formatNumber(contributionData.issuesClosed) : '-' },
-  ];
+  // When LeetCode is disabled, we swap Card 1 and Card 3 to show Contributions first
+  let card1Title;
+  let card1Stats;
+  let card3Title;
+  let card3Stats;
 
-  // Card 2: Streak Stats (real data from GraphQL)
+  if (leetcodeDisabled) {
+    // Card 1: GitHub Activity (show Contributions prominently)
+    card1Title = 'GitHub Activity';
+    card1Stats = [
+      { label: 'Contributions', value: contributionData ? formatNumber(contributionData.totalContributions) : '-' },
+      { label: 'PRs Opened', value: contributionData ? formatNumber(contributionData.totalPRs) : '-' },
+      { label: 'Issues Opened', value: contributionData ? formatNumber(contributionData.totalIssues) : '-' },
+    ];
+
+    // Card 3: Repository Stats (repos, stars, forks)
+    card3Title = 'Repository Stats';
+    card3Stats = [
+      { label: 'Repositories', value: formatNumber(data.publicRepos) },
+      { label: 'Stars', value: formatNumber(data.totalStars) },
+      { label: 'Followers', value: formatNumber(data.followers) },
+    ];
+  } else {
+    // Card 1: GitHub Stats (commits, PRs, issues) - when LeetCode is enabled
+    card1Title = 'GitHub Stats';
+    card1Stats = [
+      { label: 'Commits', value: contributionData ? formatNumber(contributionData.totalCommits) : formatNumber(0) },
+      { label: 'PRs Merged', value: contributionData ? formatNumber(contributionData.prsMerged) : '-' },
+      { label: 'Issues', value: contributionData ? formatNumber(contributionData.issuesClosed) : '-' },
+    ];
+  }
+
+  // Card 2: Streak Stats (real data from GraphQL) - always the same
   const streakStats = [
     { label: 'Current', value: contributionData ? formatNumber(contributionData.currentStreak) : '-' },
     { label: 'Longest', value: contributionData ? formatNumber(contributionData.longestStreak) : '-' },
     { label: 'Total', value: contributionData ? formatNumber(contributionData.totalContributionDays) : '-' },
   ];
 
-  // Card 3: Competitive Coding (LeetCode data or placeholder)
-  // Use rating if available (show full number), otherwise fall back to ranking
-  const getRatingOrRanking = () => {
-    if (!leetcodeData) return { label: 'Rating', value: '-' };
-    if (leetcodeData.contestRating) {
-      // Show full rating number, not abbreviated
-      return { label: 'Rating', value: String(leetcodeData.contestRating) };
-    }
-    return { label: 'Rank', value: formatNumber(leetcodeData.ranking) };
-  };
-
-  // E/M/H as vertical layout object
-  const getEMHStats = () => {
-    if (!leetcodeData) return { label: 'E/M/H', value: '-', isVertical: false };
-    return {
-      label: 'E/M/H',
-      isVertical: true,
-      easy: leetcodeData.easySolved,
-      medium: leetcodeData.mediumSolved,
-      hard: leetcodeData.hardSolved,
+  // Card 3: LeetCode stats (only when leetcode is NOT disabled)
+  if (!leetcodeDisabled) {
+    // LeetCode or Competitive Coding stats
+    // Use rating if available (show full number), otherwise fall back to ranking
+    const getRatingOrRanking = () => {
+      if (!leetcodeData) return { label: 'Rating', value: '-' };
+      if (leetcodeData.contestRating) {
+        // Show full rating number, not abbreviated
+        return { label: 'Rating', value: String(leetcodeData.contestRating) };
+      }
+      return { label: 'Rank', value: formatNumber(leetcodeData.ranking) };
     };
-  };
 
-  const codingStats = [
-    { label: 'Solved', value: leetcodeData ? formatNumber(leetcodeData.totalSolved) : '-' },
-    getEMHStats(),
-    getRatingOrRanking(),
-  ];
+    // E/M/H as vertical layout object
+    const getEMHStats = () => {
+      if (!leetcodeData) return { label: 'E/M/H', value: '-', isVertical: false };
+      return {
+        label: 'E/M/H',
+        isVertical: true,
+        easy: leetcodeData.easySolved,
+        medium: leetcodeData.mediumSolved,
+        hard: leetcodeData.hardSolved,
+      };
+    };
+
+    card3Title = leetcodeData ? 'LeetCode Stats' : 'Competitive Coding';
+    card3Stats = [
+      { label: 'Solved', value: leetcodeData ? formatNumber(leetcodeData.totalSolved) : '-' },
+      getEMHStats(),
+      getRatingOrRanking(),
+    ];
+  }
 
   // Use real contribution data for chart (last 30 days), fallback to fake data if unavailable
   let chartData;
@@ -156,15 +192,16 @@ router.get('/', async (req, res) => {
       y: 52,
       title: `${data.name || username}'s Dashboard`,
       subtitle: data.bio ? (data.bio.length > 60 ? data.bio.slice(0, 60) + '...' : data.bio) : `@${username}`,
-      avatarUrl: data.avatarUrl
+      avatarUrl: data.avatarUrl,
+      align: headerAlign
     }),
 
     // Row 1: Stat cards
-    renderCardWithStats({ x: calculateCardX(0, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'GitHub Stats', stats: githubStats }),
+    renderCardWithStats({ x: calculateCardX(0, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: card1Title, stats: card1Stats }),
 
     renderCardWithStats({ x: calculateCardX(1, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'Streak Stats', stats: streakStats }),
 
-    renderCardWithStats({ x: calculateCardX(2, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: leetcodeData ? 'LeetCode Stats' : 'Competitive Coding', stats: codingStats }),
+    renderCardWithStats({ x: calculateCardX(2, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: card3Title, stats: card3Stats }),
 
     // Row 2: Contribution chart (left) + Top Languages donut (right)
     renderContributionChart({ x: LAYOUT.padding, y: row2Y, width: chartWidth, height: row2Height, title: 'Contribution Activity', data: chartData }),
