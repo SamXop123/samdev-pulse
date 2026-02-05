@@ -1,30 +1,53 @@
+/* ===== CSS Reset & Base ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ===== CSS Variables ===== */
 :root {
-  --bg: #0d1117;
-  --surface: #11161d;
-  --border: #1b212b;
+  /* Colors */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-tertiary: #1a1a24;
+  --surface: #1e1e2e;
+  --surface-glass: rgba(30, 30, 46, 0.6);
+  --border: #2a2a3e;
+  --border-light: #3a3a4e;
+
   --text-primary: #e8ecf3;
   --text-secondary: #9aa3b5;
   --accent: #4ea1ff;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background-color: var(--bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  padding: 56px 20px;
-  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-.page {
-  max-width: 920px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* ===== Container ===== */
+.container {
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 0 var(--spacing-xl);
+}
 }
 
 .hero {
