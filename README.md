@@ -1,18 +1,79 @@
-# samdev-pulse
+# 🚀 samdev-pulse
 
-> A personalized GitHub profile README generator that makes your profile stand out.
+### Project Unified Live Stats Engine
+> A **uniquely styled** GitHub profile README generator with personal branding, dynamic stats, contribution graphs, and achievement trophies—all in beautiful SVG format.
 
 
-## Features
+---
 
-- 📊 **GitHub Stats** - Followers, repositories, and total stars
-- 🔥 **Streak Stats** - Current streak, longest streak, and total contribution days
-- 💻 **LeetCode Integration** - Problems solved and ranking
-- 📈 **Contribution Graph** - Visual activity chart
-- 🍩 **Top Languages** - Donut chart of your most used languages
-- 🎨 **Theme Support** - Dark and light themes
+## ✨ Features
 
-## Usage
+### 📊 **GitHub Activity Stats**
+- Total contributions this year
+- Pull requests opened
+- Issues opened
+- Real-time data via GitHub API
+
+### 🔥 **Streak Statistics**
+- Current active streak
+- Longest streak ever
+- Total contribution days
+- Powered by GitHub GraphQL API
+
+### 💻 **LeetCode Integration** *(Optional)*
+- Total problems solved
+- Easy / Medium / Hard breakdown
+- Contest rating with fallback to ranking
+- Toggle on/off with `&leetcode=false`
+
+### 📈 **Contribution Activity Graph**
+- Smooth SVG line chart
+- Last 30 days of contributions
+- Auto-scaled Y-axis
+- Gradient fill styling
+
+### 🍩 **Top Languages Donut Chart**
+- Top 5 most-used languages
+- Percentage-based slices
+- Legend with color indicators
+- Calculated from your public repositories
+
+### 🏆 **Trophy System**
+Unique achievement badges showcasing your GitHub milestones:
+
+| Trophy | Description | Tiers |
+|--------|-------------|-------|
+| 💪 **Commits** | Total contributions this year | Bronze → Silver → Gold → Diamond |
+| 🔀 **Pull Requests** | PRs opened | Bronze → Silver → Gold → Diamond |
+| 🐛 **Issues** | Issues opened | Bronze → Silver → Gold → Diamond |
+| 📦 **Repositories** | Public repos created | Bronze → Silver → Gold → Diamond |
+| ⭐ **Stars** | Total stars across repos | Bronze → Silver → Gold → Diamond |
+| 👥 **Followers** | GitHub followers | Bronze → Silver → Gold → Diamond |
+
+**Tier Requirements:**
+- 🥉 Bronze: Entry level (1+)
+- 🥈 Silver: 100+ (500+ for stars)
+- 🥇 Gold: 500+ (1000+ for stars)
+- 💎 Diamond: 1000+ (5000+ for stars)
+
+### 🎨 **Multi-Theme Support**
+Choose from 7 beautiful themes:
+- `dark` (default) - Purple accents on dark background
+- `light` - Clean and minimal
+- `dracula` - Popular Dracula color scheme
+- `nord` - Arctic, north-bluish palette
+- `tokyonight` - Night-inspired Tokyo theme
+- `monokai` - Classic Monokai Pro colors
+- `gruvbox` - Retro groove warm scheme
+
+### 🔧 **Customization Options**
+- Header alignment (`left`, `center`, `right`)
+- Conditional LeetCode stats
+- Fallback to Repository Stats when LeetCode is disabled
+- 30-minute caching for optimal performance
+
+---
+
 
 Add this to your GitHub profile README:
 
