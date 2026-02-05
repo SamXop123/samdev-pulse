@@ -366,6 +366,90 @@
       </div>
     </div>
   </section>
+
+  <!-- Usage Guide Section -->
+  <section class="usage-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Quick Start Guide</h2>
+        <p class="section-subtitle">Get up and running in 30 seconds</p>
+      </div>
+
+      <div class="usage-grid">
+        <div class="usage-card">
+          <div class="usage-step">1</div>
+          <h3 class="usage-title">Basic Usage</h3>
+          <p class="usage-description">Simply add this to your GitHub README.md:</p>
+          <pre
+            class="code-block"><code>![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_USERNAME)</code></pre>
+        </div>
+
+        <div class="usage-card">
+          <div class="usage-step">2</div>
+          <h3 class="usage-title">With Theme</h3>
+          <p class="usage-description">Customize with your favorite color scheme:</p>
+          <pre
+            class="code-block"><code>![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_USERNAME&theme=tokyonight)</code></pre>
+        </div>
+
+        <div class="usage-card">
+          <div class="usage-step">3</div>
+          <h3 class="usage-title">With LeetCode</h3>
+          <p class="usage-description">Show off your problem-solving prowess:</p>
+          <pre
+            class="code-block"><code>![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_USERNAME&leetcode=YOUR_LEETCODE_USERNAME)</code></pre>
+        </div>
+
+        <div class="usage-card">
+          <div class="usage-step">4</div>
+          <h3 class="usage-title">Full Customization</h3>
+          <p class="usage-description">Combine all options for maximum impact:</p>
+          <pre
+            class="code-block"><code>![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_USERNAME&theme=dracula&leetcode=YOUR_LEETCODE_USERNAME&align=center)</code></pre>
+        </div>
+      </div>
+
+      <div class="params-table">
+        <h3 class="params-title">Available Parameters</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>username</code></td>
+              <td>string</td>
+              <td><code>SamXop123</code></td>
+              <td>Your GitHub username</td>
+            </tr>
+            <tr>
+              <td><code>theme</code></td>
+              <td>string</td>
+              <td><code>dark</code></td>
+              <td>Theme: dark, light, dracula, nord, tokyonight, monokai, gruvbox</td>
+            </tr>
+            <tr>
+              <td><code>leetcode</code></td>
+              <td>string</td>
+              <td>-</td>
+              <td>LeetCode username (or "false" to disable)</td>
+            </tr>
+            <tr>
+              <td><code>align</code></td>
+              <td>string</td>
+              <td><code>left</code></td>
+              <td>Header alignment: left, center, right</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
       </div>
     </div>
   </section>
