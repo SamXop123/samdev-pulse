@@ -14,30 +14,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
-  <div class="page">
-    <header class="hero">
-      <p class="eyebrow">Project Unified Live Stats Engine</p>
-      <h1>samdev-pulse</h1>
-      <p class="lede">A developer-first way to ship trustworthy profile intelligence as a single SVG. Built for GitHub READMEs, tuned for reliability.</p>
-    </header>
-
-    <section class="panel value">
-      <h2>Why it matters</h2>
-      <p class="value-text">One drop-in image delivers your GitHub story—contributions, streaks, languages, trophies—in a calm, premium layout that stays in sync automatically.</p>
-    </section>
-
-    <section class="panel preview">
-      <div class="panel-head">
-        <h2>Live preview</h2>
-        <span class="pill">SVG</span>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-background"></div>
+    <div class="container hero-content">
+      <div class="hero-eyebrow">Project Unified Live Stats Engine</div>
       </div>
       <div class="input-group">
         <label for="username">GitHub username</label>
         <input id="username" name="username" type="text" value="SamXop123" autocomplete="off" spellcheck="false" />
       </div>
-      <div class="preview-frame">
-        <img id="preview" src="/api/profile?username=SamXop123" alt="Profile dashboard preview" loading="lazy">
+    </div>
+  </section>
       </div>
     </section>
 
