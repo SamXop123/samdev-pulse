@@ -1,12 +1,20 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import profileRoute from './routes/profile.route.js';
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+
+// Serve static files from public directory
+app.use(express.static(join(__dirname, '..', 'public')));
 
 // Validate environment on startup
 function validateEnv() {

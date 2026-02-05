@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>samdev-pulse | Project Unified Live Stats Engine</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <p class="eyebrow">Project Unified Live Stats Engine</p>
+      <h1>samdev-pulse</h1>
+      <p class="lede">A developer-first way to ship trustworthy profile intelligence as a single SVG. Built for GitHub READMEs, tuned for reliability.</p>
+    </header>
+
+    <section class="panel value">
+      <h2>Why it matters</h2>
+      <p class="value-text">One drop-in image delivers your GitHub story—contributions, streaks, languages, trophies—in a calm, premium layout that stays in sync automatically.</p>
+    </section>
+
+    <section class="panel preview">
+      <div class="panel-head">
+        <h2>Live preview</h2>
+        <span class="pill">SVG</span>
+      </div>
+      <div class="input-group">
+        <label for="username">GitHub username</label>
+        <input id="username" name="username" type="text" value="SamXop123" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="preview-frame">
+        <img id="preview" src="/api/profile?username=SamXop123" alt="Profile dashboard preview" loading="lazy">
+      </div>
+    </section>
+
+    <section class="panel usage">
+      <div class="panel-head">
+        <h2>README usage</h2>
+        <span class="pill">Markdown</span>
+      </div>
+      <pre class="code-block"><code id="snippet">![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_USERNAME)</code></pre>
+      <p class="hint">Optional parameters: <code>&theme=tokyonight</code>, <code>&leetcode=YOUR_HANDLE</code>, <code>&align=center</code>.</p>
+    </section>
+
+    <footer class="footer">
+      <p>
+        <a href="https://github.com/SamXop123/samdev-pulse" target="_blank" rel="noopener">GitHub repo</a>
+        &nbsp;•&nbsp; MIT License &nbsp;•&nbsp; Built by SamXop123
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    const usernameInput = document.getElementById('username');
+    const previewImg = document.getElementById('preview');
+    const snippet = document.getElementById('snippet');
+
+    const previewBase = '/api/profile?username=';
+    const snippetBase = 'https://samdev-pulse.vercel.app/api/profile?username=';
+
+    function update() {
+      const handle = usernameInput.value.trim() || 'octocat';
+      const safeHandle = encodeURIComponent(handle);
+      previewImg.src = `${previewBase}${safeHandle}`;
+      snippet.textContent = `![samdev-pulse](${snippetBase}${safeHandle})`;
+    }
+
+    usernameInput.addEventListener('input', update);
+    update();
+  </script>
+</body>
+</html>
