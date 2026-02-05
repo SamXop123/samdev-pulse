@@ -73,7 +73,12 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -185,7 +190,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes gradientShift {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
 
@@ -947,12 +954,15 @@ td code {
 }
 
 .footer-content {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr;
-  gap: var(--spacing-2xl);
-  margin-bottom: var(--spacing-2xl);
-  padding-bottom: var(--spacing-2xl);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
   border-bottom: 1px solid var(--border);
+  text-align: left;
 }
 
 .footer-logo {
@@ -962,39 +972,47 @@ td code {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .footer-tagline {
   color: var(--text-secondary);
   font-size: 0.9375rem;
+  margin: 0;
 }
 
-.footer-column h4 {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-md);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.footer-column ul {
-  list-style: none;
+.footer-column {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-lg);
 }
 
 .footer-column a {
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.9375rem;
-  transition: color var(--transition-base);
+  font-weight: 500;
+  transition: all var(--transition-base);
 }
 
 .footer-column a:hover {
   color: var(--accent-purple);
+  transform: translateY(-1px);
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-md);
+  }
+}
+
+.footer-nav a:hover {
+  color: var(--accent-purple);
+  transform: translateY(-1px);
 }
 
 .footer-bottom {
