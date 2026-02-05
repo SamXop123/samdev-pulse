@@ -74,15 +74,45 @@ function calculateTotalStars(repos) {
 }
 
 /**
+ * Fetch avatar image and encode as data URI for safe embedding in SVG
+ */
+async function fetchAvatarDataUri(avatarUrl) {
+  if (!avatarUrl) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(avatarUrl, {
+      headers: {
+        'User-Agent': 'samdev-pulse',
+        'Accept': 'image/*',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Avatar fetch error: ${response.status}`);
+    }
+
+    const contentType = response.headers.get('content-type') || 'image/png';
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const base64 = buffer.toString('base64');
+    return `data:${contentType};base64,${base64}`;
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
  * Normalize GitHub data into a clean object
  */
-function normalizeUserData(profile, repos) {
+function normalizeUserData(profile, repos, avatarDataUri) {
   const totalStars = calculateTotalStars(repos);
 
   return {
     username: profile.login,
     name: profile.name || profile.login,
     avatarUrl: profile.avatar_url,
+    avatarDataUri,
     bio: profile.bio || '',
     location: profile.location || '',
     company: profile.company || '',
@@ -115,14 +145,14 @@ export async function getGitHubUserData(username) {
   }
 
   try {
-    const [profile, repos] = await Promise.all([
-      fetchUserProfile(username),
-      fetchUserRepos(username),
-    ]);
+    const profilePromise = fetchUserProfile(username);
+    const reposPromise = fetchUserRepos(username);
+    const [profile, repos] = await Promise.all([profilePromise, reposPromise]);
+    const avatarDataUri = await fetchAvatarDataUri(profile.avatar_url);
 
     const result = {
       success: true,
-      data: normalizeUserData(profile, repos),
+      data: normalizeUserData(profile, repos, avatarDataUri),
     };
 
     // Store in cache
@@ -136,4 +166,3 @@ export async function getGitHubUserData(username) {
     };
   }
 }
-
