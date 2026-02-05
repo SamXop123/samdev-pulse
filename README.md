@@ -139,40 +139,54 @@ Add this to your GitHub profile README:
 ---
 
 
-### Environment Variables
+## 🛠️ Local Development
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GITHUB_TOKEN` | Recommended | GitHub PAT for contribution data |
-| `DEFAULT_USERNAME` | No | Fallback username (default: `octocat`) |
-| `PORT` | No | Server port (default: `3000`) |
-| `NODE_ENV` | No | Set to `production` for production mode |
+### Prerequisites
 
-### Local Development
+- Node.js 18+ installed
+- GitHub Personal Access Token (see Vercel step 2 above)
+
+### Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/samdev-pulse.git
+git clone https://github.com/SamXop123/samdev-pulse.git
 cd samdev-pulse
 
 # Install dependencies
 npm install
+```
 
-# Set environment variables
-export GITHUB_TOKEN=your_github_token
+### Environment Variables
 
-# Start development server
+Create a `.env` file in the root directory:
+
+```env
+GITHUB_TOKEN=your_github_personal_access_token_here
+DEFAULT_USERNAME=octocat
+PORT=3000
+NODE_ENV=development
+```
+
+### Run Development Server
+
+```bash
+# Start the server
 npm run dev
 ```
 
-### Deploy to Vercel
+The server will start at `http://localhost:3000`
 
-1. Fork this repository
-2. Import to Vercel
-3. Add environment variables:
-   - `GITHUB_TOKEN`: Your GitHub Personal Access Token
-   - `NODE_ENV`: `production`
-4. Deploy!
+### Test Locally
+
+Open in browser:
+```
+http://localhost:3000/api/profile?username=octocat
+http://localhost:3000/api/profile?username=YOUR_USERNAME&theme=dracula
+http://localhost:3000/api/profile?username=YOUR_USERNAME&leetcode=YOUR_LEETCODE_USERNAME
+```
+
+---
 
 ## API Endpoints
 
