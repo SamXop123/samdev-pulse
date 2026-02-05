@@ -196,7 +196,7 @@ router.get('/', async (req, res) => {
       y: 52,
       title: `${data.name || username}'s Dashboard`,
       subtitle: data.bio ? (data.bio.length > 60 ? data.bio.slice(0, 60) + '...' : data.bio) : `@${username}`,
-      avatarUrl: data.avatarUrl,
+      avatarUrl: data.avatarDataUri || data.avatarUrl,
       align: headerAlign
     }),
 
