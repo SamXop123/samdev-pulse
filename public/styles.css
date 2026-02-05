@@ -333,9 +333,93 @@ section {
 }
 
 /* ===== Features Section ===== */
+.features-section {
+  background: var(--bg-secondary);
+  position: relative;
 }
 
-.panel {
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.feature-card {
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  transition: all var(--transition-base);
+  cursor: default;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-purple);
+  box-shadow: var(--shadow-xl), 0 0 30px rgba(139, 92, 246, 0.2);
+}
+
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  transition: all var(--transition-base);
+}
+
+.feature-card:hover .feature-icon {
+  transform: rotate(-5deg) scale(1.1);
+}
+
+.feature-icon svg {
+  color: white;
+}
+
+.feature-icon.fire {
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+}
+
+.feature-icon.code {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+}
+
+.feature-icon.chart {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.feature-icon.donut {
+  background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+}
+
+.feature-icon.trophy {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.feature-icon.palette {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.feature-icon.rocket {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-primary);
+}
+
+.feature-description {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
