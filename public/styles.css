@@ -24,15 +24,20 @@
   --accent-purple: #8b5cf6;
   --accent-blue: #3b82f6;
   --accent-pink: #ec4899;
+  --accent-cyan: #06b6d4;
+
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
   --gradient-hero: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #ec4899 100%);
   --gradient-mesh: radial-gradient(at 40% 20%, rgba(139, 92, 246, 0.3) 0px, transparent 50%),
+
   /* Spacing */
   --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
   /* Border Radius */
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -41,6 +46,7 @@
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -420,11 +426,24 @@ section {
   line-height: 1.6;
 }
 
+/* ===== Themes Section ===== */
+.themes-section {
+  background: var(--bg-primary);
+}
+
+.themes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.theme-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 24px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-base);
+  cursor: pointer;
 }
 
 .panel-head {
