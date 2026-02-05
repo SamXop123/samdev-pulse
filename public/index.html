@@ -560,18 +560,35 @@
   </footer>
 
   <script>
+    // Preview functionality
     const usernameInput = document.getElementById('username');
+    const leetcodeInput = document.getElementById('leetcode');
+    const themeSelect = document.getElementById('theme-select');
+    const alignSelect = document.getElementById('align-select');
     const previewImg = document.getElementById('preview');
     const snippet = document.getElementById('snippet');
+    const copyBtn = document.getElementById('copy-btn');
 
-    const previewBase = '/api/profile?username=';
-    const snippetBase = 'https://samdev-pulse.vercel.app/api/profile?username=';
+    const deployUrl = window.location.hostname === 'localhost'
+      ? window.location.origin
+      : 'https://samdev-pulse.vercel.app';
 
-    function update() {
-      const handle = usernameInput.value.trim() || 'octocat';
-      const safeHandle = encodeURIComponent(handle);
-      previewImg.src = `${previewBase}${safeHandle}`;
-      snippet.textContent = `![samdev-pulse](${snippetBase}${safeHandle})`;
+    function updatePreview() {
+      const username = usernameInput.value.trim() || 'SamXop123';
+      const leetcode = leetcodeInput.value.trim();
+      const theme = themeSelect.value;
+      const align = alignSelect.value;
+
+      const params = new URLSearchParams({ username });
+      if (theme) params.append('theme', theme);
+      if (leetcode) params.append('leetcode', leetcode);
+      if (align && align !== 'left') params.append('align', align);
+
+      const localUrl = `/api/profile?${params.toString()}`;
+      const publicUrl = `${deployUrl}/api/profile?${params.toString()}`;
+
+      previewImg.src = localUrl;
+      snippet.textContent = `![samdev-pulse](${publicUrl})`;
     }
 
     usernameInput.addEventListener('input', update);
