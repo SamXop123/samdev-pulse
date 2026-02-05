@@ -188,20 +188,31 @@ http://localhost:3000/api/profile?username=YOUR_USERNAME&leetcode=YOUR_LEETCODE_
 
 ---
 
-## API Endpoints
+## 🔍 API Endpoints
 
 ### `GET /api/profile`
 
 Returns an SVG image of the profile dashboard.
 
+**Query Parameters:**
+- `username` - GitHub username (default: `octocat`)
+- `theme` - Theme name (default: `dark`)
+- `leetcode` - LeetCode username or `false` to disable
+- `align` - Header alignment: `left`, `center`, `right`
+
+**Response:**
+- Content-Type: `image/svg+xml`
+- Cache-Control: `public, max-age=1800` (30 minutes)
+
 ### `GET /health`
 
-Health check endpoint returning JSON:
+Health check endpoint.
 
+**Response:**
 ```json
 {
   "status": "ok",
-  "timestamp": "2026-02-01T00:00:00.000Z"
+  "timestamp": "2026-02-04T00:00:00.000Z"
 }
 ```
 
