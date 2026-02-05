@@ -216,7 +216,63 @@ Health check endpoint.
 }
 ```
 
-## License
+---
+
+## 📁 Project Structure
+
+```
+samdev-pulse/
+├── src/
+│   ├── server.js                      # Express app entry point
+│   ├── routes/
+│   │   └── profile.route.js           # Main API route handler
+│   ├── services/
+│   │   ├── github.service.js          # GitHub REST API
+│   │   ├── github-graphql.service.js  # GitHub GraphQL API (streaks)
+│   │   └── leetcode.service.js        # LeetCode API integration
+│   ├── renderers/
+│   │   ├── svg.renderer.js            # SVG layout & cards
+│   │   └── chart.renderer.js          # Graphs & charts
+│   ├── themes/
+│   │   ├── dark.theme.js
+│   │   ├── light.theme.js
+│   │   ├── dracula.theme.js
+│   │   ├── nord.theme.js
+│   │   ├── tokyonight.theme.js
+│   │   ├── monokai.theme.js
+│   │   └── gruvbox.theme.js
+│   └── utils/
+│       └── cache.js                   # In-memory TTL cache
+├── package.json
+├── vercel.json                        # Vercel configuration
+└── README.md
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### SVG not showing in README
+- Ensure the URL is correct and accessible
+- Check that your deployment is live
+- Verify environment variables are set correctly
+- Clear GitHub's cache by appending `?v=1` to URL
+
+### Data not updating
+- GitHub caches images for ~5-10 minutes
+- Cache-Control is set to 30 minutes on the API
+- Try appending a query param like `&v=2` to force refresh
+
+### LeetCode stats not showing
+- Verify your LeetCode username is correct
+- LeetCode API may be rate-limited or down
+- The dashboard will gracefully fallback to showing placeholders
+
+### Contribution graph shows fake data
+- Ensure `GITHUB_TOKEN` is set with correct scopes
+- Token needs `public_repo` and `read:user` permissions
+- Check if token has expired
+
 
 MIT
 
