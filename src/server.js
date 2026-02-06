@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { inject } from '@vercel/analytics';
+import { track } from '@vercel/analytics/server';
 import profileRoute from './routes/profile.route.js';
 
 dotenv.config();
@@ -39,7 +40,17 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use('/api/profile', profileRoute);
+// Analytics tracking middleware for profile requests
+app.use('/api/profile', (req, res, next) => {
+  track('github_stats_request', {
+    username: req.query.username || 'unknown',
+    theme: req.query.theme || 'dark',
+    leetcode: req.query.leetcode || 'not_specified',
+    align: req.query.align || 'left',
+  });
+
+  next();
+}, profileRoute);
 
 app.listen(PORT, () => {
   if (!IS_PRODUCTION) {
