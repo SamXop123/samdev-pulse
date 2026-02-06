@@ -2,9 +2,13 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { inject } from '@vercel/analytics';
 import profileRoute from './routes/profile.route.js';
 
 dotenv.config();
+
+// Initialize Vercel Analytics
+inject();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
