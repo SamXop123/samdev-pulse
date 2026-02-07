@@ -1,10 +1,8 @@
-// Chart Renderer - Premium Modern Design
+// Chart Renderer
 
 import { getTheme, LAYOUT } from './svg.renderer.js';
 
-/**
- * Generate a smooth SVG path using cardinal spline interpolation
- */
+// generate a smooth SVG path using cardinal spline interpolation
 function smoothPath(points) {
   if (points.length < 2) return '';
 
@@ -28,9 +26,7 @@ function smoothPath(points) {
   return path;
 }
 
-/**
- * Scale data points to fit within chart dimensions
- */
+// scale data points to fit within chart dimensions
 function scaleData(data, width, height, padding) {
   const maxVal = Math.max(...data);
   const minVal = Math.min(...data);
@@ -46,9 +42,7 @@ function scaleData(data, width, height, padding) {
   }));
 }
 
-/**
- * Render a modern line/area chart with glow effects
- */
+// render a modern line/area chart with glow effects
 export function renderLineChart({ x, y, width, height, data, showArea = true, showLine = true, showDots = false, uniqueId }) {
   const { colors } = getTheme();
   const padding = 12;
@@ -59,7 +53,7 @@ export function renderLineChart({ x, y, width, height, data, showArea = true, sh
 
   let elements = [];
 
-  // Gradient definitions for this chart
+  // gradient definitions for this chart
   elements.push(`
     <defs>
       <linearGradient id="lineGradient-${id}" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -82,7 +76,7 @@ export function renderLineChart({ x, y, width, height, data, showArea = true, sh
     </defs>
   `);
 
-  // Subtle grid lines
+  // subtle grid lines
   const gridLines = [];
   for (let i = 0; i <= 4; i++) {
     const lineY = padding + (i / 4) * (height - padding * 2);
@@ -90,21 +84,21 @@ export function renderLineChart({ x, y, width, height, data, showArea = true, sh
   }
   elements.push(gridLines.join('\n'));
 
-  // Area fill with gradient
+  // area fill with gradient
   if (showArea && points.length > 1) {
     const areaPath = `${pathD} L ${points[points.length - 1].x} ${height - padding} L ${points[0].x} ${height - padding} Z`;
     elements.push(`<path d="${areaPath}" fill="url(#areaGradient-${id})"/>`);
   }
 
-  // Line stroke with glow
+  // line stroke with glow
   if (showLine && pathD) {
-    // Glow layer
+    // glow layer
     elements.push(`<path d="${pathD}" fill="none" stroke="url(#lineGradient-${id})" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" filter="url(#lineGlow-${id})"/>`);
-    // Main line
+    // main line
     elements.push(`<path d="${pathD}" fill="none" stroke="url(#lineGradient-${id})" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`);
   }
 
-  // Dots at data points with glow
+  // dots at data points with glow
   if (showDots && points.length <= 15) {
     points.forEach((point, i) => {
       const dotColor = i === points.length - 1 ? colors.gradientEnd : colors.gradientStart;
@@ -116,7 +110,7 @@ export function renderLineChart({ x, y, width, height, data, showArea = true, sh
     });
   }
 
-  // End point highlight
+  // end point highlight
   if (points.length > 0) {
     const lastPoint = points[points.length - 1];
     elements.push(`
@@ -132,9 +126,7 @@ export function renderLineChart({ x, y, width, height, data, showArea = true, sh
   </g>`;
 }
 
-/**
- * Render a modern contribution chart card
- */
+// render a modern contribution chart card
 export function renderContributionChart({ x, y, width, height, title, data }) {
   const { colors } = getTheme();
   const chartX = 0;
@@ -144,34 +136,32 @@ export function renderContributionChart({ x, y, width, height, title, data }) {
 
   return `
   <g>
-    <!-- Card glow -->
+    <!-- card glow -->
     <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.glow}" opacity="0.03" filter="url(#cardGlow)"/>
     
-    <!-- Card background -->
+    <!-- card background -->
     <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>
     
-    <!-- Inner gradient -->
+    <!-- inner gradient -->
     <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="0.3"/>
     
-    <!-- Border -->
+    <!-- border -->
     <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
     
-    <!-- Title -->
+    <!-- title -->
     <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${title.toUpperCase()}</text>
     
-    <!-- Title accent -->
+    <!-- title accent -->
     <rect x="${x + 20}" y="${y + 36}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
     
-    <!-- Chart -->
+    <!-- chart -->
     <g transform="translate(${x + 20}, ${y})">
       ${renderLineChart({ x: chartX, y: chartY, width: chartWidth, height: chartHeight, data, showArea: true, showLine: true, showDots: false, uniqueId: 'contrib' })}
     </g>
   </g>`;
 }
 
-/**
- * Generate fake contribution data with realistic pattern
- */
+// generate fake contribution data with realistic pattern
 export function generateFakeContributionData(days = 30) {
   const data = [];
   let base = 8;
@@ -191,9 +181,7 @@ export function generateFakeContributionData(days = 30) {
   return data;
 }
 
-/**
- * Create an SVG arc path for a donut slice
- */
+// create an SVG arc path for a donut slice
 function describeArc(cx, cy, outerR, innerR, startAngle, endAngle) {
   const gap = 0.03;
   const adjustedStart = startAngle + gap;
@@ -231,23 +219,21 @@ function describeArc(cx, cy, outerR, innerR, startAngle, endAngle) {
   ].join(' ');
 }
 
-/**
- * Render a modern donut chart with legend
- */
+// render a modern donut chart with legend
 export function renderDonutChart({ x, y, width, height, title, data }) {
   const { colors, chartColors } = getTheme();
 
-  // Donut dimensions
+  // donut dimensions
   const chartAreaWidth = width * 0.42;
   const centerX = x + chartAreaWidth / 2 + 20;
   const centerY = y + height / 2 + 12;
   const outerRadius = Math.min(chartAreaWidth, height - 70) / 2 - 4;
   const innerRadius = outerRadius * 0.62;
 
-  // Calculate total for percentages
+  // calculate total for percentages
   const total = data.reduce((sum, item) => sum + item.value, 0);
 
-  // Build pie slices with shadows
+  // build pie slices with shadows
   let currentAngle = -Math.PI / 2;
   const slices = [];
 
@@ -264,7 +250,7 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
     currentAngle += sliceAngle;
   });
 
-  // Center decoration
+  // center decoration
   const centerDeco = `
     <circle cx="${centerX}" cy="${centerY}" r="${innerRadius - 4}" fill="${colors.cardBackground}" opacity="0.9"/>
     <circle cx="${centerX}" cy="${centerY}" r="${innerRadius - 8}" fill="url(#mainGradient)" opacity="0.5"/>
@@ -272,7 +258,7 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
     <text x="${centerX}" y="${centerY + 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="9" fill="${colors.mutedText}" text-anchor="middle">REPOS</text>
   `;
 
-  // Build legend with modern styling
+  // build legend with modern styling
   const legendX = x + chartAreaWidth + 32;
   const legendStartY = y + 56;
   const legendItemHeight = 28;
@@ -294,29 +280,29 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
 
   return `
   <g>
-    <!-- Card glow -->
+    <!-- card glow -->
     <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.glowSecondary}" opacity="0.03" filter="url(#cardGlow)"/>
     
-    <!-- Card background -->
+    <!-- card background -->
     <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>
     
-    <!-- Inner gradient -->
+    <!-- inner gradient -->
     <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="0.3"/>
     
-    <!-- Border -->
+    <!-- border -->
     <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
     
-    <!-- Title -->
+    <!-- title -->
     <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${title.toUpperCase()}</text>
     
-    <!-- Title accent -->
+    <!-- title accent -->
     <rect x="${x + 20}" y="${y + 36}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
     
-    <!-- Donut chart -->
+    <!-- donut chart -->
     ${slices.join('\n    ')}
     ${centerDeco}
     
-    <!-- Legend -->
+    <!-- legend -->
     ${legendItems}
   </g>`;
 }
