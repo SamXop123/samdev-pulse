@@ -17,12 +17,10 @@ import { getLeetCodeData } from '../services/leetcode.service.js';
 
 const router = Router();
 
-// Default fallback username for demo purposes
-const DEFAULT_USERNAME = process.env.DEFAULT_USERNAME || 'octocat';
+// default fallback username
+const DEFAULT_USERNAME = process.env.DEFAULT_USERNAME || 'SamXop123';
 
-/**
- * Format large numbers (e.g., 1500 -> 1.5k)
- */
+// to format large numbers (e.g. 1500 -> 1.5k)
 function formatNumber(num) {
   if (num >= 1000000) {
     return (num / 1000000).toFixed(1) + 'M';
@@ -33,9 +31,7 @@ function formatNumber(num) {
   return num.toString();
 }
 
-/**
- * Calculate top languages from repos
- */
+// calculate top languages from repos
 function getTopLanguages(repos, max = 5) {
   const langCounts = {};
 
@@ -53,24 +49,24 @@ function getTopLanguages(repos, max = 5) {
   return sorted;
 }
 
-// GET /api/profile?username=octocat&theme=dark&leetcode=username (or leetcode=false to disable)
+// GET /api/profile?username=SamXop123&theme=dark&leetcode=username (or leetcode=false to disable)
 router.get('/', async (req, res) => {
   const { theme, leetcode, align } = req.query;
   const username = req.query.username || DEFAULT_USERNAME;
 
-  // Set theme (defaults to dark)
+  // theme (default is dark)
   setTheme(theme || 'dark');
 
-  // Check if LeetCode is explicitly disabled
+  // check if LeetCode is explicitly disabled
   const leetcodeDisabled = leetcode === 'false';
   const shouldRenderLeetCode = Boolean(leetcode && !leetcodeDisabled);
   const showRepositoryStats = !shouldRenderLeetCode;
 
-  // Validate and set alignment (left, center, right - defaults to left)
+  // alignment
   const validAlignments = ['left', 'center', 'right'];
   const headerAlign = validAlignments.includes(align) ? align : 'left';
 
-  // Fetch GitHub data
+  // fetch github data
   const result = await getGitHubUserData(username);
 
   if (!result.success) {
@@ -79,11 +75,11 @@ router.get('/', async (req, res) => {
 
   const { data } = result;
 
-  // Fetch contribution data for streaks (non-blocking)
+  // fetch contribution data for streaks
   const contributionResult = await getContributionData(username);
   const contributionData = contributionResult.success ? contributionResult.data : null;
 
-  // Fetch LeetCode data if username provided and not disabled (non-blocking)
+  // fetch LC data if username provided and not disabled
   const leetcodeResult = shouldRenderLeetCode ? await getLeetCodeData(leetcode) : null;
   const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
 
@@ -92,19 +88,19 @@ router.get('/', async (req, res) => {
   const cardHeight = 140;
   const row1Y = 95;
 
-  // Row 2: Contribution chart (left) + placeholder (right)
+  // Row 2: contribution chart (left) + placeholder (right)
   const row2Y = row1Y + cardHeight + LAYOUT.cardGap;
   const chartWidth = calculateCardWidth(2) + LAYOUT.cardGap / 2;
   const row2CardWidth = calculateCardWidth(2) - LAYOUT.cardGap / 2;
   const row2Height = 200;
 
-  // Row 3: Trophy row
+  // Row 3: trophy row
   const row3Y = row2Y + row2Height + LAYOUT.cardGap;
   const row3Height = 165;
   const fullWidth = width - (LAYOUT.padding * 2);
   const height = row3Y + row3Height + LAYOUT.padding;
 
-  // Card 1: GitHub Activity - ALWAYS Card 1
+  // Card 1: github activity
   const card1Title = 'GitHub Activity';
   const card1Stats = [
     { label: 'Contributions', value: contributionData ? formatNumber(contributionData.totalContributions) : '-' },
@@ -112,14 +108,14 @@ router.get('/', async (req, res) => {
     { label: 'Issues Opened', value: contributionData ? formatNumber(contributionData.totalIssues) : '-' },
   ];
 
-  // Card 2: Streak Stats (real data from GraphQL) - ALWAYS Card 2
+  // Card 2: streak stats
   const streakStats = [
     { label: 'Current', value: contributionData ? formatNumber(contributionData.currentStreak) : '-' },
     { label: 'Longest', value: contributionData ? formatNumber(contributionData.longestStreak) : '-' },
     { label: 'Total', value: contributionData ? formatNumber(contributionData.totalContributionDays) : '-' },
   ];
 
-  // Card 3: Changes based on leetcode parameter
+  // card 3: changes based on leetcode parameter
   let card3Title;
   let card3Stats;
 
@@ -131,13 +127,11 @@ router.get('/', async (req, res) => {
       { label: 'Followers', value: formatNumber(data.followers) },
     ];
   } else {
-    // When leetcode is enabled: Show LeetCode stats
-    // LeetCode or Competitive Coding stats
-    // Use rating if available (show full number), otherwise fall back to ranking
+    // when leetcode is enabled: show its stats
+    // use rating if available, otherwise fall back to ranking
     const getRatingOrRanking = () => {
       if (!leetcodeData) return { label: 'Rating', value: '-' };
       if (leetcodeData.contestRating) {
-        // Show full rating number, not abbreviated
         return { label: 'Rating', value: String(leetcodeData.contestRating) };
       }
       return { label: 'Rank', value: formatNumber(leetcodeData.ranking) };
@@ -163,21 +157,21 @@ router.get('/', async (req, res) => {
     ];
   }
 
-  // Use real contribution data for chart (last 30 days), fallback to fake data if unavailable
+  // use real contribution data for chart (last 30 days)
   let chartData;
   if (contributionData && contributionData.days && contributionData.days.length > 0) {
-    // Get last 30 days of real contribution data
+    // get last 30 days of real contribution data
     const recentDays = contributionData.days.slice(-30);
     chartData = recentDays.map(day => day.count);
   } else {
-    // Fallback to fake data if real data unavailable
+    // fallback to fake data if real data unavailable
     chartData = generateFakeContributionData(30);
   }
 
-  // Calculate top languages from repos
+  // calculate top languages from repos
   const topLanguages = getTopLanguages(data.repos, 5);
 
-  // Trophy data
+  // trophy data
   const trophyData = {
     commits: contributionData?.totalContributions || 0,
     prs: contributionData?.totalPRs || 0,
@@ -188,7 +182,7 @@ router.get('/', async (req, res) => {
   };
 
 
-  // Build SVG content
+  // build SVG content
   const content = [
     renderBackground(width, height),
     renderHeader({
@@ -200,19 +194,19 @@ router.get('/', async (req, res) => {
       align: headerAlign
     }),
 
-    // Row 1: Stat cards
+    // Row 1: stat cards
     renderCardWithStats({ x: calculateCardX(0, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: card1Title, stats: card1Stats }),
 
     renderCardWithStats({ x: calculateCardX(1, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: 'Streak Stats', stats: streakStats }),
 
     renderCardWithStats({ x: calculateCardX(2, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: card3Title, stats: card3Stats }),
 
-    // Row 2: Contribution chart (left) + Top Languages donut (right)
+    // Row 2: contribution chart (left) + top languages donut (right)
     renderContributionChart({ x: LAYOUT.padding, y: row2Y, width: chartWidth, height: row2Height, title: 'Contribution Activity', data: chartData }),
 
     renderDonutChart({ x: LAYOUT.padding + chartWidth + LAYOUT.cardGap, y: row2Y, width: row2CardWidth, height: row2Height, title: 'Top Languages', data: topLanguages }),
 
-    // Row 3: Trophy row
+    // Row 3: trophy row
     renderTrophyRow({ x: LAYOUT.padding, y: row3Y, width: fullWidth, height: row3Height, data: trophyData }),
   ].join('\n');
 
