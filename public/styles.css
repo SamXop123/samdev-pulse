@@ -757,8 +757,7 @@ section {
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
   font-size: 0.8125rem;
-  word-break: break-word;
-  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .params-table {
@@ -770,7 +769,45 @@ section {
 }
 
 .params-table table {
-  min-width: 520px;
+  min-width: 720px;
+  margin-top: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: var(--bg-tertiary);
+}
+
+th {
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border);
+}
+
+td {
+  padding: var(--spacing-md);
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+  background: var(--bg-tertiary);
+}
+
+td code {
+  padding: 0.125rem 0.375rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 0.875rem;
+  color: var(--accent-cyan);
 }
 
 /* ===== Developer Section ===== */
@@ -1068,6 +1105,8 @@ section {
 
   .usage-card .code-block {
     font-size: 0.9rem;
+    word-break: break-word;
+    white-space: pre-wrap;
   }
 
   .footer-content {
@@ -1081,6 +1120,11 @@ section {
   th,
   td {
     padding: var(--spacing-sm);
+  }
+
+
+  .params-table table {
+    min-width: 520px;
   }
 }
 
