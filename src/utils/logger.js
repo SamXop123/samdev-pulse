@@ -1,25 +1,37 @@
 import mongoose from 'mongoose';
 
 let isConnected = false;
+let connectionAttempted = false;
 
 async function connectToDatabase() {
   if (isConnected) {
-    return;
+    return true;
+  }
+
+  if (connectionAttempted) {
+    return false;
   }
 
   const mongoUri = process.env.MONGODB_URI;
 
   if (!mongoUri) {
-    console.warn('⚠️  MONGODB_URI not set - logging disabled');
-    return;
+    connectionAttempted = true;
+    return false;
   }
 
+  connectionAttempted = true;
+
   try {
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 5000,
+    });
     isConnected = true;
     console.log('✅ MongoDB connected for logging');
+    return true;
   } catch (error) {
     console.error('❌ MongoDB connection failed:', error.message);
+    return false;
   }
 }
 
@@ -59,9 +71,9 @@ export async function logApiAccess(req) {
   }
 
   try {
-    await connectToDatabase();
+    const connected = await connectToDatabase();
 
-    if (!isConnected) {
+    if (!connected) {
       return;
     }
 
@@ -84,16 +96,23 @@ export async function logApiAccess(req) {
       },
     });
 
-    logEntry.save().catch(err => {
-      console.error('Failed to save log:', err.message);
+    // set a timeout for the save operation to prevent buffering issues
+    const savePromise = logEntry.save();
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Log save timeout')), 3000)
+    );
+
+    await Promise.race([savePromise, timeoutPromise]).catch(err => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Failed to save log:', err.message);
+      }
     });
 
-    // optionally log to console in development
     if (process.env.NODE_ENV !== 'production') {
       console.log(`[LOG] API Access: ${logEntry.githubUsername} → ${req.query.username}`);
     }
   } catch (error) {
-    console.error('Logging error:', error.message);
+    // silently fail - logging should never break main functionality
   }
 }
 
