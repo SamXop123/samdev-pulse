@@ -85,10 +85,14 @@ export async function logApiAccess(req) {
     const userAgent = req.headers['user-agent'] || '';
     const ip = req.ip || req.connection?.remoteAddress || req.socket?.remoteAddress || '';
 
+    const githubFromReferer = extractGitHubUsername(referer);
+    const githubUsername = githubFromReferer !== 'unknown' ? githubFromReferer : (req.query.username || 'unknown');
+    const safeReferer = referer || 'direct';
+
     const logEntry = new ApiLog({
       timestamp: new Date(),
-      githubUsername: extractGitHubUsername(referer),
-      referer: referer,
+      githubUsername,
+      referer: safeReferer,
       userAgent: userAgent,
       ip: ip,
       endpoint: req.path,
