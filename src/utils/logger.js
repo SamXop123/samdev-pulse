@@ -13,6 +13,7 @@ async function connectToDatabase() {
   }
 
   const mongoUri = process.env.MONGODB_URI;
+  const dbName = process.env.MONGODB_DB || undefined; // set a db name to avoid admin/local
 
   if (!mongoUri) {
     console.error('❌ MONGODB_URI is not set');
@@ -24,11 +25,12 @@ async function connectToDatabase() {
 
   try {
     await mongoose.connect(mongoUri, {
+      dbName,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 5000,
     });
     isConnected = true;
-    console.log('✅ MongoDB connected for logging');
+    console.log(`✅ MongoDB connected for logging (db: ${mongoose.connection.db.databaseName})`);
     return true;
   } catch (error) {
     console.error('❌ MongoDB connection failed:', error.message);
@@ -71,6 +73,7 @@ export async function logApiAccess(req) {
 
   try {
     console.log('📝 Attempting to log API access...');
+    console.log(`🔍 MONGODB_URI present: ${Boolean(process.env.MONGODB_URI)}, DB: ${process.env.MONGODB_DB || 'default-from-URI'}`);
     const connected = await connectToDatabase();
 
     if (!connected) {
