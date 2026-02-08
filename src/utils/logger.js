@@ -102,10 +102,12 @@ export async function logApiAccess(req) {
 
     const savePromise = logEntry.save();
     const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Log save timeout')), 3000)
+        setTimeout(() => reject(new Error('Log save timeout')), 8000)
     );
 
-    await Promise.race([savePromise, timeoutPromise]);
+    await Promise.race([savePromise, timeoutPromise]).catch(err => {
+      console.error('Failed to save log:', err.message);
+    });
     console.log(`✅ [LOG] Saved: ${logEntry.githubUsername} → ${req.query.username}`);
 
   } catch (error) {
