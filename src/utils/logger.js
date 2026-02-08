@@ -2,14 +2,15 @@ import mongoose from 'mongoose';
 
 let isConnected = false;
 let connectionAttempted = false;
+let connectingPromise = null;
 
 async function connectToDatabase() {
-  if (isConnected) {
-    return true;
+  if (mongoose.connection.readyState === 1) {
+    return true; // already connected
   }
 
-  if (connectionAttempted) {
-    return false;
+  if (connectingPromise) {
+    return connectingPromise; // reuse in-flight attempt
   }
 
   const mongoUri = process.env.MONGODB_URI;
@@ -17,27 +18,26 @@ async function connectToDatabase() {
 
   if (!mongoUri) {
     console.error('❌ MONGODB_URI is not set');
-    connectionAttempted = true;
     return false;
   }
 
-  connectionAttempted = true;
+  console.log(`ℹ️  Connecting to MongoDB (db: ${dbName || 'from-URI'}, state: ${mongoose.connection.readyState})`);
 
-  try {
-    await mongoose.connect(mongoUri, {
-      dbName,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 5000,
-    });
-    isConnected = true;
+  connectingPromise = mongoose.connect(mongoUri, {
+    dbName,
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 10000,
+  }).then(() => {
     console.log(`✅ MongoDB connected for logging (db: ${mongoose.connection.db.databaseName})`);
+    connectingPromise = null;
     return true;
-  } catch (error) {
-    console.error('❌ MongoDB connection failed:', error.message);
-    isConnected = false;
-    connectionAttempted = false; // Reset to retry on next attempt
+  }).catch((error) => {
+    console.error('❌ MongoDB connection failed:', error?.message || error);
+    connectingPromise = null;
     return false;
-  }
+  });
+
+  return connectingPromise;
 }
 
 const logSchema = new mongoose.Schema({
