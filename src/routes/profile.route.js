@@ -14,6 +14,7 @@ import { renderContributionChart, generateFakeContributionData, renderDonutChart
 import { getGitHubUserData } from '../services/github.service.js';
 import { getContributionData } from '../services/github-graphql.service.js';
 import { getLeetCodeData } from '../services/leetcode.service.js';
+import { logApiAccess } from '../utils/logger.js';
 
 const router = Router();
 
@@ -51,6 +52,9 @@ function getTopLanguages(repos, max = 5) {
 
 // GET /api/profile?username=SamXop123&theme=dark&leetcode=username (or leetcode=false to disable)
 router.get('/', async (req, res) => {
+  // log API access
+  logApiAccess(req).catch(err => console.error('Log failed:', err.message));
+
   const { theme, leetcode, align } = req.query;
   const username = req.query.username || DEFAULT_USERNAME;
 
