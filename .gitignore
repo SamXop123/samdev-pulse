@@ -22,6 +22,7 @@ Thumbs.db
 
 # Test output
 *.svg
+test-logging.js
 !public/*.svg
 
 # Vercel
