@@ -24,6 +24,7 @@ Thumbs.db
 *.svg
 test-logging.js
 !public/*.svg
+/src/utils/view-logs.js
 
 # Vercel
 .vercel
