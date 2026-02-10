@@ -212,6 +212,16 @@ src/
 └── utils/         # Caching & helpers
 ```
 
+
+---
+
+## 🔒 Usage & privacy
+
+samdev-pulse logs basic, non-sensitive usage information (such as the github username passed to the api) for monitoring and improving the service.
+
+no personal data, authentication details, or private information is collected.
+
+
 ---
 
 ## 🤝 Contributing
