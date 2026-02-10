@@ -7,6 +7,9 @@ import nordTheme from '../themes/nord.theme.js';
 import monokaiTheme from '../themes/monokai.theme.js';
 import gruvboxTheme from '../themes/gruvbox.theme.js';
 import tokyonightTheme from '../themes/tokyonight.theme.js';
+import solarizedTheme from '../themes/solarized.theme.js';
+import catppuccinTheme from '../themes/catppuccin.theme.js';
+import rosePineTheme from '../themes/rose-pine.theme.js';
 
 const LAYOUT = {
   width: 960,
@@ -25,6 +28,9 @@ const themes = {
   monokai: monokaiTheme,
   gruvbox: gruvboxTheme,
   tokyonight: tokyonightTheme,
+  solarized: solarizedTheme,
+  catppuccin: catppuccinTheme,
+  'rose-pine': rosePineTheme,
 };
 
 // current active theme
