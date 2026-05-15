@@ -413,6 +413,12 @@
               </select>
             </div>
           </div>
+          <div class="input-row">
+            <div class="input-group" style="flex-direction: row; align-items: center; justify-content: flex-start;">
+              <input id="hide-trophies" name="hide_trophies" type="checkbox" style="width: 18px; height: 18px; cursor: pointer; margin-right: 4px;" />
+              <label for="hide-trophies" style="margin-bottom: 0; cursor: pointer;">Hide Trophies</label>
+            </div>
+          </div>
           <div class="preview-update-row">
             <button id="update-preview-btn" class="btn btn-primary">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -527,6 +533,12 @@
               <td>string</td>
               <td><code>left</code></td>
               <td>Header alignment: left, center, right</td>
+            </tr>
+            <tr>
+              <td><code>hide_trophies</code></td>
+              <td>boolean</td>
+              <td><code>false</code></td>
+              <td>Hide the achievement trophies row</td>
             </tr>
           </tbody>
         </table>

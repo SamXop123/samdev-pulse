@@ -11,6 +11,7 @@
   const snippet = document.getElementById('snippet');
   const copyBtn = document.getElementById('copy-btn');
   const updateBtn = document.getElementById('update-preview-btn');
+  const hideTrophiesCheck = document.getElementById('hide-trophies');
 
   // catching base URL
   const deployUrl = window.location.hostname === 'localhost'
@@ -23,12 +24,14 @@
     const leetcode = leetcodeInput.value.trim();
     const theme = themeSelect.value;
     const align = alignSelect.value;
+    const hideTrophies = hideTrophiesCheck ? hideTrophiesCheck.checked : false;
 
     // Build query parameters
     const params = new URLSearchParams({ username });
     if (theme) params.append('theme', theme);
     if (leetcode) params.append('leetcode', leetcode);
     if (align && align !== 'left') params.append('align', align);
+    if (hideTrophies) params.append('hide_trophies', 'true');
 
     // Cache-busting timestamp for local preview
     const localUrl = `/api/profile?${params.toString()}&t=${Date.now()}`;

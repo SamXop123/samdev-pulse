@@ -120,6 +120,7 @@ A visual trophy system highlighting GitHub milestones:
 | ---------------- | ------------------- |
 | 💪 Commits       | Total contributions |
 | 🔀 Pull Requests | PRs opened          |
+| 👁️ Reviews       | PR reviews          |
 | 🐛 Issues        | Issues opened       |
 | 📦 Repositories  | Public repos        |
 | ⭐ Stars          | Total stars         |
@@ -145,6 +146,7 @@ A visual trophy system highlighting GitHub milestones:
 | `theme`    | string         | `dark`      | Visual theme                 |
 | `leetcode` | string / false | –           | LeetCode username or disable |
 | `align`    | string         | `left`      | Header alignment             |
+| `hide_trophies` | boolean | `false`      | Hide the achievements trophies row |
 
 ---
 
