@@ -48,30 +48,66 @@
     }
   }
 
+  /* Updates only the markdown snippet in real-time without reloading the preview image */
+  function updateSnippetOnly() {
+    const username = usernameInput.value.trim() || 'SamXop123';
+    const leetcode = leetcodeInput.value.trim();
+    const theme = themeSelect.value;
+    const align = alignSelect.value;
+    const hideTrophies = hideTrophiesCheck ? hideTrophiesCheck.checked : false;
+
+    const params = new URLSearchParams({ username });
+    if (theme) params.append('theme', theme);
+    if (leetcode) params.append('leetcode', leetcode);
+    if (align && align !== 'left') params.append('align', align);
+    if (hideTrophies) params.append('hide_trophies', 'true');
+
+    const publicUrl = `${deployUrl}/api/profile?${params.toString()}`;
+
+    if (snippet) {
+      snippet.textContent = `![samdev-pulse](${publicUrl})`;
+    }
+  }
+
   /* Handles the update preview button click */
   function handleUpdateClick() {
-    if (!updateBtn) return;
+  if (!updateBtn) return;
 
-    updateBtn.disabled = true;
+  const username = usernameInput.value.trim();
+  const errorMsg = document.getElementById('username-error');
+
+  // Show validation message if username is empty
+  if (!username) {
+    if (errorMsg) {
+      errorMsg.style.display = 'block';
+      usernameInput.focus();
+    }
+    return; // Stop here — don't make API call
+  }
+
+  // Hide error if username is now filled
+  if (errorMsg) errorMsg.style.display = 'none';
+
+  updateBtn.disabled = true;
+  updateBtn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+    </svg>
+    Updating...
+  `;
+
+  updatePreview();
+
+  setTimeout(() => {
+    updateBtn.disabled = false;
     updateBtn.innerHTML = `
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
       </svg>
-      Updating...
+      Update Preview
     `;
-
-    updatePreview();
-
-    setTimeout(() => {
-      updateBtn.disabled = false;
-      updateBtn.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
-        </svg>
-        Update Preview
-      `;
-    }, 500);
-  }
+  }, 500);
+}
 
   /* Handles copy button click */
   async function handleCopyClick() {
@@ -112,6 +148,36 @@
     });
   }
 
+  /* Sets up real-time listeners so the markdown snippet stays
+     in sync with all input changes instantly, without requiring
+     the user to click "Update Preview" */
+  function setupRealTimeSync() {
+    // Typing in username or leetcode fields updates snippet instantly
+    if (usernameInput) {
+      usernameInput.addEventListener('input', () => {
+        const errorMsg = document.getElementById('username-error');
+        if (errorMsg && usernameInput.value.trim()) {
+          errorMsg.style.display = 'none';
+        }
+        updateSnippetOnly();
+     });
+    }
+    if (leetcodeInput) {
+      leetcodeInput.addEventListener('input', updateSnippetOnly);
+    }
+
+    // Changing theme, alignment, or hide-trophies updates snippet instantly
+    if (themeSelect) {
+      themeSelect.addEventListener('change', updateSnippetOnly);
+    }
+    if (alignSelect) {
+      alignSelect.addEventListener('change', updateSnippetOnly);
+    }
+    if (hideTrophiesCheck) {
+      hideTrophiesCheck.addEventListener('change', updateSnippetOnly);
+    }
+  }
+
   /* this function initialize all event listeners */
   function init() {
     if (updateBtn) {
@@ -124,7 +190,12 @@
 
     setupSmoothScrolling();
 
-    updatePreview();
+    // Set up real-time snippet sync on every input change
+    setupRealTimeSync();
+
+    if (usernameInput && usernameInput.value.trim()) {
+      updateSnippetOnly();
+   }
   }
 
   // runs initialization when DOM is ready
