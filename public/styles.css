@@ -127,7 +127,14 @@ section{
 .navbtn a{
   text-decoration: none;
   cursor: pointer;
-  color: inherit;
+  color: var(--text-secondary);
+  transition: color var(--transition-base), transform var(--transition-base);
+}
+
+.navbtn a:hover,
+.navbtn a:focus-visible{
+  color: var(--accent-purple);
+  transform: translateY(-1px);
 }
 .navlogo{
   padding-left: 50px;
