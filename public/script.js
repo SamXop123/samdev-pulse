@@ -13,6 +13,7 @@
   const snippet = document.getElementById('snippet');
   const copyBtn = document.getElementById('copy-btn');
   const updateBtn = document.getElementById('update-preview-btn');
+  const downloadBtn = document.getElementById('download-png-btn');
   const hideTrophiesCheck = document.getElementById('hide-trophies');
 
   // catching base URL
@@ -119,7 +120,92 @@
   }, 500);
 }
 
-  /* Handles copy button click */
+  /* Handles png download */
+  async function handleDownloadPng() {
+  if (!previewImg || !previewImg.src) {
+    alert('Preview not available');
+    return;
+  }
+
+  try {
+    downloadBtn.disabled = true;
+
+    downloadBtn.innerHTML = 'Generating PNG...';
+
+    // fetch SVG
+    const response = await fetch(previewImg.src);
+
+    const svgText = await response.text();
+
+    // create SVG blob
+    const svgBlob = new Blob([svgText], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
+
+    const url = URL.createObjectURL(svgBlob);
+
+    // create image
+    const img = new Image();
+
+    img.onload = () => {
+      const scale = 3;
+
+      const canvas = document.createElement('canvas');
+
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+
+      const ctx = canvas.getContext('2d');
+
+      // high quality scaling
+      ctx.setTransform(scale, 0, 0, scale, 0, 0);
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      ctx.drawImage(img, 0, 0);
+
+      // convert canvas → png
+      canvas.toBlob((blob) => {
+        const pngUrl = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+
+        const username =
+          usernameInput.value.trim() || 'github-user';
+
+        a.href = pngUrl;
+
+        a.download = `${username}-samdev-pulse.png`;
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(pngUrl);
+      }, 'image/png');
+
+      URL.revokeObjectURL(url);
+
+      downloadBtn.disabled = false;
+
+      downloadBtn.innerHTML = 'Download PNG';
+    };
+
+    img.src = url;
+
+  } catch (error) {
+    console.error(error);
+
+    downloadBtn.disabled = false;
+
+    downloadBtn.innerHTML = 'Download PNG';
+
+    alert('Failed to generate PNG');
+  }
+}
   async function handleCopyClick() {
     if (!copyBtn || !snippet) return;
 
@@ -199,6 +285,9 @@
     if (updateBtn) {
       updateBtn.addEventListener('click', handleUpdateClick);
     }
+    if (downloadBtn) {
+  downloadBtn.addEventListener('click', handleDownloadPng);
+}
 
     if (copyBtn) {
       copyBtn.addEventListener('click', handleCopyClick);

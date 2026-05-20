@@ -499,6 +499,11 @@ section{
   padding: 1.125rem 2.25rem;
   font-size: 1.125rem;
 }
+.preview-update-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
 
 /* ===== Section Styling ===== */

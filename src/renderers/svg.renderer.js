@@ -28,6 +28,14 @@ import catppuccinTheme from '../themes/catppuccin.theme.js';
 import rosePineTheme from '../themes/rose-pine.theme.js';
 import auroraTheme from '../themes/aurora.theme.js';
 import midnightSunsetTheme from '../themes/midnight-sunset.theme.js';
+import oneDarkProTheme from '../themes/onedarkpro.theme.js';
+import materialTheme from '../themes/material.theme.js';
+import synthwave84Theme from '../themes/synthwave84.theme.js';
+import forestNightTheme from '../themes/forestnight.theme.js';
+import oceanicNextTheme from '../themes/oceanicnext.theme.js';
+import emberGlowTheme from '../themes/emberglow.theme.js';
+import midnightNeonTheme from '../themes/midnightneon.theme.js';
+import pastelDreamTheme from '../themes/pasteldream.theme.js';
 
 const LAYOUT = {
   width: 960,
@@ -51,6 +59,14 @@ const themes = {
   'rose-pine': rosePineTheme,
   aurora: auroraTheme,
   'midnight-sunset': midnightSunsetTheme,
+  onedarkpro: oneDarkProTheme,
+material: materialTheme,
+synthwave84: synthwave84Theme,
+forestnight: forestNightTheme,
+oceanicnext: oceanicNextTheme,
+emberglow: emberGlowTheme,
+midnightneon: midnightNeonTheme,
+pasteldream: pastelDreamTheme,
 };
 
 // current active theme
