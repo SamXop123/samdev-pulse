@@ -89,7 +89,7 @@ router.get('/', async (req, res) => {
 
   const leetcodeDisabled = leetcode === 'false';
   const shouldRenderLeetCode = Boolean(leetcode && !leetcodeDisabled);
-  const showRepositoryStats = !shouldRenderLeetCode;
+  let showRepositoryStats = !shouldRenderLeetCode;
   const hideTrophies = hide_trophies === 'true';
 
   const validAlignments = ['left', 'center', 'right'];
@@ -111,6 +111,9 @@ router.get('/', async (req, res) => {
   ]);
 
   const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
+  if (shouldRenderLeetCode && !leetcodeData) {
+  showRepositoryStats = true;
+}
   const codeforcesData = codeforcesResult?.success ? codeforcesResult.data : null;
   const codechefData = codechefResult?.success ? codechefResult.data : null;
 
