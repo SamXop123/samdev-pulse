@@ -1,6 +1,7 @@
 // Chart Renderer
 
 import { getTheme, LAYOUT } from './svg.renderer.js';
+import { sanitizeSvgValue } from '../utils/svg-sanitizer.js';
 
 // generate a smooth SVG path using cardinal spline interpolation
 function smoothPath(points) {
@@ -85,6 +86,8 @@ export function renderLineChart({
   xTickLabels = [],
 }) {
   const { colors } = getTheme();
+  const safeXLabel = sanitizeSvgValue(xLabel);
+  const safeYLabel = sanitizeSvgValue(yLabel);
   const padding = 12;
   const id = uniqueId || `chart-${x}-${y}`;
   const maxVal = Math.max(...data);
@@ -150,17 +153,18 @@ export function renderLineChart({
     yTicks.forEach((tick) => {
       const yPos = topY + tick.ratio * (bottomY - topY);
       elements.push(`<line x1="${leftX - 4}" y1="${yPos}" x2="${leftX}" y2="${yPos}" stroke="${colors.secondaryText}" stroke-width="1" opacity="0.7"/>`);
-      elements.push(`<text x="${leftX - 8}" y="${yPos + 3}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="8.5" fill="${colors.mutedText}" text-anchor="end">${tick.value}</text>`);
+      elements.push(`<text x="${leftX - 8}" y="${yPos + 3}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="8.5" fill="${colors.mutedText}" text-anchor="end">${sanitizeSvgValue(tick.value)}</text>`);
     });
 
     xTicks.forEach((tick) => {
       const xPos = leftX + tick.ratio * (rightX - leftX);
+      const safeTickLabel = sanitizeSvgValue(tick.label);
       elements.push(`<line x1="${xPos}" y1="${bottomY}" x2="${xPos}" y2="${bottomY + 4}" stroke="${colors.secondaryText}" stroke-width="1" opacity="0.7"/>`);
-      elements.push(`<text x="${xPos}" y="${bottomY + 14}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="8.5" fill="${colors.mutedText}" text-anchor="middle">${tick.label}</text>`);
+      elements.push(`<text x="${xPos}" y="${bottomY + 14}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="8.5" fill="${colors.mutedText}" text-anchor="middle">${safeTickLabel}</text>`);
     });
 
-    elements.push(`<text x="${(leftX + rightX) / 2}" y="${height + 22}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="9" fill="${colors.secondaryText}" text-anchor="middle">${xLabel}</text>`);
-    elements.push(`<text x="${leftX - 36}" y="${(topY + bottomY) / 2}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="9" fill="${colors.secondaryText}" text-anchor="middle" transform="rotate(-90, ${leftX - 36}, ${(topY + bottomY) / 2})">${yLabel}</text>`);
+    elements.push(`<text x="${(leftX + rightX) / 2}" y="${height + 22}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="9" fill="${colors.secondaryText}" text-anchor="middle">${safeXLabel}</text>`);
+    elements.push(`<text x="${leftX - 36}" y="${(topY + bottomY) / 2}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="9" fill="${colors.secondaryText}" text-anchor="middle" transform="rotate(-90, ${leftX - 36}, ${(topY + bottomY) / 2})">${safeYLabel}</text>`);
   }
 
   // area fill with gradient
@@ -208,6 +212,7 @@ export function renderLineChart({
 // render a modern contribution chart card
 export function renderContributionChart({ x, y, width, height, title, data }) {
   const { colors } = getTheme();
+  const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
   const chartX = 0;
   const chartY = 44;
   const chartWidth = width - 40;
@@ -235,7 +240,7 @@ export function renderContributionChart({ x, y, width, height, title, data }) {
     <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
     
     <!-- title -->
-    <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${title.toUpperCase()}</text>
+    <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
     
     <!-- title accent -->
     <rect x="${x + 20}" y="${y + 36}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
@@ -322,6 +327,7 @@ function describeArc(cx, cy, outerR, innerR, startAngle, endAngle) {
 // render a modern donut chart with legend
 export function renderDonutChart({ x, y, width, height, title, data }) {
   const { colors, chartColors } = getTheme();
+  const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
 
   // donut dimensions
   const chartAreaWidth = width * 0.42;
@@ -354,7 +360,7 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
   const centerDeco = `
     <circle cx="${centerX}" cy="${centerY}" r="${innerRadius - 4}" fill="${colors.cardBackground}" opacity="0.9"/>
     <circle cx="${centerX}" cy="${centerY}" r="${innerRadius - 8}" fill="url(#mainGradient)" opacity="0.5"/>
-    <text x="${centerX}" y="${centerY + 4}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="16" font-weight="700" fill="${colors.primaryText}" text-anchor="middle">${total}</text>
+    <text x="${centerX}" y="${centerY + 4}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="16" font-weight="700" fill="${colors.primaryText}" text-anchor="middle">${sanitizeSvgValue(total)}</text>
     <text x="${centerX}" y="${centerY + 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="9" fill="${colors.mutedText}" text-anchor="middle">REPOS</text>
   `;
 
@@ -367,13 +373,15 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
     const itemY = legendStartY + i * legendItemHeight;
     const percentage = ((item.value / total) * 100).toFixed(0);
     const color = chartColors[i % chartColors.length];
+    const safeLabel = sanitizeSvgValue(item.label);
+    const safePercentage = sanitizeSvgValue(`${percentage}%`);
 
     return `
       <g>
         <rect x="${legendX - 2}" y="${itemY - 8}" width="${width - chartAreaWidth - 50}" height="24" rx="6" fill="${color}" opacity="0.08"/>
         <circle cx="${legendX + 6}" cy="${itemY + 4}" r="4" fill="${color}"/>
-        <text x="${legendX + 18}" y="${itemY + 8}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="500" fill="${colors.primaryText}">${item.label}</text>
-        <text x="${x + width - 24}" y="${itemY + 8}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${color}" text-anchor="end">${percentage}%</text>
+        <text x="${legendX + 18}" y="${itemY + 8}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="500" fill="${colors.primaryText}">${safeLabel}</text>
+        <text x="${x + width - 24}" y="${itemY + 8}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${color}" text-anchor="end">${safePercentage}</text>
       </g>
     `;
   }).join('');
@@ -393,7 +401,7 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
     <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
     
     <!-- title -->
-    <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${title.toUpperCase()}</text>
+    <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
     
     <!-- title accent -->
     <rect x="${x + 20}" y="${y + 36}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>

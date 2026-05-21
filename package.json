@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node test-deployment.js"
+    "test": "node test-deployment.js",
+    "test:unit": "node --test src/utils/svg-sanitizer.test.js"
   },
   "keywords": [
     "github",

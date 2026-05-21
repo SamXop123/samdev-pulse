@@ -36,6 +36,7 @@ import oceanicNextTheme from '../themes/oceanicnext.theme.js';
 import emberGlowTheme from '../themes/emberglow.theme.js';
 import midnightNeonTheme from '../themes/midnightneon.theme.js';
 import pastelDreamTheme from '../themes/pasteldream.theme.js';
+import { sanitizeSvgValue, sanitizeSvgHref } from '../utils/svg-sanitizer.js';
 
 const LAYOUT = {
   width: 960,
@@ -162,6 +163,7 @@ export function renderBackground(width, height) {
 export function renderCard({ x, y, width, height, title, glowColor }) {
   const { colors } = currentTheme;
   const glow = glowColor || colors.glow;
+  const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
 
   return `
   <g>
@@ -178,7 +180,7 @@ export function renderCard({ x, y, width, height, title, glowColor }) {
     <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.5"/>
     
     <!-- title -->
-    <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${title.toUpperCase()}</text>
+    <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
     
     <!-- title underline accent -->
     <rect x="${x + 20}" y="${y + 36}" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
@@ -192,6 +194,8 @@ export function renderStatItem({ x, y, label, value, icon, accentColor, showProg
 
   // dynamic font size based on value length
   const valueStr = String(value);
+  const safeValue = sanitizeSvgValue(valueStr);
+  const safeLabel = sanitizeSvgValue(String(label));
   let fontSize = 32;
   if (valueStr.length > 8) fontSize = 14;
   else if (valueStr.length > 6) fontSize = 18;
@@ -219,8 +223,8 @@ export function renderStatItem({ x, y, label, value, icon, accentColor, showProg
   return `
   <g>
     ${iconElement}
-    <text x="${x}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="${fontSize}" font-weight="700" fill="${colors.primaryText}" ${valueStr.length > 10 ? 'textLength="90" lengthAdjust="spacingAndGlyphs"' : ''}>${value}</text>
-    <text x="${x}" y="${y + 20}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" fill="${colors.mutedText}" letter-spacing="0.3">${label}</text>
+    <text x="${x}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="${fontSize}" font-weight="700" fill="${colors.primaryText}" ${valueStr.length > 10 ? 'textLength="90" lengthAdjust="spacingAndGlyphs"' : ''}>${safeValue}</text>
+    <text x="${x}" y="${y + 20}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" fill="${colors.mutedText}" letter-spacing="0.3">${safeLabel}</text>
     ${progressBar}
   </g>`;
 }
@@ -228,6 +232,9 @@ export function renderStatItem({ x, y, label, value, icon, accentColor, showProg
 // renders vertical E/M/H stat
 function renderVerticalEMH({ x, y, easy, medium, hard, accentColor }) {
   const { colors } = currentTheme;
+  const safeEasy = sanitizeSvgValue(easy);
+  const safeMedium = sanitizeSvgValue(medium);
+  const safeHard = sanitizeSvgValue(hard);
 
   const easyColor = '#10b981';  // green
   const medColor = '#f59e0b';   // amber
@@ -240,15 +247,15 @@ function renderVerticalEMH({ x, y, easy, medium, hard, accentColor }) {
   <g>
     <!-- easy -->
     <text x="${x}" y="${y - 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${easyColor}">E</text>
-    <text x="${x + labelWidth}" y="${y - 18}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${easy}</text>
+    <text x="${x + labelWidth}" y="${y - 18}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${safeEasy}</text>
     
     <!-- medium -->
     <text x="${x}" y="${y}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${medColor}">M</text>
-    <text x="${x + labelWidth}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${medium}</text>
+    <text x="${x + labelWidth}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${safeMedium}</text>
     
     <!-- hard -->
     <text x="${x}" y="${y + 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${hardColor}">H</text>
-    <text x="${x + labelWidth}" y="${y + 18}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${hard}</text>
+    <text x="${x + labelWidth}" y="${y + 18}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${safeHard}</text>
   </g>`;
 }
 
@@ -258,6 +265,7 @@ export function renderCardWithStats({ x, y, width, height, title, stats, cardAcc
   const glow = cardAccent || colors.glow;
   const statsStartY = y + 85;
   const statSpacing = (width - 40) / stats.length;
+  const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
 
   const statsContent = stats.map((stat, index) => {
     const statX = x + 20 + (index * statSpacing);
@@ -302,7 +310,7 @@ export function renderCardWithStats({ x, y, width, height, title, stats, cardAcc
     <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
     
     <!-- title -->
-    <text x="${x + 20}" y="${y + 30}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${title.toUpperCase()}</text>
+    <text x="${x + 20}" y="${y + 30}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
     
     <!-- title accent line -->
     <rect x="${x + 20}" y="${y + 40}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
@@ -314,6 +322,10 @@ export function renderCardWithStats({ x, y, width, height, title, stats, cardAcc
 // render header section with branding
 export function renderHeader({ x, y, title, subtitle, avatarUrl, align = 'left' }) {
   const { colors } = currentTheme;
+  const titleText = String(title ?? '');
+  const safeTitle = sanitizeSvgValue(titleText);
+  const safeSubtitle = subtitle ? sanitizeSvgValue(subtitle) : '';
+  const safeAvatarUrl = sanitizeSvgHref(avatarUrl);
 
   // calculate positions based on alignment
   let avatarX, titleX, titleAnchor, subtitleAnchor;
@@ -323,30 +335,30 @@ export function renderHeader({ x, y, title, subtitle, avatarUrl, align = 'left' 
 
   if (align === 'center') {
     // center alignment
-    const titleWidth = title.length * 13;
-    const totalWidth = avatarUrl ? avatarSize + 16 + titleWidth : titleWidth;
+    const titleWidth = titleText.length * 13;
+    const totalWidth = safeAvatarUrl ? avatarSize + 16 + titleWidth : titleWidth;
     const startX = x + (contentWidth - totalWidth) / 2;
 
     avatarX = startX;
-    titleX = avatarUrl ? startX + avatarSize + 16 : startX + totalWidth / 2;
-    titleAnchor = avatarUrl ? 'start' : 'middle';
-    subtitleAnchor = avatarUrl ? 'start' : 'middle';
+    titleX = safeAvatarUrl ? startX + avatarSize + 16 : startX + totalWidth / 2;
+    titleAnchor = safeAvatarUrl ? 'start' : 'middle';
+    subtitleAnchor = safeAvatarUrl ? 'start' : 'middle';
   } else if (align === 'right') {
     // right alignment
     avatarX = x + contentWidth - avatarSize;
-    titleX = avatarUrl ? avatarX - 16 : x + contentWidth;
+    titleX = safeAvatarUrl ? avatarX - 16 : x + contentWidth;
     titleAnchor = 'end';
     subtitleAnchor = 'end';
   } else {
     // left alignment
     avatarX = x;
-    titleX = avatarUrl ? x + avatarSize + 16 : x;
+    titleX = safeAvatarUrl ? x + avatarSize + 16 : x;
     titleAnchor = 'start';
     subtitleAnchor = 'start';
   }
 
   let avatarElement = '';
-  if (avatarUrl) {
+  if (safeAvatarUrl) {
     const avatarCenterX = avatarX + avatarRadius;
     const avatarCenterY = y - 8;
     avatarElement = `
@@ -354,7 +366,7 @@ export function renderHeader({ x, y, title, subtitle, avatarUrl, align = 'left' 
         <circle cx="${avatarCenterX}" cy="${avatarCenterY}" r="${avatarRadius}"/>
       </clipPath>
       <circle cx="${avatarCenterX}" cy="${avatarCenterY}" r="${avatarRadius + 2}" fill="url(#accentGradient)" opacity="0.6"/>
-      <image href="${avatarUrl}" x="${avatarX}" y="${avatarCenterY - avatarRadius}" width="${avatarSize}" height="${avatarSize}" clip-path="url(#avatarClip)"/>`;
+      <image href="${safeAvatarUrl}" x="${avatarX}" y="${avatarCenterY - avatarRadius}" width="${avatarSize}" height="${avatarSize}" clip-path="url(#avatarClip)"/>`;
   }
 
   // branding position: left when align=right, right otherwise
@@ -365,8 +377,8 @@ export function renderHeader({ x, y, title, subtitle, avatarUrl, align = 'left' 
   <g>
     ${avatarElement}
     <!-- title with gradient -->
-    <text x="${titleX}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="26" font-weight="700" fill="url(#accentGradient)" text-anchor="${titleAnchor}">${title}</text>
-    ${subtitle ? `<text x="${titleX}" y="${y + 22}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" fill="${colors.mutedText}" text-anchor="${subtitleAnchor}">${subtitle}</text>` : ''}
+    <text x="${titleX}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="26" font-weight="700" fill="url(#accentGradient)" text-anchor="${titleAnchor}">${safeTitle}</text>
+    ${safeSubtitle ? `<text x="${titleX}" y="${y + 22}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" fill="${colors.mutedText}" text-anchor="${subtitleAnchor}">${safeSubtitle}</text>` : ''}
     
     <!-- branding -->
     <text x="${brandingX}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="500" fill="${colors.mutedText}" text-anchor="${brandingAnchor}" opacity="0.6">samdev-pulse</text>
@@ -404,6 +416,9 @@ function getTrophyTier(value, thresholds) {
 function renderTrophyBadge({ x, y, size, tier, icon, label, value, uniqueId }) {
   const { colors } = currentTheme;
   const halfSize = size / 2;
+  const safeTier = sanitizeSvgValue(tier.tier);
+  const safeLabel = sanitizeSvgValue(label);
+  const safeValue = sanitizeSvgValue(value);
 
   // hexagon points
   const hexPoints = [];
@@ -445,13 +460,13 @@ function renderTrophyBadge({ x, y, size, tier, icon, label, value, uniqueId }) {
     
     <!-- tier badge -->
     <circle cx="${x + size - 8}" cy="${y + 12}" r="10" fill="${tier.color}"/>
-    <text x="${x + size - 8}" y="${y + 16}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="${colors.background}" text-anchor="middle">${tier.tier}</text>
+    <text x="${x + size - 8}" y="${y + 16}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="${colors.background}" text-anchor="middle">${safeTier}</text>
     
     <!-- label -->
-    <text x="${x + halfSize}" y="${y + size + 14}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="${colors.secondaryText}" text-anchor="middle">${label}</text>
+    <text x="${x + halfSize}" y="${y + size + 14}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="${colors.secondaryText}" text-anchor="middle">${safeLabel}</text>
     
     <!-- value -->
-    <text x="${x + halfSize}" y="${y + size + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="${colors.primaryText}" text-anchor="middle">${value}</text>
+    <text x="${x + halfSize}" y="${y + size + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="${colors.primaryText}" text-anchor="middle">${safeValue}</text>
   </g>`;
 }
 
