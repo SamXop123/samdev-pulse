@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { inject } from '@vercel/analytics';
 import profileRoute from './routes/profile.route.js';
+import { githubCache } from './utils/cache.js';
 
 dotenv.config();
 inject();
@@ -35,6 +36,10 @@ validateEnv();
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+app.get('/api/cache/stats', (req, res) => {
+  res.json(githubCache.getStats());
 });
 
 app.use('/api/profile', profileRoute);
