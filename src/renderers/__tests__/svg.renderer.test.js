@@ -167,7 +167,7 @@ describe('svg.renderer.js', () => {
         height: 100,
         title: 'Test',
       });
-      expect(card).toContain(theme.colors.cardBg);
+      expect(card).toContain(theme.colors.cardBackground);
     });
   });
 
