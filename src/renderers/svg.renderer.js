@@ -61,14 +61,16 @@ const themes = {
   aurora: auroraTheme,
   'midnight-sunset': midnightSunsetTheme,
   onedarkpro: oneDarkProTheme,
-material: materialTheme,
-synthwave84: synthwave84Theme,
-forestnight: forestNightTheme,
-oceanicnext: oceanicNextTheme,
-emberglow: emberGlowTheme,
-midnightneon: midnightNeonTheme,
-pasteldream: pastelDreamTheme,
+  material: materialTheme,
+  synthwave84: synthwave84Theme,
+  forestnight: forestNightTheme,
+  oceanicnext: oceanicNextTheme,
+  emberglow: emberGlowTheme,
+  midnightneon: midnightNeonTheme,
+  pasteldream: pastelDreamTheme,
 };
+
+export const SUPPORTED_THEME_NAMES = Object.freeze(Object.keys(themes));
 
 // current active theme
 let currentTheme = darkTheme;
@@ -570,4 +572,3 @@ ${content}
 }
 
 export { LAYOUT };
-

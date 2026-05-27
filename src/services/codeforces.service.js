@@ -1,8 +1,9 @@
 export async function getCodeforcesData(handle) {
   try {
+    const safeHandle = encodeURIComponent(handle);
     const [infoRes, statusRes] = await Promise.all([
-      fetch(`https://codeforces.com/api/user.info?handles=${handle}`),
-      fetch(`https://codeforces.com/api/user.status?handle=${handle}&from=1&count=10000`),
+      fetch(`https://codeforces.com/api/user.info?handles=${safeHandle}`),
+      fetch(`https://codeforces.com/api/user.status?handle=${safeHandle}&from=1&count=10000`),
     ]);
 
     const infoData = await infoRes.json();

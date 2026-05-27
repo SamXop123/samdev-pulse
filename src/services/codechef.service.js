@@ -7,8 +7,9 @@ function getDivision(rating) {
 
 export async function getCodeChefData(handle) {
   try {
+    const safeHandle = encodeURIComponent(handle);
     const res = await fetch(
-      `https://competeapi.vercel.app/user/codechef/${handle}/`
+      `https://competeapi.vercel.app/user/codechef/${safeHandle}/`
     );
     const data = await res.json();
 

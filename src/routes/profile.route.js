@@ -22,6 +22,7 @@ import { sendLoadingSpinner } from '../renderers/loading.renderer.js';
 import { GitHubErrorCode } from '../services/github.service.js';
 import { logApiAccess } from '../utils/logger.js';
 import { CF_RANK_MAP } from '../constants.js';
+import { normalizeProfileQuery, normalizeTheme } from '../utils/query-validation.js';
 
 const router = Router();
 
@@ -50,31 +51,27 @@ router.get('/', async (req, res) => {
   try {
   logApiAccess(req).catch(err => console.error('Log failed:', err.message));
 
-  const { theme, leetcode, align, hide_trophies, codeforces, codechef } = req.query;
-  setTheme(theme || 'dark');
+  const {
+    theme,
+    align,
+    hideTrophies,
+    username,
+    isUsernameValid,
+    leetcode,
+    codeforces,
+    codechef,
+    shouldRenderLeetCode,
+  } = normalizeProfileQuery(req.query, { defaultUsername: DEFAULT_USERNAME });
+  setTheme(theme);
 
-  const rawUsername = typeof req.query.username === 'string' ? req.query.username : '';
-  const usernameRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$|^[a-zA-Z0-9]$/;
-
-  let username;
-  if (!rawUsername) {
-    username = DEFAULT_USERNAME;
-  } else if (!usernameRegex.test(rawUsername)) {
+  if (!isUsernameValid) {
     return sendGracefulErrorSvg(res, {
       code: 'INVALID_USERNAME',
-      username: rawUsername,
+      username,
     });
-  } else {
-    username = rawUsername;
   }
 
-  const leetcodeDisabled = leetcode === 'false';
-  const shouldRenderLeetCode = Boolean(leetcode && !leetcodeDisabled);
   let showRepositoryStats = !shouldRenderLeetCode;
-  const hideTrophies = hide_trophies === 'true';
-
-  const validAlignments = ['left', 'center', 'right'];
-  const headerAlign = validAlignments.includes(align) ? align : 'left';
 
   const result = await getGitHubUserData(username);
   if (!result.success) {
@@ -236,7 +233,7 @@ router.get('/', async (req, res) => {
       title: `${data.name || username}'s Dashboard`,
       subtitle: data.bio ? (data.bio.length > 60 ? data.bio.slice(0, 60) + '...' : data.bio) : `@${username}`,
       avatarUrl: data.avatarDataUri || data.avatarUrl,
-      align: headerAlign,
+      align,
     }),
 
     renderCardWithStats({ x: calculateCardX(0, cardWidth), y: row1Y, width: cardWidth, height: cardHeight, title: card1Title, stats: card1Stats }),
@@ -285,8 +282,7 @@ router.get('/', async (req, res) => {
 
 // Loading spinner endpoint
 router.get('/loading', (req, res) => {
-  const { theme } = req.query;
-  setTheme(theme || 'dark');
+  setTheme(normalizeTheme(req.query.theme));
   return sendLoadingSpinner(res);
 });
 
