@@ -39,11 +39,11 @@ import pastelDreamTheme from '../themes/pasteldream.theme.js';
 import { sanitizeSvgValue, sanitizeSvgHref } from '../utils/svg-sanitizer.js';
 
 const LAYOUT = {
-  width: 960,
-  padding: 28,
-  cardGap: 16,
-  borderRadius: 20,
-  cardRadius: 16,
+  width: 820,
+  padding: 18,
+  cardGap: 10,
+  borderRadius: 16,
+  cardRadius: 12,
 };
 
 // available themes
@@ -198,7 +198,7 @@ export function renderStatItem({ x, y, label, value, icon, accentColor, showProg
   const valueStr = String(value);
   const safeValue = sanitizeSvgValue(valueStr);
   const safeLabel = sanitizeSvgValue(String(label));
-  let fontSize = 32;
+  let fontSize = 22;
   if (valueStr.length > 8) fontSize = 14;
   else if (valueStr.length > 6) fontSize = 18;
   else if (valueStr.length > 4) fontSize = 24;
@@ -226,7 +226,7 @@ export function renderStatItem({ x, y, label, value, icon, accentColor, showProg
   <g>
     ${iconElement}
     <text x="${x}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="${fontSize}" font-weight="700" fill="${colors.primaryText}" ${valueStr.length > 10 ? 'textLength="90" lengthAdjust="spacingAndGlyphs"' : ''}>${safeValue}</text>
-    <text x="${x}" y="${y + 20}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" fill="${colors.mutedText}" letter-spacing="0.3">${safeLabel}</text>
+    <text x="${x}" y="${y + 20}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" fill="${colors.mutedText}" letter-spacing="0.3">${safeLabel}</text>
     ${progressBar}
   </g>`;
 }
@@ -248,15 +248,15 @@ function renderVerticalEMH({ x, y, easy, medium, hard, accentColor }) {
   return `
   <g>
     <!-- easy -->
-    <text x="${x}" y="${y - 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${easyColor}">E</text>
+    <text x="${x}" y="${y - 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="${easyColor}">E</text>
     <text x="${x + labelWidth}" y="${y - 18}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${safeEasy}</text>
     
     <!-- medium -->
-    <text x="${x}" y="${y}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${medColor}">M</text>
+    <text x="${x}" y="${y}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="${medColor}">M</text>
     <text x="${x + labelWidth}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${safeMedium}</text>
     
     <!-- hard -->
-    <text x="${x}" y="${y + 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${hardColor}">H</text>
+    <text x="${x}" y="${y + 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="${hardColor}">H</text>
     <text x="${x + labelWidth}" y="${y + 18}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${safeHard}</text>
   </g>`;
 }
