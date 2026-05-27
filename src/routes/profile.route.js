@@ -24,6 +24,15 @@ import { logApiAccess } from '../utils/logger.js';
 
 const router = Router();
 
+// Security: Implement strict Content-Security-Policy for SVG responses
+router.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'"
+  );
+  next();
+});
+
 const DEFAULT_USERNAME = process.env.DEFAULT_USERNAME || 'SamXop123';
 
 const CF_RANK_MAP = {
@@ -60,67 +69,88 @@ function getTopLanguages(repos, max = 5) {
 
 router.get('/', async (req, res) => {
   try {
-  logApiAccess(req).catch(err => console.error('Log failed:', err.message));
+    logApiAccess(req).catch(err => console.error('Log failed:', err.message));
 
-  const { theme, leetcode, align, hide_trophies, codeforces, codechef } = req.query;
-  setTheme(theme || 'dark');
+    const { theme, leetcode, align, hide_trophies, codeforces, codechef } = req.query;
+    setTheme(theme || 'dark');
 
-  const rawUsername = typeof req.query.username === 'string' ? req.query.username : '';
-  const usernameRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$|^[a-zA-Z0-9]$/;
+    const rawUsername = typeof req.query.username === 'string' ? req.query.username : '';
+    const usernameRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$|^[a-zA-Z0-9]$/;
 
-  let username;
-  if (!rawUsername) {
-    username = DEFAULT_USERNAME;
-  } else if (!usernameRegex.test(rawUsername)) {
-    return sendGracefulErrorSvg(res, {
-      code: 'INVALID_USERNAME',
-      username: rawUsername,
-    });
-  } else {
-    username = rawUsername;
-  }
+    let username;
+    if (!rawUsername) {
+      username = DEFAULT_USERNAME;
+    } else if (!usernameRegex.test(rawUsername)) {
+      return sendGracefulErrorSvg(res, {
+        code: 'INVALID_USERNAME',
+        username: rawUsername,
+      });
+    } else {
+      username = rawUsername;
+    }
 
-  const leetcodeDisabled = leetcode === 'false';
-  const shouldRenderLeetCode = Boolean(leetcode && !leetcodeDisabled);
-  let showRepositoryStats = !shouldRenderLeetCode;
-  const hideTrophies = hide_trophies === 'true';
+    // Input Hardening: Enforce strict regex validation for platform usernames
+    const platformRegex = /^[a-zA-Z0-9_-]{1,40}$/;
+    if (leetcode && leetcode !== 'false' && !platformRegex.test(leetcode)) {
+      return sendGracefulErrorSvg(res, {
+        code: 'INVALID_USERNAME',
+        username: leetcode,
+      });
+    }
+    if (codeforces && !platformRegex.test(codeforces)) {
+      return sendGracefulErrorSvg(res, {
+        code: 'INVALID_USERNAME',
+        username: codeforces,
+      });
+    }
+    if (codechef && !platformRegex.test(codechef)) {
+      return sendGracefulErrorSvg(res, {
+        code: 'INVALID_USERNAME',
+        username: codechef,
+      });
+    }
 
-  const validAlignments = ['left', 'center', 'right'];
-  const headerAlign = validAlignments.includes(align) ? align : 'left';
+    const leetcodeDisabled = leetcode === 'false';
+    const shouldRenderLeetCode = Boolean(leetcode && !leetcodeDisabled);
+    let showRepositoryStats = !shouldRenderLeetCode;
+    const hideTrophies = hide_trophies === 'true';
 
-  const result = await getGitHubUserData(username);
-  if (!result.success) {
-    return sendGracefulErrorSvg(res, {
-      code: result.code || GitHubErrorCode.API_ERROR,
-      username,
-      detail: result.error,
-    });
-  }
-  const { data } = result;
+    const validAlignments = ['left', 'center', 'right'];
+    const headerAlign = validAlignments.includes(align) ? align : 'left';
 
-  const contributionResult = await getContributionData(username);
-  const contributionData = contributionResult.success ? contributionResult.data : null;
+    const result = await getGitHubUserData(username);
+    if (!result.success) {
+      return sendGracefulErrorSvg(res, {
+        code: result.code || GitHubErrorCode.API_ERROR,
+        username,
+        detail: result.error,
+      });
+    }
+    const { data } = result;
 
-  const [leetcodeResult, codeforcesResult, codechefResult] = await Promise.all([
-    shouldRenderLeetCode ? getLeetCodeData(leetcode) : null,
-    codeforces ? getCodeforcesData(codeforces) : null,
-    codechef ? getCodeChefData(codechef) : null,
-  ]);
+    const contributionResult = await getContributionData(username);
+    const contributionData = contributionResult.success ? contributionResult.data : null;
 
-  const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
-  if (shouldRenderLeetCode && !leetcodeData) {
-  showRepositoryStats = true;
-}
-  const codeforcesData = codeforcesResult?.success ? codeforcesResult.data : null;
-  const codechefData = codechefResult?.success ? codechefResult.data : null;
+    const [leetcodeResult, codeforcesResult, codechefResult] = await Promise.all([
+      shouldRenderLeetCode ? getLeetCodeData(leetcode) : null,
+      codeforces ? getCodeforcesData(codeforces) : null,
+      codechef ? getCodeChefData(codechef) : null,
+    ]);
 
-  const cpPlatforms = [
-    shouldRenderLeetCode ? leetcodeData : null,
-    codeforcesData,
-    codechefData,
-  ].filter(Boolean).length;
+    const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
+    if (shouldRenderLeetCode && !leetcodeData) {
+      showRepositoryStats = true;
+    }
+    const codeforcesData = codeforcesResult?.success ? codeforcesResult.data : null;
+    const codechefData = codechefResult?.success ? codechefResult.data : null;
 
-  const showCPSection = cpPlatforms >= 2;
+    const cpPlatforms = [
+      shouldRenderLeetCode ? leetcodeData : null,
+      codeforcesData,
+      codechefData,
+    ].filter(Boolean).length;
+
+    const showCPSection = cpPlatforms >= 2;
 
   const width = LAYOUT.width;
   const cardWidth = calculateCardWidth(3);
