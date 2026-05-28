@@ -81,3 +81,21 @@ test('normalizeProfileQuery returns normalized values for the profile route', ()
     }
   );
 });
+
+test('normalizeProfileQuery rejects invalid platform handles securely', () => {
+  // Invalid leetcode injection
+  const q1 = normalizeProfileQuery({ leetcode: '<script>alert(1)</script>' }, { defaultUsername: 'SamXop123' });
+  assert.equal(q1.isUsernameValid, false);
+
+  // Invalid codeforces handle
+  const q2 = normalizeProfileQuery({ codeforces: 'bad.user!' }, { defaultUsername: 'SamXop123' });
+  assert.equal(q2.isUsernameValid, false);
+
+  // Overlong platform handle (41 characters)
+  const q3 = normalizeProfileQuery({ codechef: 'a'.repeat(41) }, { defaultUsername: 'SamXop123' });
+  assert.equal(q3.isUsernameValid, false);
+
+  // Valid handles with letters, numbers, underscore, hyphen
+  const q4 = normalizeProfileQuery({ leetcode: 'user_1-2' }, { defaultUsername: 'SamXop123' });
+  assert.equal(q4.isUsernameValid, true);
+});
