@@ -69,12 +69,24 @@ export function normalizeProfileQuery(query, { defaultUsername }) {
   const codeforces = normalizeCPHandle(query.codeforces);
   const codechef = normalizeCPHandle(query.codechef);
 
+  // Input Hardening: Enforce strict regex validation for platform usernames
+  const platformRegex = /^@?[a-zA-Z0-9_-]{1,40}$/;
+  const rawLeetcode = normalizeString(query.leetcode);
+  const rawCodeforces = normalizeString(query.codeforces);
+  const rawCodechef = normalizeString(query.codechef);
+
+  const isLeetcodeValid = !rawLeetcode || rawLeetcode === 'false' || platformRegex.test(rawLeetcode);
+  const isCodeforcesValid = !rawCodeforces || platformRegex.test(rawCodeforces);
+  const isCodechefValid = !rawCodechef || platformRegex.test(rawCodechef);
+
+  const isPlatformHandlesValid = isLeetcodeValid && isCodeforcesValid && isCodechefValid;
+
   return {
     theme: normalizeTheme(query.theme),
     align: normalizeAlign(query.align),
     hideTrophies: normalizeBoolean(query.hide_trophies, false),
     username: usernameResult.username,
-    isUsernameValid: usernameResult.isValid,
+    isUsernameValid: usernameResult.isValid && isPlatformHandlesValid,
     leetcode,
     codeforces,
     codechef,

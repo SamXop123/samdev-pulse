@@ -1,10 +1,15 @@
 export async function getCodeforcesData(handle) {
   try {
     const safeHandle = encodeURIComponent(handle);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
     const [infoRes, statusRes] = await Promise.all([
-      fetch(`https://codeforces.com/api/user.info?handles=${safeHandle}`),
-      fetch(`https://codeforces.com/api/user.status?handle=${safeHandle}&from=1&count=10000`),
+      fetch(`https://codeforces.com/api/user.info?handles=${safeHandle}`, { signal: controller.signal }),
+      fetch(`https://codeforces.com/api/user.status?handle=${safeHandle}&from=1&count=10000`, { signal: controller.signal }),
     ]);
+
+    clearTimeout(timeout);
 
     const infoData = await infoRes.json();
     if (infoData.status !== 'OK') {
@@ -42,6 +47,9 @@ export async function getCodeforcesData(handle) {
       }
     };
   } catch (err) {
+    if (err.name === 'AbortError') {
+      return { success: false, error: 'Codeforces API timeout' };
+    }
     return { success: false, error: err.message };
   }
 }

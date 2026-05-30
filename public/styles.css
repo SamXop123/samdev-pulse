@@ -148,17 +148,19 @@ h6 {
 }
 
 /*==== NAVBAR==== */
-html{
+html {
   scroll-behavior: smooth;
 }
-section{
+
+section {
   scroll-margin-top: 80px;
 }
-.navbar{
+
+.navbar {
   padding: 5px;
   display: flex;
   align-items: center;
-  justify-content:space-between;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -170,13 +172,15 @@ section{
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
   transition: background var(--transition-slow), border-color var(--transition-slow), box-shadow var(--transition-slow);
 }
-.navbtn ul{
+
+.navbtn ul {
   display: flex;
   list-style: none;
   gap: 70px;
   padding: 20px;
 }
-.navbtn a{
+
+.navbtn a {
   text-decoration: none;
   cursor: pointer;
   color: var(--text-secondary);
@@ -184,17 +188,20 @@ section{
 }
 
 .navbtn a:hover,
-.navbtn a:focus-visible{
+.navbtn a:focus-visible {
   color: var(--accent-purple);
   transform: translateY(-1px);
 }
-.navlogo{
+
+.navlogo {
   padding-left: 50px;
 }
-.navlogo img{
+
+.navlogo img {
   height: 60px;
 }
-.navbtn{
+
+.navbtn {
   padding-right: 100px;
 }
 
@@ -323,10 +330,12 @@ section{
   transform: translateY(7px) rotate(45deg);
   background: var(--accent-purple);
 }
+
 .nav-hamburger.is-open span:nth-child(2) {
   opacity: 0;
   transform: scaleX(0);
 }
+
 .nav-hamburger.is-open span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
   background: var(--accent-purple);
@@ -386,7 +395,7 @@ section{
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.25s ease;
+      opacity 0.25s ease;
     opacity: 0;
     pointer-events: none;
   }
@@ -410,8 +419,8 @@ section{
     letter-spacing: 0.06em;
     border-left: 2px solid transparent;
     transition: color var(--transition-base),
-                border-color var(--transition-base),
-                background var(--transition-base);
+      border-color var(--transition-base),
+      background var(--transition-base);
   }
 
   .navbtn ul li a:hover,
@@ -419,7 +428,8 @@ section{
     color: var(--accent-purple);
     border-left-color: var(--accent-purple);
     background: rgba(139, 92, 246, 0.06);
-    transform: none; /* override the desktop lift effect */
+    transform: none;
+    /* override the desktop lift effect */
   }
 
   .theme-toggle {
@@ -427,6 +437,7 @@ section{
     height: 42px;
   }
 }
+
 /* ===== Hero Section ===== */
 .hero {
   position: relative;
@@ -781,6 +792,7 @@ section{
     height: 2.875rem;
   }
 }
+
 .preview-update-row {
   display: flex;
   gap: 12px;
@@ -1297,7 +1309,8 @@ section {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
-  padding-bottom: 1.25rem; /* Ensure enough bottom padding so scrollbar doesn't overlap text */
+  padding-bottom: 1.25rem;
+  /* Ensure enough bottom padding so scrollbar doesn't overlap text */
   font-size: 0.8125rem;
   word-break: break-all;
   scrollbar-width: thin;
@@ -1480,9 +1493,9 @@ td code {
 }
 
 @media (max-width: 768px) {
-.profile-avatar {
+  .profile-avatar {
     max-width: 240px;
-    width: 80%;     
+    width: 80%;
     margin: 0 auto;
   }
 }
@@ -1679,11 +1692,11 @@ td code {
     font-size: 1.1rem;
   }
 
-.usage-card .code-block {
+  .usage-card .code-block {
     font-size: 0.9rem;
     white-space: pre-wrap;
     word-break: break-all;
-    overflow-wrap: anywhere; 
+    overflow-wrap: anywhere;
     overflow-x: auto;
   }
 
@@ -1703,20 +1716,23 @@ td code {
 }
 
 @media (max-width: 480px) {
+
   .hero-cta .btn,
   .cta-buttons .btn {
     width: 100%;
     justify-content: center;
   }
 
-  .copy-btn, 
+  .copy-btn,
   .preview-update-row .btn {
     width: auto !important;
     display: inline-flex;
   }
+
   .preview-update-row {
     justify-content: center;
   }
+
   .preview-panel {
     padding: var(--spacing-lg);
   }
@@ -1933,6 +1949,7 @@ html {
 .theme-empty-state small {
   font-size: 0.85rem;
 }
+
 /* ── Show More Button ── */
 .theme-show-more-wrapper {
   grid-column: 1 / -1;
@@ -1969,6 +1986,28 @@ html {
 .theme-show-more-btn.expanded svg {
   transform: rotate(180deg);
 }
+
+.navbtn ul li a {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbtn ul li a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 2px;
+  background: #8b5cf6;
+  transition: width 0.3s ease;
+}
+
+.navbtn ul li a:hover::after {
+  width: 100%;
+}
+
+
 
 @media (max-width: 768px) {
   .light-theme .navbtn {

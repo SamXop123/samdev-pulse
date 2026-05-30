@@ -1,7 +1,7 @@
 // samdev-pulse Preview functionality
 
 // Navbar light/dark theme toggle
-(function() {
+(function () {
   'use strict';
 
   const THEME_KEY = 'theme';
@@ -18,7 +18,7 @@
   function storeTheme(theme) {
     try {
       localStorage.setItem(THEME_KEY, theme);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   function applyTheme(theme) {
@@ -42,7 +42,7 @@
 
     if (!toggle) return;
 
-    toggle.addEventListener('click', function() {
+    toggle.addEventListener('click', function () {
       const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : LIGHT_THEME;
       applyTheme(nextTheme);
       storeTheme(nextTheme);
@@ -56,7 +56,7 @@
   }
 })();
 
-(function() {
+(function () {
   'use strict';
 
   const usernameInput = document.getElementById('username');
@@ -104,7 +104,7 @@
     if (previewImg) {
       const loadingUrl = `/api/profile/loading?theme=${encodeURIComponent(theme || 'dark')}`;
       previewImg.src = loadingUrl;
-      
+
       // After a brief delay, fetch the actual profile
       // This allows the loading spinner to be visible
       setTimeout(() => {
@@ -145,43 +145,43 @@
 
   /* Handles the update preview button click */
   function handleUpdateClick() {
-  if (!updateBtn) return;
+    if (!updateBtn) return;
 
-  const username = usernameInput.value.trim();
-  const errorMsg = document.getElementById('username-error');
+    const username = usernameInput.value.trim();
+    const errorMsg = document.getElementById('username-error');
 
-  // Show validation message if username is empty
-  if (!username) {
-    if (errorMsg) {
-      errorMsg.style.display = 'block';
-      usernameInput.focus();
+    // Show validation message if username is empty
+    if (!username) {
+      if (errorMsg) {
+        errorMsg.style.display = 'block';
+        usernameInput.focus();
+      }
+      return; // Stop here — don't make API call
     }
-    return; // Stop here — don't make API call
-  }
 
-  // Hide error if username is now filled
-  if (errorMsg) errorMsg.style.display = 'none';
+    // Hide error if username is now filled
+    if (errorMsg) errorMsg.style.display = 'none';
 
-  updateBtn.disabled = true;
-  updateBtn.innerHTML = `
+    updateBtn.disabled = true;
+    updateBtn.innerHTML = `
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
     </svg>
     Updating...
   `;
 
-  updatePreview();
+    updatePreview();
 
-  setTimeout(() => {
-    updateBtn.disabled = false;
-    updateBtn.innerHTML = `
+    setTimeout(() => {
+      updateBtn.disabled = false;
+      updateBtn.innerHTML = `
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
       </svg>
       Update Preview
     `;
-  }, 500);
-}
+    }, 500);
+  }
   const DOWNLOAD_BTN_HTML = `
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2">
@@ -195,125 +195,125 @@
 
   /* Handles png download */
   async function handleDownloadPng() {
-  if (!previewImg || !previewImg.src) {
-    alert('Preview not available');
-    return;
-  }
+    if (!previewImg || !previewImg.src) {
+      alert('Preview not available');
+      return;
+    }
 
-  try {
-    downloadBtn.disabled = true;
+    try {
+      downloadBtn.disabled = true;
 
-    downloadBtn.innerHTML = 'Generating PNG...';
+      downloadBtn.innerHTML = 'Generating PNG...';
 
-    // fetch SVG
-    const response = await fetch(previewImg.src);
+      // fetch SVG
+      const response = await fetch(previewImg.src);
 
-    const svgText = await response.text();
+      const svgText = await response.text();
 
-    // create SVG blob
-    const svgBlob = new Blob([svgText], {
-      type: 'image/svg+xml;charset=utf-8',
-    });
+      // create SVG blob
+      const svgBlob = new Blob([svgText], {
+        type: 'image/svg+xml;charset=utf-8',
+      });
 
-    const url = URL.createObjectURL(svgBlob);
+      const url = URL.createObjectURL(svgBlob);
 
-    // create image
-    const img = new Image();
+      // create image
+      const img = new Image();
 
-    img.onload = () => {
-      const scale = 3;
+      img.onload = () => {
+        const scale = 3;
 
-      const canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas');
 
-      canvas.width = img.width * scale;
-      canvas.height = img.height * scale;
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
 
-      const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d');
 
-      // high quality scaling
-      ctx.setTransform(scale, 0, 0, scale, 0, 0);
+        // high quality scaling
+        ctx.setTransform(scale, 0, 0, scale, 0, 0);
 
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
 
-      ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0);
 
-      // convert canvas → png
-      canvas.toBlob((blob) => {
-        const pngUrl = URL.createObjectURL(blob);
+        // convert canvas → png
+        canvas.toBlob((blob) => {
+          const pngUrl = URL.createObjectURL(blob);
 
-        const a = document.createElement('a');
+          const a = document.createElement('a');
 
-        const username =
-          usernameInput.value.trim() || 'github-user';
+          const username =
+            usernameInput.value.trim() || 'github-user';
 
-        a.href = pngUrl;
+          a.href = pngUrl;
 
-        a.download = `${username}-samdev-pulse.png`;
+          a.download = `${username}-samdev-pulse.png`;
 
-        document.body.appendChild(a);
+          document.body.appendChild(a);
 
-        a.click();
+          a.click();
 
-        document.body.removeChild(a);
+          document.body.removeChild(a);
 
-        URL.revokeObjectURL(pngUrl);
-      }, 'image/png');
+          URL.revokeObjectURL(pngUrl);
+        }, 'image/png');
 
-      URL.revokeObjectURL(url);
+        URL.revokeObjectURL(url);
+
+        downloadBtn.disabled = false;
+        downloadBtn.innerHTML = DOWNLOAD_BTN_HTML;
+      };
+
+      img.src = url;
+
+    } catch (error) {
+      console.error(error);
 
       downloadBtn.disabled = false;
       downloadBtn.innerHTML = DOWNLOAD_BTN_HTML;
-    };
 
-    img.src = url;
-
-  } catch (error) {
-    console.error(error);
-
-    downloadBtn.disabled = false;
-    downloadBtn.innerHTML = DOWNLOAD_BTN_HTML; 
-
-    alert('Failed to generate PNG');
+      alert('Failed to generate PNG');
+    }
   }
-}
-const resetBtn = document.getElementById('resetBtn');
+  const resetBtn = document.getElementById('resetBtn');
 
-if (resetBtn) {
-  resetBtn.addEventListener('click', () => {
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
 
-    usernameInput.value = '';
-    leetcodeInput.value = '';
+      usernameInput.value = '';
+      leetcodeInput.value = '';
 
-    if (codeforcesInput) {
-      codeforcesInput.value = '';
-    }
+      if (codeforcesInput) {
+        codeforcesInput.value = '';
+      }
 
-    if (codechefInput) {
-      codechefInput.value = '';
-    }
+      if (codechefInput) {
+        codechefInput.value = '';
+      }
 
-    if (themeSelect) {
-      themeSelect.selectedIndex = 0;
-    }
+      if (themeSelect) {
+        themeSelect.selectedIndex = 0;
+      }
 
-    if (alignSelect) {
-      alignSelect.selectedIndex = 0;
-    }
+      if (alignSelect) {
+        alignSelect.selectedIndex = 0;
+      }
 
-    if (hideTrophiesCheck) {
-      hideTrophiesCheck.checked = false;
-    }
+      if (hideTrophiesCheck) {
+        hideTrophiesCheck.checked = false;
+      }
 
-    const errorMsg = document.getElementById('username-error');
+      const errorMsg = document.getElementById('username-error');
 
-    if (errorMsg) {
-      errorMsg.style.display = 'none';
-    }
+      if (errorMsg) {
+        errorMsg.style.display = 'none';
+      }
 
-    updatePreview();
-  });
-}
+      updatePreview();
+    });
+  }
   /* Handles copy button click */
   // async function handleCopyClick() {
   //   if (!copyBtn || !snippet) return;
@@ -339,41 +339,41 @@ if (resetBtn) {
   //   }
   // }
 
-function setupThemeCardClicks() {
-  document.querySelectorAll('.theme-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const theme = card.dataset.theme || '';
+  function setupThemeCardClicks() {
+    document.querySelectorAll('.theme-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const theme = card.dataset.theme || '';
 
-      // Update the dropdown
-      if (themeSelect) {
-        themeSelect.value = theme;
-        updateSnippetOnly();
-      }
+        // Update the dropdown
+        if (themeSelect) {
+          themeSelect.value = theme;
+          updateSnippetOnly();
+        }
 
-      // Scroll to preview section
-      const previewSection = document.getElementById('preview');
-      if (previewSection) {
-        previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+        // Scroll to preview section
+        const previewSection = document.getElementById('preview');
+        if (previewSection) {
+          previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
-      if (usernameInput && usernameInput.value.trim()) {
-        updatePreview();
-      }
+        if (usernameInput && usernameInput.value.trim()) {
+          updatePreview();
+        }
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
     });
-
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        card.click();
-      }
-    });
-  });
-}
+  }
 
   /* Sets up smooth scrolling for anchor links */
   function setupSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
+      anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
         const target = document.querySelector(targetId);
@@ -396,7 +396,7 @@ function setupThemeCardClicks() {
           errorMsg.style.display = 'none';
         }
         updateSnippetOnly();
-     });
+      });
     }
     if (leetcodeInput) {
       leetcodeInput.addEventListener('input', updateSnippetOnly);
@@ -426,33 +426,33 @@ function setupThemeCardClicks() {
       updateBtn.addEventListener('click', handleUpdateClick);
     }
     if (downloadBtn) {
-  downloadBtn.addEventListener('click', handleDownloadPng);
-}
+      downloadBtn.addEventListener('click', handleDownloadPng);
+    }
 
 
-  copyButtons.forEach((button) => {
-    button.addEventListener('click', async () => {
+    copyButtons.forEach((button) => {
+      button.addEventListener('click', async () => {
 
-      const wrapper =
-        button.closest('.code-wrapper, .code-section');
+        const wrapper =
+          button.closest('.code-wrapper, .code-section');
 
-      const snippet = wrapper.querySelector('code');
+        const snippet = wrapper.querySelector('code');
 
-      if (!snippet) return;
+        if (!snippet) return;
 
-      try {
-        await navigator.clipboard.writeText(
-          snippet.textContent
-        );
+        try {
+          await navigator.clipboard.writeText(
+            snippet.textContent
+          );
 
-  
-      const originalHTML = button.innerHTML;
 
-      const hasCopyText =
-        button.textContent.trim().toLowerCase().includes('copy');
+          const originalHTML = button.innerHTML;
 
-      if (hasCopyText) {
-        button.innerHTML = `
+          const hasCopyText =
+            button.textContent.trim().toLowerCase().includes('copy');
+
+          if (hasCopyText) {
+            button.innerHTML = `
           <svg width="16" height="16"
             viewBox="0 0 24 24"
             fill="none"
@@ -462,8 +462,8 @@ function setupThemeCardClicks() {
           </svg>
           Copied
         `;
-      } else {
-        button.innerHTML = `
+          } else {
+            button.innerHTML = `
           <svg width="16" height="16"
             viewBox="0 0 24 24"
             fill="none"
@@ -472,19 +472,19 @@ function setupThemeCardClicks() {
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         `;
-      }
+          }
 
-      setTimeout(() => {
-        button.innerHTML = originalHTML;
-      }, 2000);
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+          }, 2000);
 
 
 
-      } catch (err) {
-        console.error('Failed to copy:', err);
-      }
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
     });
-  });
 
     setupSmoothScrolling();
 
@@ -495,7 +495,7 @@ function setupThemeCardClicks() {
 
     if (usernameInput && usernameInput.value.trim()) {
       updateSnippetOnly();
-   }
+    }
   }
 
   // runs initialization when DOM is ready
@@ -599,7 +599,7 @@ function setupThemeCardClicks() {
 
   function initHamburger() {
     const hamburger = document.getElementById('nav-hamburger');
-    const navMenu   = document.getElementById('nav-menu');
+    const navMenu = document.getElementById('nav-menu');
 
     if (!hamburger || !navMenu) return;
 
@@ -648,25 +648,25 @@ function setupThemeCardClicks() {
 // ── Theme Gallery: Search & Filter + Show More ──
 (function () {
   function initThemeFilter() {
-    const searchInput   = document.getElementById('themeSearch');
-    const chips         = document.querySelectorAll('.theme-chip');
-    const cards         = document.querySelectorAll('#themesGrid .theme-card');
-    const emptyState    = document.getElementById('themeEmptyState');
-    const countEl       = document.getElementById('themeResultCount');
-    const showMoreBtn   = document.getElementById('themeShowMoreBtn');
-    const showMoreWrap  = document.getElementById('themeShowMoreWrapper');
+    const searchInput = document.getElementById('themeSearch');
+    const chips = document.querySelectorAll('.theme-chip');
+    const cards = document.querySelectorAll('#themesGrid .theme-card');
+    const emptyState = document.getElementById('themeEmptyState');
+    const countEl = document.getElementById('themeResultCount');
+    const showMoreBtn = document.getElementById('themeShowMoreBtn');
+    const showMoreWrap = document.getElementById('themeShowMoreWrapper');
 
     if (!searchInput || !emptyState || !countEl) return;
 
-    const totalCount  = cards.length;
+    const totalCount = cards.length;
     const INITIAL_SHOW = 8;
 
     const countAllEl = document.getElementById('count-all');
     if (countAllEl) countAllEl.textContent = totalCount;
 
     let activeCategory = 'all';
-    let searchQuery    = '';
-    let showingAll     = false;   // tracks whether user expanded the list
+    let searchQuery = '';
+    let showingAll = false;   // tracks whether user expanded the list
 
     // ── Core filter function ──
     function filterThemes() {
@@ -675,16 +675,16 @@ function setupThemeCardClicks() {
       let shownSoFar = 0;
 
       cards.forEach(card => {
-        const name   = card.querySelector('.theme-name').textContent.toLowerCase();
-        const desc   = card.querySelector('.theme-desc').textContent.toLowerCase();
-        const cat    = card.dataset.cat    || '';
+        const name = card.querySelector('.theme-name').textContent.toLowerCase();
+        const desc = card.querySelector('.theme-desc').textContent.toLowerCase();
+        const cat = card.dataset.cat || '';
         const colors = (card.dataset.colors || '').toLowerCase();
 
-        const matchesCat    = activeCategory === 'all' || cat === activeCategory;
+        const matchesCat = activeCategory === 'all' || cat === activeCategory;
         const matchesSearch = searchQuery === '' ||
-          name.includes(searchQuery)   ||
-          desc.includes(searchQuery)   ||
-          cat.includes(searchQuery)    ||
+          name.includes(searchQuery) ||
+          desc.includes(searchQuery) ||
+          cat.includes(searchQuery) ||
           colors.includes(searchQuery);
 
         const matches = matchesCat && matchesSearch;
@@ -753,7 +753,7 @@ function setupThemeCardClicks() {
     // ── Search input ──
     searchInput.addEventListener('input', e => {
       searchQuery = e.target.value.trim().toLowerCase();
-      showingAll  = false;  // reset expansion on new search
+      showingAll = false;  // reset expansion on new search
       filterThemes();
     });
 
@@ -763,7 +763,7 @@ function setupThemeCardClicks() {
         chips.forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         activeCategory = chip.dataset.cat;
-        showingAll     = false;  // reset expansion on category change
+        showingAll = false;  // reset expansion on category change
         filterThemes();
       });
     });

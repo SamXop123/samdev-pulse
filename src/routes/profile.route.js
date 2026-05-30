@@ -26,6 +26,15 @@ import { normalizeProfileQuery, normalizeTheme } from '../utils/query-validation
 
 const router = Router();
 
+// Security: Implement strict Content-Security-Policy for SVG responses
+router.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'"
+  );
+  next();
+});
+
 const DEFAULT_USERNAME = process.env.DEFAULT_USERNAME || 'SamXop123';
 
 function formatNumber(num) {
@@ -49,7 +58,7 @@ function getTopLanguages(repos, max = 5) {
 
 router.get('/', async (req, res) => {
   try {
-  logApiAccess(req).catch(err => console.error('Log failed:', err.message));
+    logApiAccess(req).catch(err => console.error('Log failed:', err.message));
 
   const {
     theme,
@@ -73,39 +82,39 @@ router.get('/', async (req, res) => {
 
   let showRepositoryStats = !shouldRenderLeetCode;
 
-  const result = await getGitHubUserData(username);
-  if (!result.success) {
-    return sendGracefulErrorSvg(res, {
-      code: result.code || GitHubErrorCode.API_ERROR,
-      username,
-      detail: result.error,
-    });
-  }
-  const { data } = result;
+    const result = await getGitHubUserData(username);
+    if (!result.success) {
+      return sendGracefulErrorSvg(res, {
+        code: result.code || GitHubErrorCode.API_ERROR,
+        username,
+        detail: result.error,
+      });
+    }
+    const { data } = result;
 
-  const contributionResult = await getContributionData(username);
-  const contributionData = contributionResult.success ? contributionResult.data : null;
+    const contributionResult = await getContributionData(username);
+    const contributionData = contributionResult.success ? contributionResult.data : null;
 
-  const [leetcodeResult, codeforcesResult, codechefResult] = await Promise.all([
-    shouldRenderLeetCode ? getLeetCodeData(leetcode) : null,
-    codeforces ? getCodeforcesData(codeforces) : null,
-    codechef ? getCodeChefData(codechef) : null,
-  ]);
+    const [leetcodeResult, codeforcesResult, codechefResult] = await Promise.all([
+      shouldRenderLeetCode ? getLeetCodeData(leetcode) : null,
+      codeforces ? getCodeforcesData(codeforces) : null,
+      codechef ? getCodeChefData(codechef) : null,
+    ]);
 
-  const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
-  if (shouldRenderLeetCode && !leetcodeData) {
-  showRepositoryStats = true;
-}
-  const codeforcesData = codeforcesResult?.success ? codeforcesResult.data : null;
-  const codechefData = codechefResult?.success ? codechefResult.data : null;
+    const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
+    if (shouldRenderLeetCode && !leetcodeData) {
+      showRepositoryStats = true;
+    }
+    const codeforcesData = codeforcesResult?.success ? codeforcesResult.data : null;
+    const codechefData = codechefResult?.success ? codechefResult.data : null;
 
-  const cpPlatforms = [
-    shouldRenderLeetCode ? leetcodeData : null,
-    codeforcesData,
-    codechefData,
-  ].filter(Boolean).length;
+    const cpPlatforms = [
+      shouldRenderLeetCode ? leetcodeData : null,
+      codeforcesData,
+      codechefData,
+    ].filter(Boolean).length;
 
-  const showCPSection = cpPlatforms >= 2;
+    const showCPSection = cpPlatforms >= 2;
 
   const width = LAYOUT.width;
   const cardWidth = calculateCardWidth(3);

@@ -79,13 +79,23 @@ function renderLeetCodeCard(x, y, width, data, colors) {
   const col3X = x + 20 + ((width - 40) / 3) * 2;
 
   const solved = String(data.totalSolved ?? 0);
-  const rating = String(data.contestRating ?? data.ranking ?? 'N/A');
+  const hasContestRating =
+  data.contestRating !== null &&
+  data.contestRating !== undefined;
+
+const statValue = String(
+  hasContestRating
+    ? data.contestRating
+    : data.ranking ?? 'N/A'
+);
+
+const statLabel = hasContestRating ? 'Rating' : 'Rank';
   const safeSolved = sanitizeSvgValue(solved);
   const safeEasySolved = sanitizeSvgValue(data.easySolved ?? 0);
   const safeMediumSolved = sanitizeSvgValue(data.mediumSolved ?? 0);
   const safeHardSolved = sanitizeSvgValue(data.hardSolved ?? 0);
-  const safeRating = sanitizeSvgValue(rating);
-
+const safeStatValue = sanitizeSvgValue(statValue);
+const safeStatLabel = sanitizeSvgValue(statLabel);
   return `
     <text x="${col1X}" y="${statsY}"
       font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
@@ -117,10 +127,10 @@ function renderLeetCodeCard(x, y, width, data, colors) {
 
     <text x="${col3X}" y="${statsY}"
       font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-      font-size="32" font-weight="700" fill="${colors.primaryText}">${safeRating}</text>
+      font-size="32" font-weight="700" fill="${colors.primaryText}">${safeStatValue}</text>
     <text x="${col3X}" y="${statsY + 20}"
       font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-      font-size="11" fill="${colors.mutedText}" letter-spacing="0.3">Rating</text>
+      font-size="11" fill="${colors.mutedText}" letter-spacing="0.3">${safeStatLabel}</text>
   `;
 }
 

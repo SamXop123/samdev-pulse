@@ -8,9 +8,14 @@ function getDivision(rating) {
 export async function getCodeChefData(handle) {
   try {
     const safeHandle = encodeURIComponent(handle);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
     const res = await fetch(
-      `https://competeapi.vercel.app/user/codechef/${safeHandle}/`
+      `https://competeapi.vercel.app/user/codechef/${safeHandle}/`,
+      { signal: controller.signal }
     );
+    clearTimeout(timeout);
     const data = await res.json();
 
     if (!data || !data.username) {
@@ -31,6 +36,9 @@ export async function getCodeChefData(handle) {
       }
     };
   } catch (err) {
+    if (err.name === 'AbortError') {
+      return { success: false, error: 'CodeChef API timeout' };
+    }
     return { success: false, error: err.message };
   }
 }

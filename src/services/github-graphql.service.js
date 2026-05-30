@@ -54,35 +54,49 @@ async function fetchContributionData(username) {
     throw new Error("GITHUB_TOKEN required for contribution data");
   }
 
-  const response = await fetch(GITHUB_GRAPHQL_URL, {
-    method: "POST",
-    headers: getHeaders(),
-    body: JSON.stringify({
-      query: CONTRIBUTION_QUERY,
-      variables: { username },
-    }),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
 
-  // handles rate limits silently
-  const rateLimitRemaining = response.headers.get("x-ratelimit-remaining");
-  if (rateLimitRemaining && parseInt(rateLimitRemaining, 10) < 10) {
-    // rate limit warning suppressed for production
-  }
+  try {
+    const response = await fetch(GITHUB_GRAPHQL_URL, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify({
+        query: CONTRIBUTION_QUERY,
+        variables: { username },
+      }),
+      signal: controller.signal,
+    });
 
-  if (!response.ok) {
-    if (response.status === 403) {
-      throw new Error("GitHub API rate limit exceeded");
+    clearTimeout(timeout);
+
+    // handles rate limits silently
+    const rateLimitRemaining = response.headers.get("x-ratelimit-remaining");
+    if (rateLimitRemaining && parseInt(rateLimitRemaining, 10) < 10) {
+      // rate limit warning suppressed for production
     }
-    throw new Error(`GitHub GraphQL API error: ${response.status}`);
+
+    if (!response.ok) {
+      if (response.status === 403) {
+        throw new Error("GitHub API rate limit exceeded");
+      }
+      throw new Error(`GitHub GraphQL API error: ${response.status}`);
+    }
+
+    const json = await response.json();
+
+    if (json.errors) {
+      throw new Error(json.errors[0]?.message || "GraphQL query failed");
+    }
+
+    return json.data?.user;
+  } catch (error) {
+    clearTimeout(timeout);
+    if (error.name === "AbortError") {
+      throw new Error("GitHub GraphQL API timeout");
+    }
+    throw error;
   }
-
-  const json = await response.json();
-
-  if (json.errors) {
-    throw new Error(json.errors[0]?.message || "GraphQL query failed");
-  }
-
-  return json.data?.user;
 }
 
 /* flatten contribution calendar weeks into a sorted array of days */

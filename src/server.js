@@ -27,7 +27,7 @@ function validateEnv() {
     warnings.push('GITHUB_TOKEN not set - streak stats will be unavailable');
   }
 
-  if (!IS_PRODUCTION && warnings.length > 0) {
+  if (warnings.length > 0) {
     warnings.forEach(w => console.warn(`⚠️  ${w}`));
   }
 }

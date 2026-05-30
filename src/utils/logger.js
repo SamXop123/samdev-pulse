@@ -9,6 +9,11 @@ async function connectToDatabase() {
     return true; // already connected
   }
 
+  if (connectionAttempted) {
+    console.warn('⚠️ Skipping MongoDB connection (already attempted — see previous error)');
+    return false;
+  }
+
   if (connectingPromise) {
     return connectingPromise; // reuse in-flight attempt
   }
@@ -18,6 +23,7 @@ async function connectToDatabase() {
 
   if (!mongoUri) {
     console.error('❌ MONGODB_URI is not set');
+    connectionAttempted = true;
     return false;
   }
 
@@ -30,10 +36,12 @@ async function connectToDatabase() {
   }).then(() => {
     console.log(`✅ MongoDB connected for logging (db: ${mongoose.connection.db.databaseName})`);
     connectingPromise = null;
+    connectionAttempted = true;
     return true;
   }).catch((error) => {
     console.error('❌ MongoDB connection failed:', error?.message || error);
     connectingPromise = null;
+    connectionAttempted = true;
     return false;
   });
 
