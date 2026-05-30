@@ -38,7 +38,21 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Cache stats endpoint — restricted to callers that supply the configured
+// ADMIN_API_KEY in the Authorization header (Bearer scheme). This is an
+// internal operations endpoint; exposing hit/miss/eviction counts publicly
+// leaks implementation details useful for timing attacks.
 app.get('/api/cache/stats', (req, res) => {
+  const adminKey = process.env.ADMIN_API_KEY;
+
+  if (adminKey) {
+    const authHeader = req.headers['authorization'] || '';
+    const supplied = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (supplied !== adminKey) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+  }
+
   res.json(githubCache.getStats());
 });
 
