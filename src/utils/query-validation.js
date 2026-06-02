@@ -37,10 +37,14 @@ export function normalizeAlign(value) {
   return ALIGNMENTS.includes(align) ? align : DEFAULT_ALIGN;
 }
 
-export function normalizeGitHubUsername(value, defaultUsername) {
+export function normalizeGitHubUsername(value) {
   const username = normalizeString(value);
+
   if (!username) {
-    return { username: defaultUsername, isValid: true };
+    return {
+      username: '',
+      isValid: false,
+    };
   }
 
   return {
@@ -63,8 +67,10 @@ export function normalizeCPHandle(value) {
   return handle || null;
 }
 
-export function normalizeProfileQuery(query, { defaultUsername }) {
-  const usernameResult = normalizeGitHubUsername(query.username, defaultUsername);
+export function normalizeProfileQuery(query) {
+  const usernameResult = normalizeGitHubUsername(
+    query.username
+  );
   const leetcode = normalizeCPHandle(query.leetcode);
   const codeforces = normalizeCPHandle(query.codeforces);
   const codechef = normalizeCPHandle(query.codechef);

@@ -10,7 +10,7 @@ import {
   LAYOUT,
   renderTrophyRow,
 } from '../renderers/svg.renderer.js';
-import { renderContributionChart, generateFakeContributionData, renderDonutChart } from '../renderers/chart.renderer.js';
+import { renderContributionChart, renderDonutChart } from '../renderers/chart.renderer.js';
 import { getGitHubUserData } from '../services/github.service.js';
 import { getContributionData } from '../services/github-graphql.service.js';
 import { getLeetCodeData } from '../services/leetcode.service.js';
@@ -35,7 +35,6 @@ router.use((req, res, next) => {
   next();
 });
 
-const DEFAULT_USERNAME = process.env.DEFAULT_USERNAME || 'SamXop123';
 
 function formatNumber(num) {
   if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -66,16 +65,16 @@ router.get('/', async (req, res) => {
     logApiAccess(req).catch(err => console.error('Log failed:', err.message));
 
   const {
-    theme,
-    align,
-    hideTrophies,
-    username,
-    isUsernameValid,
-    leetcode,
-    codeforces,
-    codechef,
-    shouldRenderLeetCode,
-  } = normalizeProfileQuery(req.query, { defaultUsername: DEFAULT_USERNAME });
+  theme,
+  align,
+  hideTrophies,
+  username,
+  isUsernameValid,
+  leetcode,
+  codeforces,
+  codechef,
+  shouldRenderLeetCode,
+} = normalizeProfileQuery(req.query);
   setTheme(theme);
 
   if (!isUsernameValid) {
@@ -218,9 +217,6 @@ router.get('/', async (req, res) => {
     // clearly reflects that no data is available.
     chartData = Array(30).fill(0);
   }
-} else {
-  chartData = generateFakeContributionData(30);
-}
 
 const topLanguages = getTopLanguages(data?.repos ?? [], 5);
 
