@@ -14,15 +14,9 @@ jobs:
         with:
           script: |
             const issue = context.payload.issue;
-            const title = issue.title.toLowerCase();
-            const body = (issue.body || "").toLowerCase();
-            const content = `${title} ${body}`;
-            
-            if (content.includes('gssoc') || content.includes('girlscript')) {
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.number,
-                labels: ['gssoc26']
-              });
-            }
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: ['gssoc26']
+            });
