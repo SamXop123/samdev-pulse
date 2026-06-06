@@ -20,7 +20,7 @@ import { renderCPSection } from '../renderers/cp-section.renderer.js';
 import { sendGracefulErrorSvg } from '../renderers/error.renderer.js';
 import { sendLoadingSpinner } from '../renderers/loading.renderer.js';
 import { GitHubErrorCode } from '../services/github.service.js';
-import { logApiAccess } from '../utils/logger.js';
+import { trackProfileRequest } from '../services/analytics.service.js';
 import { CF_RANK_MAP } from '../constants.js';
 import { normalizeProfileQuery, normalizeTheme } from '../utils/query-validation.js';
 
@@ -61,7 +61,7 @@ function getTopLanguages(repos, max = 5) {
 
 router.get('/', async (req, res) => {
   try {
-    logApiAccess(req).catch(err => console.error('Log failed:', err.message));
+    void trackProfileRequest(req);
 
   const {
     theme,
