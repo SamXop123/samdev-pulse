@@ -1,5 +1,1920 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Visual Regression: Structural Snapshots Renderer permutations snapshots graceful fallback rendering 1`] = `
+"
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="960"
+  height="240"
+  viewBox="0 0 960 240"
+  role="img"
+  aria-labelledby="dashboard-title dashboard-desc"
+  xml:lang="en"
+  lang="en"
+>
+<title id="dashboard-title">GitHub Dashboard</title>
+<desc id="dashboard-desc">GitHub profile statistics</desc>
+
+
+  <defs aria-hidden="true">
+    <!-- main gradient -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.15"/>
+    </linearGradient>
+
+    <!-- accent gradient for text/elements -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+
+    <!-- card glow effect -->
+    <filter id="cardGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- soft glow for accents -->
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- noise texture pattern -->
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" in2="noise" mode="overlay" result="blend"/>
+      <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- dot pattern -->
+    <pattern id="dotPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.5" fill="#1e1e2e" opacity="0.3"/>
+    </pattern>
+
+    <!-- grid pattern -->
+    <pattern id="gridPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e1e2e" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
+  </defs>
+
+  <g aria-hidden="true">
+  <!-- base background -->
+  <rect x="0" y="0" width="960" height="240" rx="20" ry="20" fill="#0a0a0f"/>
+
+  <!-- gradient overlay -->
+  <rect x="0" y="0" width="960" height="240" rx="20" ry="20" fill="url(#mainGradient)"/>
+
+  <!-- subtle grid pattern -->
+  <rect x="0" y="0" width="960" height="240" rx="20" ry="20" fill="url(#gridPattern)" opacity="0.3"/>
+
+  <!-- top accent glow -->
+  <ellipse cx="480" cy="0" rx="384" ry="120" fill="#7c3aed" opacity="0.08"/>
+
+  <!-- border with glow -->
+  <rect x="1" y="1" width="958" height="238" rx="20" ry="20" fill="none" stroke="url(#accentGradient)" stroke-width="1" opacity="0.4"/>
+</g>
+<text x="28" y="36" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="700" fill="#ffffff">samdev-pulse</text>
+<text x="932" y="36" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" fill="#64748b" text-anchor="end">dashboard</text>
+
+  <g role="group" aria-labelledby="card-status-28-50-title">
+    <!-- card glow -->
+    <rect x="28" y="50" width="904" height="168" rx="16" ry="16" fill="#7c3aed" opacity="0.03" filter="url(#cardGlow)"/>
+
+    <!-- card background -->
+    <rect x="28" y="50" width="904" height="168" rx="16" ry="16" fill="#12121a"/>
+
+    <!-- inner gradient -->
+    <rect x="28" y="50" width="904" height="168" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.5"/>
+
+    <!-- border -->
+    <rect x="28.5" y="50.5" width="903" height="167" rx="16" ry="16" fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.5"/>
+
+    <text id="card-status-28-50-title" x="48" y="78" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="0.5">STATUS</text>
+    <!-- title underline accent -->
+    <rect x="48" y="86" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  </g>
+<circle cx="480" cy="108" r="24" fill="#ef4444" opacity="0.12"/>
+<text x="480" y="116" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#ef4444" text-anchor="middle">!</text>
+<text x="480" y="148" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="19" font-weight="700" fill="#ef4444" text-anchor="middle">Unable to Load Profile</text>
+<text x="480" y="168" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" fill="#7c3aed" text-anchor="middle">@fallback-user</text>
+<text x="480" y="186" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">Something went wrong while fetching GitHub data.</text>
+<text x="480" y="204" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Verify your username and try again.</text>
+<text x="480" y="232" font-family="monospace" font-size="10" fill="#64748b" text-anchor="middle" opacity="0.7">Renderer fallback path</text>
+</svg>"
+`;
+
+exports[`Visual Regression: Structural Snapshots Renderer permutations snapshots hidden trophies 1`] = `
+"
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="960"
+  height="500"
+  viewBox="0 0 960 500"
+  role="img"
+  aria-labelledby="dashboard-title dashboard-desc"
+  xml:lang="en"
+  lang="en"
+>
+<title id="dashboard-title">GitHub Dashboard</title>
+<desc id="dashboard-desc">GitHub profile statistics</desc>
+
+
+  <defs aria-hidden="true">
+    <!-- main gradient -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.15"/>
+    </linearGradient>
+
+    <!-- accent gradient for text/elements -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+
+    <!-- card glow effect -->
+    <filter id="cardGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- soft glow for accents -->
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- noise texture pattern -->
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" in2="noise" mode="overlay" result="blend"/>
+      <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- dot pattern -->
+    <pattern id="dotPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.5" fill="#1e1e2e" opacity="0.3"/>
+    </pattern>
+
+    <!-- grid pattern -->
+    <pattern id="gridPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e1e2e" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
+  </defs>
+
+  <g aria-hidden="true">
+  <!-- base background -->
+  <rect x="0" y="0" width="960" height="500" rx="20" ry="20" fill="#0a0a0f"/>
+
+  <!-- gradient overlay -->
+  <rect x="0" y="0" width="960" height="500" rx="20" ry="20" fill="url(#mainGradient)"/>
+
+  <!-- subtle grid pattern -->
+  <rect x="0" y="0" width="960" height="500" rx="20" ry="20" fill="url(#gridPattern)" opacity="0.3"/>
+
+  <!-- top accent glow -->
+  <ellipse cx="480" cy="0" rx="384" ry="120" fill="#7c3aed" opacity="0.08"/>
+
+  <!-- border with glow -->
+  <rect x="1" y="1" width="958" height="498" rx="20" ry="20" fill="none" stroke="url(#accentGradient)" stroke-width="1" opacity="0.4"/>
+</g>
+
+  <g role="group" aria-labelledby="card-test-card-50-50-title">
+    <!-- card glow -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#7c3aed" opacity="0.03" filter="url(#cardGlow)"/>
+
+    <!-- card background -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#12121a"/>
+
+    <!-- inner gradient -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.5"/>
+
+    <!-- border -->
+    <rect x="50.5" y="50.5" width="199" height="99" rx="16" ry="16" fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.5"/>
+
+    <text id="card-test-card-50-50-title" x="70" y="78" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="0.5">TEST CARD</text>
+    <!-- title underline accent -->
+    <rect x="70" y="86" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  </g>
+
+  <g transform="translate(28, 100)">
+    
+    <defs>
+      <linearGradient id="lineGradient-chart-28-100" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#7c3aed"/>
+        <stop offset="50%" stop-color="#6366f1"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+      <linearGradient id="areaGradient-chart-28-100" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.4"/>
+        <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="lineGlow-chart-28-100" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  
+    <line x1="12" y1="12" x2="388" y2="12" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="56" x2="388" y2="56" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="100" x2="388" y2="100" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="144" x2="388" y2="144" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="188" x2="388" y2="188" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56 L 388 188 L 12 188 Z" fill="url(#areaGradient-chart-28-100)"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56" fill="none" stroke="url(#lineGradient-chart-28-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" filter="url(#lineGlow-chart-28-100)"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56" fill="none" stroke="url(#lineGradient-chart-28-100)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+      <circle cx="388" cy="56" r="6" fill="#06b6d4" opacity="0.3"/>
+      <circle cx="388" cy="56" r="4" fill="#06b6d4"/>
+      <circle cx="388" cy="56" r="2" fill="#fff" opacity="0.9"/>
+    
+  </g>
+
+<g
+  role="group"
+  aria-labelledby="cp-title"
+>
+  <title id="cp-title">Competitive Programming Statistics</title>
+  <desc>LeetCode statistics available, Codeforces statistics available, CodeChef statistics available</desc>
+  
+      <g role="group" aria-labelledby="cp-leetcode-stats-28-320-title">
+        <rect x="28" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#7c3aed" opacity="0.04" filter="url(#cardGlow)"/>
+        <rect x="28" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#12121a"/>
+        <rect x="28" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="url(#mainGradient)" opacity="0.3"/>
+        <rect x="28.5" y="320.5" width="288.3333333333333" height="139"
+          rx="16" ry="16"
+          fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+        <text
+          id="cp-leetcode-stats-28-320-title"
+          x="48" y="350"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="13" font-weight="600"
+          fill="#94a3b8"
+          letter-spacing="0.5">LEETCODE STATS</text>
+        <rect x="48" y="360" width="28" height="2"
+          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        
+    <g role="group" aria-labelledby="lbl-solved-lc-48-405 val-solved-lc-48-405">
+      <text id="val-solved-lc-48-405" x="48" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">450</text>
+      <text id="lbl-solved-lc-48-405" x="48" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Solved</text>
+    </g>
+
+    <g role="group" aria-label="Difficulty Breakdown">
+      <g role="group" aria-labelledby="lbl-easy-lc-131.1111111111111-405 val-easy-lc-131.1111111111111-405">
+        <text id="lbl-easy-lc-131.1111111111111-405" x="131.1111111111111" y="387"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#10b981">E</text>
+        <text id="val-easy-lc-131.1111111111111-405" x="145.1111111111111" y="387"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">200</text>
+      </g>
+
+      <g role="group" aria-labelledby="lbl-med-lc-131.1111111111111-405 val-med-lc-131.1111111111111-405">
+        <text id="lbl-med-lc-131.1111111111111-405" x="131.1111111111111" y="405"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#f59e0b">M</text>
+        <text id="val-med-lc-131.1111111111111-405" x="145.1111111111111" y="405"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">200</text>
+      </g>
+
+      <g role="group" aria-labelledby="lbl-hard-lc-131.1111111111111-405 val-hard-lc-131.1111111111111-405">
+        <text id="lbl-hard-lc-131.1111111111111-405" x="131.1111111111111" y="423"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#ef4444">H</text>
+        <text id="val-hard-lc-131.1111111111111-405" x="145.1111111111111" y="423"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">50</text>
+      </g>
+    </g>
+
+    <g role="group" aria-labelledby="lbl-rating-lc-214.2222222222222-405 val-rating-lc-214.2222222222222-405">
+      <text id="val-rating-lc-214.2222222222222-405" x="214.2222222222222" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1850</text>
+      <text id="lbl-rating-lc-214.2222222222222-405" x="214.2222222222222" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Rating</text>
+    </g>
+  
+      </g>
+    
+      <g role="group" aria-labelledby="cp-codeforces-stats-333.3333333333333-320-title">
+        <rect x="333.3333333333333" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#7c3aed" opacity="0.04" filter="url(#cardGlow)"/>
+        <rect x="333.3333333333333" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#12121a"/>
+        <rect x="333.3333333333333" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="url(#mainGradient)" opacity="0.3"/>
+        <rect x="333.8333333333333" y="320.5" width="288.3333333333333" height="139"
+          rx="16" ry="16"
+          fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+        <text
+          id="cp-codeforces-stats-333.3333333333333-320-title"
+          x="353.3333333333333" y="350"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="13" font-weight="600"
+          fill="#94a3b8"
+          letter-spacing="0.5">CODEFORCES STATS</text>
+        <rect x="353.3333333333333" y="360" width="28" height="2"
+          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        
+    <!-- Rating -->
+    <g role="group" aria-labelledby="lbl-rating-cf-353.3333333333333-405 val-rating-cf-353.3333333333333-405">
+      <text id="val-rating-cf-353.3333333333333-405" x="353.3333333333333" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1750</text>
+      <text id="lbl-rating-cf-353.3333333333333-405" x="353.3333333333333" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Rating</text>
+    </g>
+
+    <!-- Rank + Solved -->
+    <g role="group" aria-label="Competitive Rank and Problems Solved">
+      <g role="group" aria-labelledby="lbl-rank-cf-436.4444444444444-405 val-rank-cf-436.4444444444444-405">
+        <text id="lbl-rank-cf-436.4444444444444-405" x="442.4444444444444" y="387"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#6366f1">R</text>
+        <text id="val-rank-cf-436.4444444444444-405" x="454.4444444444444" y="387"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="700" fill="#ffffff">Expert</text>
+      </g>
+
+      <g role="group" aria-labelledby="lbl-solved-cf-436.4444444444444-405 val-solved-cf-436.4444444444444-405">
+        <text id="lbl-solved-cf-436.4444444444444-405" x="442.4444444444444" y="407"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#10b981">S</text>
+        <text id="val-solved-cf-436.4444444444444-405" x="454.4444444444444" y="407"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="700" fill="#ffffff">642</text>
+      </g>
+    </g>
+
+    <!-- Max Rating -->
+    <g role="group" aria-labelledby="lbl-maxrating-cf-519.5555555555555-405 val-maxrating-cf-519.5555555555555-405">
+      <text id="val-maxrating-cf-519.5555555555555-405" x="525.5555555555555" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1800</text>
+      <text id="lbl-maxrating-cf-519.5555555555555-405" x="519.5555555555555" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Max Rating</text>
+    </g>
+  
+      </g>
+    
+      <g role="group" aria-labelledby="cp-codechef-stats-638.6666666666666-320-title">
+        <rect x="638.6666666666666" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#7c3aed" opacity="0.04" filter="url(#cardGlow)"/>
+        <rect x="638.6666666666666" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#12121a"/>
+        <rect x="638.6666666666666" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="url(#mainGradient)" opacity="0.3"/>
+        <rect x="639.1666666666666" y="320.5" width="288.3333333333333" height="139"
+          rx="16" ry="16"
+          fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+        <text
+          id="cp-codechef-stats-638.6666666666666-320-title"
+          x="658.6666666666666" y="350"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="13" font-weight="600"
+          fill="#94a3b8"
+          letter-spacing="0.5">CODECHEF STATS</text>
+        <rect x="658.6666666666666" y="360" width="28" height="2"
+          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        
+    <!-- Current Rating -->
+    <g role="group" aria-labelledby="lbl-rating-cc-658.6666666666666-405 val-rating-cc-658.6666666666666-405">
+      <text id="val-rating-cc-658.6666666666666-405" x="658.6666666666666" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1620</text>
+      <text id="lbl-rating-cc-658.6666666666666-405" x="658.6666666666666" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Rating</text>
+    </g>
+
+    <!-- Stars & Division -->
+    <g role="group" aria-labelledby="lbl-stars-cc-741.7777777777777-405 val-stars-cc-741.7777777777777-405" aria-label="CodeChef Star and Division Rating">
+      <text id="val-stars-cc-741.7777777777777-405" x="751.7777777777777" y="397"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="22" font-weight="700" fill="#f59e0b">3★</text>
+      <text id="lbl-stars-cc-741.7777777777777-405" x="751.7777777777777" y="415"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Stars</text>
+
+      <!-- Division badge -->
+      <rect x="747.7777777777777" y="422" width="44" height="16" rx="4"
+        fill="#8b5cf6" opacity="0.18"/>
+      <text x="769.7777777777777" y="434"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="10" font-weight="600" fill="#a78bfa" text-anchor="middle">Div 2</text>
+    </g>
+
+    <!-- Global Rank -->
+    <g role="group" aria-labelledby="lbl-rank-cc-824.8888888888888-405 val-rank-cc-824.8888888888888-405">
+      <text id="val-rank-cc-824.8888888888888-405" x="824.8888888888888" y="397"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="24" font-weight="700" fill="#ffffff">12000</text>
+      <text id="lbl-rank-cc-824.8888888888888-405" x="824.8888888888888" y="415"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Global Rank</text>
+    </g>
+  
+      </g>
+    
+</g>
+
+
+</svg>"
+`;
+
+exports[`Visual Regression: Structural Snapshots Renderer permutations snapshots multiple CP platforms 1`] = `
+"
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="960"
+  height="700"
+  viewBox="0 0 960 700"
+  role="img"
+  aria-labelledby="dashboard-title dashboard-desc"
+  xml:lang="en"
+  lang="en"
+>
+<title id="dashboard-title">GitHub Dashboard</title>
+<desc id="dashboard-desc">GitHub profile statistics</desc>
+
+
+  <defs aria-hidden="true">
+    <!-- main gradient -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.15"/>
+    </linearGradient>
+
+    <!-- accent gradient for text/elements -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+
+    <!-- card glow effect -->
+    <filter id="cardGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- soft glow for accents -->
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- noise texture pattern -->
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" in2="noise" mode="overlay" result="blend"/>
+      <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- dot pattern -->
+    <pattern id="dotPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.5" fill="#1e1e2e" opacity="0.3"/>
+    </pattern>
+
+    <!-- grid pattern -->
+    <pattern id="gridPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e1e2e" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
+  </defs>
+
+  <g aria-hidden="true">
+  <!-- base background -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="#0a0a0f"/>
+
+  <!-- gradient overlay -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="url(#mainGradient)"/>
+
+  <!-- subtle grid pattern -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="url(#gridPattern)" opacity="0.3"/>
+
+  <!-- top accent glow -->
+  <ellipse cx="480" cy="0" rx="384" ry="120" fill="#7c3aed" opacity="0.08"/>
+
+  <!-- border with glow -->
+  <rect x="1" y="1" width="958" height="698" rx="20" ry="20" fill="none" stroke="url(#accentGradient)" stroke-width="1" opacity="0.4"/>
+</g>
+
+  <g role="group" aria-labelledby="card-test-card-50-50-title">
+    <!-- card glow -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#7c3aed" opacity="0.03" filter="url(#cardGlow)"/>
+
+    <!-- card background -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#12121a"/>
+
+    <!-- inner gradient -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.5"/>
+
+    <!-- border -->
+    <rect x="50.5" y="50.5" width="199" height="99" rx="16" ry="16" fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.5"/>
+
+    <text id="card-test-card-50-50-title" x="70" y="78" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="0.5">TEST CARD</text>
+    <!-- title underline accent -->
+    <rect x="70" y="86" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  </g>
+
+  <g transform="translate(28, 100)">
+    
+    <defs>
+      <linearGradient id="lineGradient-chart-28-100" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#7c3aed"/>
+        <stop offset="50%" stop-color="#6366f1"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+      <linearGradient id="areaGradient-chart-28-100" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.4"/>
+        <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="lineGlow-chart-28-100" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  
+    <line x1="12" y1="12" x2="388" y2="12" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="56" x2="388" y2="56" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="100" x2="388" y2="100" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="144" x2="388" y2="144" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="188" x2="388" y2="188" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56 L 388 188 L 12 188 Z" fill="url(#areaGradient-chart-28-100)"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56" fill="none" stroke="url(#lineGradient-chart-28-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" filter="url(#lineGlow-chart-28-100)"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56" fill="none" stroke="url(#lineGradient-chart-28-100)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+      <circle cx="388" cy="56" r="6" fill="#06b6d4" opacity="0.3"/>
+      <circle cx="388" cy="56" r="4" fill="#06b6d4"/>
+      <circle cx="388" cy="56" r="2" fill="#fff" opacity="0.9"/>
+    
+  </g>
+
+<g
+  role="group"
+  aria-labelledby="cp-title"
+>
+  <title id="cp-title">Competitive Programming Statistics</title>
+  <desc>LeetCode statistics available, Codeforces statistics available, CodeChef statistics available</desc>
+  
+      <g role="group" aria-labelledby="cp-leetcode-stats-28-320-title">
+        <rect x="28" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#7c3aed" opacity="0.04" filter="url(#cardGlow)"/>
+        <rect x="28" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#12121a"/>
+        <rect x="28" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="url(#mainGradient)" opacity="0.3"/>
+        <rect x="28.5" y="320.5" width="288.3333333333333" height="139"
+          rx="16" ry="16"
+          fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+        <text
+          id="cp-leetcode-stats-28-320-title"
+          x="48" y="350"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="13" font-weight="600"
+          fill="#94a3b8"
+          letter-spacing="0.5">LEETCODE STATS</text>
+        <rect x="48" y="360" width="28" height="2"
+          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        
+    <g role="group" aria-labelledby="lbl-solved-lc-48-405 val-solved-lc-48-405">
+      <text id="val-solved-lc-48-405" x="48" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">450</text>
+      <text id="lbl-solved-lc-48-405" x="48" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Solved</text>
+    </g>
+
+    <g role="group" aria-label="Difficulty Breakdown">
+      <g role="group" aria-labelledby="lbl-easy-lc-131.1111111111111-405 val-easy-lc-131.1111111111111-405">
+        <text id="lbl-easy-lc-131.1111111111111-405" x="131.1111111111111" y="387"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#10b981">E</text>
+        <text id="val-easy-lc-131.1111111111111-405" x="145.1111111111111" y="387"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">200</text>
+      </g>
+
+      <g role="group" aria-labelledby="lbl-med-lc-131.1111111111111-405 val-med-lc-131.1111111111111-405">
+        <text id="lbl-med-lc-131.1111111111111-405" x="131.1111111111111" y="405"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#f59e0b">M</text>
+        <text id="val-med-lc-131.1111111111111-405" x="145.1111111111111" y="405"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">200</text>
+      </g>
+
+      <g role="group" aria-labelledby="lbl-hard-lc-131.1111111111111-405 val-hard-lc-131.1111111111111-405">
+        <text id="lbl-hard-lc-131.1111111111111-405" x="131.1111111111111" y="423"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#ef4444">H</text>
+        <text id="val-hard-lc-131.1111111111111-405" x="145.1111111111111" y="423"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">50</text>
+      </g>
+    </g>
+
+    <g role="group" aria-labelledby="lbl-rating-lc-214.2222222222222-405 val-rating-lc-214.2222222222222-405">
+      <text id="val-rating-lc-214.2222222222222-405" x="214.2222222222222" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1850</text>
+      <text id="lbl-rating-lc-214.2222222222222-405" x="214.2222222222222" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Rating</text>
+    </g>
+  
+      </g>
+    
+      <g role="group" aria-labelledby="cp-codeforces-stats-333.3333333333333-320-title">
+        <rect x="333.3333333333333" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#7c3aed" opacity="0.04" filter="url(#cardGlow)"/>
+        <rect x="333.3333333333333" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#12121a"/>
+        <rect x="333.3333333333333" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="url(#mainGradient)" opacity="0.3"/>
+        <rect x="333.8333333333333" y="320.5" width="288.3333333333333" height="139"
+          rx="16" ry="16"
+          fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+        <text
+          id="cp-codeforces-stats-333.3333333333333-320-title"
+          x="353.3333333333333" y="350"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="13" font-weight="600"
+          fill="#94a3b8"
+          letter-spacing="0.5">CODEFORCES STATS</text>
+        <rect x="353.3333333333333" y="360" width="28" height="2"
+          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        
+    <!-- Rating -->
+    <g role="group" aria-labelledby="lbl-rating-cf-353.3333333333333-405 val-rating-cf-353.3333333333333-405">
+      <text id="val-rating-cf-353.3333333333333-405" x="353.3333333333333" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1750</text>
+      <text id="lbl-rating-cf-353.3333333333333-405" x="353.3333333333333" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Rating</text>
+    </g>
+
+    <!-- Rank + Solved -->
+    <g role="group" aria-label="Competitive Rank and Problems Solved">
+      <g role="group" aria-labelledby="lbl-rank-cf-436.4444444444444-405 val-rank-cf-436.4444444444444-405">
+        <text id="lbl-rank-cf-436.4444444444444-405" x="442.4444444444444" y="387"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#6366f1">R</text>
+        <text id="val-rank-cf-436.4444444444444-405" x="454.4444444444444" y="387"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="700" fill="#ffffff">Expert</text>
+      </g>
+
+      <g role="group" aria-labelledby="lbl-solved-cf-436.4444444444444-405 val-solved-cf-436.4444444444444-405">
+        <text id="lbl-solved-cf-436.4444444444444-405" x="442.4444444444444" y="407"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#10b981">S</text>
+        <text id="val-solved-cf-436.4444444444444-405" x="454.4444444444444" y="407"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="700" fill="#ffffff">642</text>
+      </g>
+    </g>
+
+    <!-- Max Rating -->
+    <g role="group" aria-labelledby="lbl-maxrating-cf-519.5555555555555-405 val-maxrating-cf-519.5555555555555-405">
+      <text id="val-maxrating-cf-519.5555555555555-405" x="525.5555555555555" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1800</text>
+      <text id="lbl-maxrating-cf-519.5555555555555-405" x="519.5555555555555" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Max Rating</text>
+    </g>
+  
+      </g>
+    
+      <g role="group" aria-labelledby="cp-codechef-stats-638.6666666666666-320-title">
+        <rect x="638.6666666666666" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#7c3aed" opacity="0.04" filter="url(#cardGlow)"/>
+        <rect x="638.6666666666666" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="#12121a"/>
+        <rect x="638.6666666666666" y="320" width="289.3333333333333" height="140"
+          rx="16" ry="16"
+          fill="url(#mainGradient)" opacity="0.3"/>
+        <rect x="639.1666666666666" y="320.5" width="288.3333333333333" height="139"
+          rx="16" ry="16"
+          fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+        <text
+          id="cp-codechef-stats-638.6666666666666-320-title"
+          x="658.6666666666666" y="350"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="13" font-weight="600"
+          fill="#94a3b8"
+          letter-spacing="0.5">CODECHEF STATS</text>
+        <rect x="658.6666666666666" y="360" width="28" height="2"
+          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        
+    <!-- Current Rating -->
+    <g role="group" aria-labelledby="lbl-rating-cc-658.6666666666666-405 val-rating-cc-658.6666666666666-405">
+      <text id="val-rating-cc-658.6666666666666-405" x="658.6666666666666" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1620</text>
+      <text id="lbl-rating-cc-658.6666666666666-405" x="658.6666666666666" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Rating</text>
+    </g>
+
+    <!-- Stars & Division -->
+    <g role="group" aria-labelledby="lbl-stars-cc-741.7777777777777-405 val-stars-cc-741.7777777777777-405" aria-label="CodeChef Star and Division Rating">
+      <text id="val-stars-cc-741.7777777777777-405" x="751.7777777777777" y="397"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="22" font-weight="700" fill="#f59e0b">3★</text>
+      <text id="lbl-stars-cc-741.7777777777777-405" x="751.7777777777777" y="415"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Stars</text>
+
+      <!-- Division badge -->
+      <rect x="747.7777777777777" y="422" width="44" height="16" rx="4"
+        fill="#8b5cf6" opacity="0.18"/>
+      <text x="769.7777777777777" y="434"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="10" font-weight="600" fill="#a78bfa" text-anchor="middle">Div 2</text>
+    </g>
+
+    <!-- Global Rank -->
+    <g role="group" aria-labelledby="lbl-rank-cc-824.8888888888888-405 val-rank-cc-824.8888888888888-405">
+      <text id="val-rank-cc-824.8888888888888-405" x="824.8888888888888" y="397"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="24" font-weight="700" fill="#ffffff">12000</text>
+      <text id="lbl-rank-cc-824.8888888888888-405" x="824.8888888888888" y="415"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Global Rank</text>
+    </g>
+  
+      </g>
+    
+</g>
+
+
+  <g
+  role="group"
+  aria-labelledby="trophy-title"
+>
+  <title id="trophy-title">Achievement Trophies</title>
+  <desc>Achievements: 1234 commits, 87 pull requests, 44 reviews, 28 issues, 16 repositories, 321 stars, 99 followers.</desc>
+    <!-- card glow -->
+    <rect x="28" y="490" width="900" height="165" rx="16" ry="16" fill="#7c3aed" opacity="0.03" filter="url(#cardGlow)"/>
+
+    <!-- card background -->
+    <rect x="28" y="490" width="900" height="165" rx="16" ry="16" fill="#12121a"/>
+
+    <!-- inner gradient -->
+    <rect x="28" y="490" width="900" height="165" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.25"/>
+
+    <!-- border -->
+    <rect x="28.5" y="490.5" width="899" height="164" rx="16" ry="16" fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+
+    <!-- title -->
+    <text x="478" y="514" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="0.5" text-anchor="middle">ACHIEVEMENT TROPHIES</text>
+
+    <!-- title accent line -->
+    <rect x="438" y="522" width="80" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  </g>
+  <g>
+    <!-- outer glow -->
+    <polygon points="220,543.25 245.76425576258706,558.125 245.76425576258706,587.875 220,602.75 194.23574423741294,587.875 194.23574423741294,558.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="220,543.25 245.76425576258706,558.125 245.76425576258706,587.875 220,602.75 194.23574423741294,587.875 194.23574423741294,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="220,543.25 245.76425576258706,558.125 245.76425576258706,587.875 220,602.75 194.23574423741294,587.875 194.23574423741294,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="220,543.25 245.76425576258706,558.125 245.76425576258706,587.875 220,602.75 194.23574423741294,587.875 194.23574423741294,558.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="220,546.75 242.7331668493415,559.875 242.7331668493415,586.125 220,599.25 197.2668331506585,586.125 197.26683315065847,559.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(210, 555)">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="247" cy="550" r="10" fill="#3b82f6"/>
+    <text x="247" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="220" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Commits</text>
+
+    <!-- value -->
+    <text x="220" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">1.2k</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="306,543.25 331.764255762587,558.125 331.764255762587,587.875 306,602.75 280.235744237413,587.875 280.2357442374129,558.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="306,543.25 331.764255762587,558.125 331.764255762587,587.875 306,602.75 280.235744237413,587.875 280.2357442374129,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="306,543.25 331.764255762587,558.125 331.764255762587,587.875 306,602.75 280.235744237413,587.875 280.2357442374129,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="306,543.25 331.764255762587,558.125 331.764255762587,587.875 306,602.75 280.235744237413,587.875 280.2357442374129,558.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="306,546.75 328.7331668493415,559.875 328.7331668493415,586.125 306,599.25 283.2668331506585,586.125 283.2668331506585,559.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(296, 555)">
+      <path d="M6 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 8a5 5 0 0 1-5-5V5a5 5 0 0 1 10 0v1a5 5 0 0 1-5 5zm12-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM6 19v-2a1 1 0 0 1 2 0v2a3 3 0 1 1-6 0v-2a1 1 0 0 1 2 0v2a1 1 0 0 0 2 0z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="333" cy="550" r="10" fill="#3b82f6"/>
+    <text x="333" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="306" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">PRs</text>
+
+    <!-- value -->
+    <text x="306" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">87</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="392,543.25 417.764255762587,558.125 417.764255762587,587.875 392,602.75 366.235744237413,587.875 366.2357442374129,558.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="392,543.25 417.764255762587,558.125 417.764255762587,587.875 392,602.75 366.235744237413,587.875 366.2357442374129,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="392,543.25 417.764255762587,558.125 417.764255762587,587.875 392,602.75 366.235744237413,587.875 366.2357442374129,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="392,543.25 417.764255762587,558.125 417.764255762587,587.875 392,602.75 366.235744237413,587.875 366.2357442374129,558.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="392,546.75 414.7331668493415,559.875 414.7331668493415,586.125 392,599.25 369.2668331506585,586.125 369.2668331506585,559.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(382, 555)">
+      <path d="M21 6h-2v9H7v2c0 .55.45 1 1 1h9l4 4V7c0-.55-.45-1-1-1zM17 11V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="419" cy="550" r="10" fill="#10b981"/>
+    <text x="419" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="392" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Reviews</text>
+
+    <!-- value -->
+    <text x="392" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">44</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="478,543.25 503.764255762587,558.125 503.764255762587,587.875 478,602.75 452.235744237413,587.875 452.2357442374129,558.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="478,543.25 503.764255762587,558.125 503.764255762587,587.875 478,602.75 452.235744237413,587.875 452.2357442374129,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="478,543.25 503.764255762587,558.125 503.764255762587,587.875 478,602.75 452.235744237413,587.875 452.2357442374129,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="478,543.25 503.764255762587,558.125 503.764255762587,587.875 478,602.75 452.235744237413,587.875 452.2357442374129,558.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="478,546.75 500.7331668493415,559.875 500.7331668493415,586.125 478,599.25 455.2668331506585,586.125 455.2668331506585,559.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(468, 555)">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="505" cy="550" r="10" fill="#10b981"/>
+    <text x="505" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="478" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Issues</text>
+
+    <!-- value -->
+    <text x="478" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">28</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="564,543.25 589.764255762587,558.125 589.764255762587,587.875 564,602.75 538.235744237413,587.875 538.235744237413,558.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="564,543.25 589.764255762587,558.125 589.764255762587,587.875 564,602.75 538.235744237413,587.875 538.235744237413,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="564,543.25 589.764255762587,558.125 589.764255762587,587.875 564,602.75 538.235744237413,587.875 538.235744237413,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="564,543.25 589.764255762587,558.125 589.764255762587,587.875 564,602.75 538.235744237413,587.875 538.235744237413,558.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="564,546.75 586.7331668493415,559.875 586.7331668493415,586.125 564,599.25 541.2668331506585,586.125 541.2668331506585,559.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(554, 555)">
+      <path d="M4 4v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-4H6c-1.1 0-2 .9-2 2zm9 0l5 4h-5V4zM7 8h4v2H7V8zm0 4h10v2H7v-2zm0 4h10v2H7v-2z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="591" cy="550" r="10" fill="#10b981"/>
+    <text x="591" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="564" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Repos</text>
+
+    <!-- value -->
+    <text x="564" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">16</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="650,543.25 675.764255762587,558.125 675.764255762587,587.875 650,602.75 624.235744237413,587.875 624.235744237413,558.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="650,543.25 675.764255762587,558.125 675.764255762587,587.875 650,602.75 624.235744237413,587.875 624.235744237413,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="650,543.25 675.764255762587,558.125 675.764255762587,587.875 650,602.75 624.235744237413,587.875 624.235744237413,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="650,543.25 675.764255762587,558.125 675.764255762587,587.875 650,602.75 624.235744237413,587.875 624.235744237413,558.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="650,546.75 672.7331668493415,559.875 672.7331668493415,586.125 650,599.25 627.2668331506585,586.125 627.2668331506585,559.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(640, 555)">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="677" cy="550" r="10" fill="#3b82f6"/>
+    <text x="677" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="650" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Stars</text>
+
+    <!-- value -->
+    <text x="650" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">321</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="736,543.25 761.764255762587,558.125 761.764255762587,587.875 736,602.75 710.235744237413,587.875 710.235744237413,558.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="736,543.25 761.764255762587,558.125 761.764255762587,587.875 736,602.75 710.235744237413,587.875 710.235744237413,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="736,543.25 761.764255762587,558.125 761.764255762587,587.875 736,602.75 710.235744237413,587.875 710.235744237413,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="736,543.25 761.764255762587,558.125 761.764255762587,587.875 736,602.75 710.235744237413,587.875 710.235744237413,558.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="736,546.75 758.7331668493415,559.875 758.7331668493415,586.125 736,599.25 713.2668331506585,586.125 713.2668331506585,559.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(726, 555)">
+      <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="763" cy="550" r="10" fill="#10b981"/>
+    <text x="763" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="736" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Followers</text>
+
+    <!-- value -->
+    <text x="736" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">99</text>
+  </g>
+</svg>"
+`;
+
+exports[`Visual Regression: Structural Snapshots Renderer permutations snapshots no CP platform 1`] = `
+"
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="960"
+  height="700"
+  viewBox="0 0 960 700"
+  role="img"
+  aria-labelledby="dashboard-title dashboard-desc"
+  xml:lang="en"
+  lang="en"
+>
+<title id="dashboard-title">GitHub Dashboard</title>
+<desc id="dashboard-desc">GitHub profile statistics</desc>
+
+
+  <defs aria-hidden="true">
+    <!-- main gradient -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.15"/>
+    </linearGradient>
+
+    <!-- accent gradient for text/elements -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+
+    <!-- card glow effect -->
+    <filter id="cardGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- soft glow for accents -->
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- noise texture pattern -->
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" in2="noise" mode="overlay" result="blend"/>
+      <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- dot pattern -->
+    <pattern id="dotPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.5" fill="#1e1e2e" opacity="0.3"/>
+    </pattern>
+
+    <!-- grid pattern -->
+    <pattern id="gridPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e1e2e" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
+  </defs>
+
+  <g aria-hidden="true">
+  <!-- base background -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="#0a0a0f"/>
+
+  <!-- gradient overlay -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="url(#mainGradient)"/>
+
+  <!-- subtle grid pattern -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="url(#gridPattern)" opacity="0.3"/>
+
+  <!-- top accent glow -->
+  <ellipse cx="480" cy="0" rx="384" ry="120" fill="#7c3aed" opacity="0.08"/>
+
+  <!-- border with glow -->
+  <rect x="1" y="1" width="958" height="698" rx="20" ry="20" fill="none" stroke="url(#accentGradient)" stroke-width="1" opacity="0.4"/>
+</g>
+
+  <g role="group" aria-labelledby="card-test-card-50-50-title">
+    <!-- card glow -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#7c3aed" opacity="0.03" filter="url(#cardGlow)"/>
+
+    <!-- card background -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#12121a"/>
+
+    <!-- inner gradient -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.5"/>
+
+    <!-- border -->
+    <rect x="50.5" y="50.5" width="199" height="99" rx="16" ry="16" fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.5"/>
+
+    <text id="card-test-card-50-50-title" x="70" y="78" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="0.5">TEST CARD</text>
+    <!-- title underline accent -->
+    <rect x="70" y="86" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  </g>
+
+  <g transform="translate(28, 100)">
+    
+    <defs>
+      <linearGradient id="lineGradient-chart-28-100" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#7c3aed"/>
+        <stop offset="50%" stop-color="#6366f1"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+      <linearGradient id="areaGradient-chart-28-100" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.4"/>
+        <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="lineGlow-chart-28-100" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  
+    <line x1="12" y1="12" x2="388" y2="12" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="56" x2="388" y2="56" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="100" x2="388" y2="100" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="144" x2="388" y2="144" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="188" x2="388" y2="188" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56 L 388 188 L 12 188 Z" fill="url(#areaGradient-chart-28-100)"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56" fill="none" stroke="url(#lineGradient-chart-28-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" filter="url(#lineGlow-chart-28-100)"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56" fill="none" stroke="url(#lineGradient-chart-28-100)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+      <circle cx="388" cy="56" r="6" fill="#06b6d4" opacity="0.3"/>
+      <circle cx="388" cy="56" r="4" fill="#06b6d4"/>
+      <circle cx="388" cy="56" r="2" fill="#fff" opacity="0.9"/>
+    
+  </g>
+
+
+  <g
+  role="group"
+  aria-labelledby="trophy-title"
+>
+  <title id="trophy-title">Achievement Trophies</title>
+  <desc>Achievements: 1234 commits, 87 pull requests, 44 reviews, 28 issues, 16 repositories, 321 stars, 99 followers.</desc>
+    <!-- card glow -->
+    <rect x="28" y="320" width="900" height="165" rx="16" ry="16" fill="#7c3aed" opacity="0.03" filter="url(#cardGlow)"/>
+
+    <!-- card background -->
+    <rect x="28" y="320" width="900" height="165" rx="16" ry="16" fill="#12121a"/>
+
+    <!-- inner gradient -->
+    <rect x="28" y="320" width="900" height="165" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.25"/>
+
+    <!-- border -->
+    <rect x="28.5" y="320.5" width="899" height="164" rx="16" ry="16" fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+
+    <!-- title -->
+    <text x="478" y="344" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="0.5" text-anchor="middle">ACHIEVEMENT TROPHIES</text>
+
+    <!-- title accent line -->
+    <rect x="438" y="352" width="80" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  </g>
+  <g>
+    <!-- outer glow -->
+    <polygon points="220,373.25 245.76425576258706,388.125 245.76425576258706,417.875 220,432.75 194.23574423741294,417.875 194.23574423741294,388.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="220,373.25 245.76425576258706,388.125 245.76425576258706,417.875 220,432.75 194.23574423741294,417.875 194.23574423741294,388.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="220,373.25 245.76425576258706,388.125 245.76425576258706,417.875 220,432.75 194.23574423741294,417.875 194.23574423741294,388.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="220,373.25 245.76425576258706,388.125 245.76425576258706,417.875 220,432.75 194.23574423741294,417.875 194.23574423741294,388.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="220,376.75 242.7331668493415,389.875 242.7331668493415,416.125 220,429.25 197.2668331506585,416.125 197.26683315065847,389.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(210, 385)">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="247" cy="380" r="10" fill="#3b82f6"/>
+    <text x="247" y="384" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="220" y="452" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Commits</text>
+
+    <!-- value -->
+    <text x="220" y="466" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">1.2k</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="306,373.25 331.764255762587,388.125 331.764255762587,417.875 306,432.75 280.235744237413,417.875 280.2357442374129,388.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="306,373.25 331.764255762587,388.125 331.764255762587,417.875 306,432.75 280.235744237413,417.875 280.2357442374129,388.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="306,373.25 331.764255762587,388.125 331.764255762587,417.875 306,432.75 280.235744237413,417.875 280.2357442374129,388.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="306,373.25 331.764255762587,388.125 331.764255762587,417.875 306,432.75 280.235744237413,417.875 280.2357442374129,388.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="306,376.75 328.7331668493415,389.875 328.7331668493415,416.125 306,429.25 283.2668331506585,416.125 283.2668331506585,389.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(296, 385)">
+      <path d="M6 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 8a5 5 0 0 1-5-5V5a5 5 0 0 1 10 0v1a5 5 0 0 1-5 5zm12-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM6 19v-2a1 1 0 0 1 2 0v2a3 3 0 1 1-6 0v-2a1 1 0 0 1 2 0v2a1 1 0 0 0 2 0z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="333" cy="380" r="10" fill="#3b82f6"/>
+    <text x="333" y="384" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="306" y="452" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">PRs</text>
+
+    <!-- value -->
+    <text x="306" y="466" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">87</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="392,373.25 417.764255762587,388.125 417.764255762587,417.875 392,432.75 366.235744237413,417.875 366.2357442374129,388.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="392,373.25 417.764255762587,388.125 417.764255762587,417.875 392,432.75 366.235744237413,417.875 366.2357442374129,388.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="392,373.25 417.764255762587,388.125 417.764255762587,417.875 392,432.75 366.235744237413,417.875 366.2357442374129,388.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="392,373.25 417.764255762587,388.125 417.764255762587,417.875 392,432.75 366.235744237413,417.875 366.2357442374129,388.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="392,376.75 414.7331668493415,389.875 414.7331668493415,416.125 392,429.25 369.2668331506585,416.125 369.2668331506585,389.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(382, 385)">
+      <path d="M21 6h-2v9H7v2c0 .55.45 1 1 1h9l4 4V7c0-.55-.45-1-1-1zM17 11V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="419" cy="380" r="10" fill="#10b981"/>
+    <text x="419" y="384" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="392" y="452" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Reviews</text>
+
+    <!-- value -->
+    <text x="392" y="466" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">44</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="478,373.25 503.764255762587,388.125 503.764255762587,417.875 478,432.75 452.235744237413,417.875 452.2357442374129,388.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="478,373.25 503.764255762587,388.125 503.764255762587,417.875 478,432.75 452.235744237413,417.875 452.2357442374129,388.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="478,373.25 503.764255762587,388.125 503.764255762587,417.875 478,432.75 452.235744237413,417.875 452.2357442374129,388.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="478,373.25 503.764255762587,388.125 503.764255762587,417.875 478,432.75 452.235744237413,417.875 452.2357442374129,388.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="478,376.75 500.7331668493415,389.875 500.7331668493415,416.125 478,429.25 455.2668331506585,416.125 455.2668331506585,389.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(468, 385)">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="505" cy="380" r="10" fill="#10b981"/>
+    <text x="505" y="384" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="478" y="452" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Issues</text>
+
+    <!-- value -->
+    <text x="478" y="466" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">28</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="564,373.25 589.764255762587,388.125 589.764255762587,417.875 564,432.75 538.235744237413,417.875 538.235744237413,388.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="564,373.25 589.764255762587,388.125 589.764255762587,417.875 564,432.75 538.235744237413,417.875 538.235744237413,388.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="564,373.25 589.764255762587,388.125 589.764255762587,417.875 564,432.75 538.235744237413,417.875 538.235744237413,388.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="564,373.25 589.764255762587,388.125 589.764255762587,417.875 564,432.75 538.235744237413,417.875 538.235744237413,388.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="564,376.75 586.7331668493415,389.875 586.7331668493415,416.125 564,429.25 541.2668331506585,416.125 541.2668331506585,389.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(554, 385)">
+      <path d="M4 4v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-4H6c-1.1 0-2 .9-2 2zm9 0l5 4h-5V4zM7 8h4v2H7V8zm0 4h10v2H7v-2zm0 4h10v2H7v-2z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="591" cy="380" r="10" fill="#10b981"/>
+    <text x="591" y="384" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="564" y="452" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Repos</text>
+
+    <!-- value -->
+    <text x="564" y="466" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">16</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="650,373.25 675.764255762587,388.125 675.764255762587,417.875 650,432.75 624.235744237413,417.875 624.235744237413,388.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="650,373.25 675.764255762587,388.125 675.764255762587,417.875 650,432.75 624.235744237413,417.875 624.235744237413,388.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="650,373.25 675.764255762587,388.125 675.764255762587,417.875 650,432.75 624.235744237413,417.875 624.235744237413,388.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="650,373.25 675.764255762587,388.125 675.764255762587,417.875 650,432.75 624.235744237413,417.875 624.235744237413,388.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="650,376.75 672.7331668493415,389.875 672.7331668493415,416.125 650,429.25 627.2668331506585,416.125 627.2668331506585,389.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(640, 385)">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="677" cy="380" r="10" fill="#3b82f6"/>
+    <text x="677" y="384" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="650" y="452" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Stars</text>
+
+    <!-- value -->
+    <text x="650" y="466" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">321</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="736,373.25 761.764255762587,388.125 761.764255762587,417.875 736,432.75 710.235744237413,417.875 710.235744237413,388.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="736,373.25 761.764255762587,388.125 761.764255762587,417.875 736,432.75 710.235744237413,417.875 710.235744237413,388.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="736,373.25 761.764255762587,388.125 761.764255762587,417.875 736,432.75 710.235744237413,417.875 710.235744237413,388.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="736,373.25 761.764255762587,388.125 761.764255762587,417.875 736,432.75 710.235744237413,417.875 710.235744237413,388.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="736,376.75 758.7331668493415,389.875 758.7331668493415,416.125 736,429.25 713.2668331506585,416.125 713.2668331506585,389.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(726, 385)">
+      <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="763" cy="380" r="10" fill="#10b981"/>
+    <text x="763" y="384" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="736" y="452" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Followers</text>
+
+    <!-- value -->
+    <text x="736" y="466" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">99</text>
+  </g>
+</svg>"
+`;
+
+exports[`Visual Regression: Structural Snapshots Renderer permutations snapshots single CP platform 1`] = `
+"
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="960"
+  height="700"
+  viewBox="0 0 960 700"
+  role="img"
+  aria-labelledby="dashboard-title dashboard-desc"
+  xml:lang="en"
+  lang="en"
+>
+<title id="dashboard-title">GitHub Dashboard</title>
+<desc id="dashboard-desc">GitHub profile statistics</desc>
+
+
+  <defs aria-hidden="true">
+    <!-- main gradient -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.15"/>
+    </linearGradient>
+
+    <!-- accent gradient for text/elements -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+
+    <!-- card glow effect -->
+    <filter id="cardGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- soft glow for accents -->
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- noise texture pattern -->
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" in2="noise" mode="overlay" result="blend"/>
+      <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- dot pattern -->
+    <pattern id="dotPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.5" fill="#1e1e2e" opacity="0.3"/>
+    </pattern>
+
+    <!-- grid pattern -->
+    <pattern id="gridPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e1e2e" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
+  </defs>
+
+  <g aria-hidden="true">
+  <!-- base background -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="#0a0a0f"/>
+
+  <!-- gradient overlay -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="url(#mainGradient)"/>
+
+  <!-- subtle grid pattern -->
+  <rect x="0" y="0" width="960" height="700" rx="20" ry="20" fill="url(#gridPattern)" opacity="0.3"/>
+
+  <!-- top accent glow -->
+  <ellipse cx="480" cy="0" rx="384" ry="120" fill="#7c3aed" opacity="0.08"/>
+
+  <!-- border with glow -->
+  <rect x="1" y="1" width="958" height="698" rx="20" ry="20" fill="none" stroke="url(#accentGradient)" stroke-width="1" opacity="0.4"/>
+</g>
+
+  <g role="group" aria-labelledby="card-test-card-50-50-title">
+    <!-- card glow -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#7c3aed" opacity="0.03" filter="url(#cardGlow)"/>
+
+    <!-- card background -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#12121a"/>
+
+    <!-- inner gradient -->
+    <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.5"/>
+
+    <!-- border -->
+    <rect x="50.5" y="50.5" width="199" height="99" rx="16" ry="16" fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.5"/>
+
+    <text id="card-test-card-50-50-title" x="70" y="78" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="0.5">TEST CARD</text>
+    <!-- title underline accent -->
+    <rect x="70" y="86" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  </g>
+
+  <g transform="translate(28, 100)">
+    
+    <defs>
+      <linearGradient id="lineGradient-chart-28-100" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#7c3aed"/>
+        <stop offset="50%" stop-color="#6366f1"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+      <linearGradient id="areaGradient-chart-28-100" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.4"/>
+        <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="lineGlow-chart-28-100" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  
+    <line x1="12" y1="12" x2="388" y2="12" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="56" x2="388" y2="56" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="100" x2="388" y2="100" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="144" x2="388" y2="144" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+<line x1="12" y1="188" x2="388" y2="188" stroke="#1e1e2e" stroke-width="1" opacity="0.3" stroke-dasharray="4 4"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56 L 388 188 L 12 188 Z" fill="url(#areaGradient-chart-28-100)"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56" fill="none" stroke="url(#lineGradient-chart-28-100)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" filter="url(#lineGlow-chart-28-100)"/>
+    <path d="M 12 188 C 30.799999999999997 168.2, 37.06666666666666 128.6, 74.66666666666666 122 C 112.26666666666665 115.4, 99.73333333333332 192.4, 137.33333333333331 166 C 174.9333333333333 139.6, 162.4 53.8, 200 34 C 237.6 14.2, 225.0666666666666 106.6, 262.66666666666663 100 C 300.26666666666665 93.4, 287.73333333333335 25.2, 325.33333333333337 12 C 362.9333333333334 -1.1999999999999993, 369.2 42.8, 388 56" fill="none" stroke="url(#lineGradient-chart-28-100)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+      <circle cx="388" cy="56" r="6" fill="#06b6d4" opacity="0.3"/>
+      <circle cx="388" cy="56" r="4" fill="#06b6d4"/>
+      <circle cx="388" cy="56" r="2" fill="#fff" opacity="0.9"/>
+    
+  </g>
+
+<g
+  role="group"
+  aria-labelledby="cp-title"
+>
+  <title id="cp-title">Competitive Programming Statistics</title>
+  <desc>LeetCode statistics available</desc>
+  
+      <g role="group" aria-labelledby="cp-leetcode-stats-28-320-title">
+        <rect x="28" y="320" width="900" height="140"
+          rx="16" ry="16"
+          fill="#7c3aed" opacity="0.04" filter="url(#cardGlow)"/>
+        <rect x="28" y="320" width="900" height="140"
+          rx="16" ry="16"
+          fill="#12121a"/>
+        <rect x="28" y="320" width="900" height="140"
+          rx="16" ry="16"
+          fill="url(#mainGradient)" opacity="0.3"/>
+        <rect x="28.5" y="320.5" width="899" height="139"
+          rx="16" ry="16"
+          fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+        <text
+          id="cp-leetcode-stats-28-320-title"
+          x="48" y="350"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="13" font-weight="600"
+          fill="#94a3b8"
+          letter-spacing="0.5">LEETCODE STATS</text>
+        <rect x="48" y="360" width="28" height="2"
+          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        
+    <g role="group" aria-labelledby="lbl-solved-lc-48-405 val-solved-lc-48-405">
+      <text id="val-solved-lc-48-405" x="48" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">450</text>
+      <text id="lbl-solved-lc-48-405" x="48" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Solved</text>
+    </g>
+
+    <g role="group" aria-label="Difficulty Breakdown">
+      <g role="group" aria-labelledby="lbl-easy-lc-334.6666666666667-405 val-easy-lc-334.6666666666667-405">
+        <text id="lbl-easy-lc-334.6666666666667-405" x="334.6666666666667" y="387"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#10b981">E</text>
+        <text id="val-easy-lc-334.6666666666667-405" x="348.6666666666667" y="387"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">200</text>
+      </g>
+
+      <g role="group" aria-labelledby="lbl-med-lc-334.6666666666667-405 val-med-lc-334.6666666666667-405">
+        <text id="lbl-med-lc-334.6666666666667-405" x="334.6666666666667" y="405"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#f59e0b">M</text>
+        <text id="val-med-lc-334.6666666666667-405" x="348.6666666666667" y="405"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">200</text>
+      </g>
+
+      <g role="group" aria-labelledby="lbl-hard-lc-334.6666666666667-405 val-hard-lc-334.6666666666667-405">
+        <text id="lbl-hard-lc-334.6666666666667-405" x="334.6666666666667" y="423"
+          font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="11" font-weight="600" fill="#ef4444">H</text>
+        <text id="val-hard-lc-334.6666666666667-405" x="348.6666666666667" y="423"
+          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="14" font-weight="700" fill="#ffffff">50</text>
+      </g>
+    </g>
+
+    <g role="group" aria-labelledby="lbl-rating-lc-621.3333333333334-405 val-rating-lc-621.3333333333334-405">
+      <text id="val-rating-lc-621.3333333333334-405" x="621.3333333333334" y="405"
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="32" font-weight="700" fill="#ffffff">1850</text>
+      <text id="lbl-rating-lc-621.3333333333334-405" x="621.3333333333334" y="425"
+        font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="11" fill="#64748b" letter-spacing="0.3">Rating</text>
+    </g>
+  
+      </g>
+    
+</g>
+
+
+  <g
+  role="group"
+  aria-labelledby="trophy-title"
+>
+  <title id="trophy-title">Achievement Trophies</title>
+  <desc>Achievements: 1234 commits, 87 pull requests, 44 reviews, 28 issues, 16 repositories, 321 stars, 99 followers.</desc>
+    <!-- card glow -->
+    <rect x="28" y="490" width="900" height="165" rx="16" ry="16" fill="#7c3aed" opacity="0.03" filter="url(#cardGlow)"/>
+
+    <!-- card background -->
+    <rect x="28" y="490" width="900" height="165" rx="16" ry="16" fill="#12121a"/>
+
+    <!-- inner gradient -->
+    <rect x="28" y="490" width="900" height="165" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.25"/>
+
+    <!-- border -->
+    <rect x="28.5" y="490.5" width="899" height="164" rx="16" ry="16" fill="none" stroke="#2a2a3a" stroke-width="1" opacity="0.4"/>
+
+    <!-- title -->
+    <text x="478" y="514" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="0.5" text-anchor="middle">ACHIEVEMENT TROPHIES</text>
+
+    <!-- title accent line -->
+    <rect x="438" y="522" width="80" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  </g>
+  <g>
+    <!-- outer glow -->
+    <polygon points="220,543.25 245.76425576258706,558.125 245.76425576258706,587.875 220,602.75 194.23574423741294,587.875 194.23574423741294,558.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="220,543.25 245.76425576258706,558.125 245.76425576258706,587.875 220,602.75 194.23574423741294,587.875 194.23574423741294,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="220,543.25 245.76425576258706,558.125 245.76425576258706,587.875 220,602.75 194.23574423741294,587.875 194.23574423741294,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="220,543.25 245.76425576258706,558.125 245.76425576258706,587.875 220,602.75 194.23574423741294,587.875 194.23574423741294,558.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="220,546.75 242.7331668493415,559.875 242.7331668493415,586.125 220,599.25 197.2668331506585,586.125 197.26683315065847,559.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(210, 555)">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="247" cy="550" r="10" fill="#3b82f6"/>
+    <text x="247" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="220" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Commits</text>
+
+    <!-- value -->
+    <text x="220" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">1.2k</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="306,543.25 331.764255762587,558.125 331.764255762587,587.875 306,602.75 280.235744237413,587.875 280.2357442374129,558.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="306,543.25 331.764255762587,558.125 331.764255762587,587.875 306,602.75 280.235744237413,587.875 280.2357442374129,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="306,543.25 331.764255762587,558.125 331.764255762587,587.875 306,602.75 280.235744237413,587.875 280.2357442374129,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="306,543.25 331.764255762587,558.125 331.764255762587,587.875 306,602.75 280.235744237413,587.875 280.2357442374129,558.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="306,546.75 328.7331668493415,559.875 328.7331668493415,586.125 306,599.25 283.2668331506585,586.125 283.2668331506585,559.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(296, 555)">
+      <path d="M6 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 8a5 5 0 0 1-5-5V5a5 5 0 0 1 10 0v1a5 5 0 0 1-5 5zm12-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM6 19v-2a1 1 0 0 1 2 0v2a3 3 0 1 1-6 0v-2a1 1 0 0 1 2 0v2a1 1 0 0 0 2 0z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="333" cy="550" r="10" fill="#3b82f6"/>
+    <text x="333" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="306" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">PRs</text>
+
+    <!-- value -->
+    <text x="306" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">87</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="392,543.25 417.764255762587,558.125 417.764255762587,587.875 392,602.75 366.235744237413,587.875 366.2357442374129,558.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="392,543.25 417.764255762587,558.125 417.764255762587,587.875 392,602.75 366.235744237413,587.875 366.2357442374129,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="392,543.25 417.764255762587,558.125 417.764255762587,587.875 392,602.75 366.235744237413,587.875 366.2357442374129,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="392,543.25 417.764255762587,558.125 417.764255762587,587.875 392,602.75 366.235744237413,587.875 366.2357442374129,558.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="392,546.75 414.7331668493415,559.875 414.7331668493415,586.125 392,599.25 369.2668331506585,586.125 369.2668331506585,559.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(382, 555)">
+      <path d="M21 6h-2v9H7v2c0 .55.45 1 1 1h9l4 4V7c0-.55-.45-1-1-1zM17 11V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="419" cy="550" r="10" fill="#10b981"/>
+    <text x="419" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="392" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Reviews</text>
+
+    <!-- value -->
+    <text x="392" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">44</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="478,543.25 503.764255762587,558.125 503.764255762587,587.875 478,602.75 452.235744237413,587.875 452.2357442374129,558.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="478,543.25 503.764255762587,558.125 503.764255762587,587.875 478,602.75 452.235744237413,587.875 452.2357442374129,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="478,543.25 503.764255762587,558.125 503.764255762587,587.875 478,602.75 452.235744237413,587.875 452.2357442374129,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="478,543.25 503.764255762587,558.125 503.764255762587,587.875 478,602.75 452.235744237413,587.875 452.2357442374129,558.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="478,546.75 500.7331668493415,559.875 500.7331668493415,586.125 478,599.25 455.2668331506585,586.125 455.2668331506585,559.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(468, 555)">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="505" cy="550" r="10" fill="#10b981"/>
+    <text x="505" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="478" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Issues</text>
+
+    <!-- value -->
+    <text x="478" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">28</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="564,543.25 589.764255762587,558.125 589.764255762587,587.875 564,602.75 538.235744237413,587.875 538.235744237413,558.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="564,543.25 589.764255762587,558.125 589.764255762587,587.875 564,602.75 538.235744237413,587.875 538.235744237413,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="564,543.25 589.764255762587,558.125 589.764255762587,587.875 564,602.75 538.235744237413,587.875 538.235744237413,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="564,543.25 589.764255762587,558.125 589.764255762587,587.875 564,602.75 538.235744237413,587.875 538.235744237413,558.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="564,546.75 586.7331668493415,559.875 586.7331668493415,586.125 564,599.25 541.2668331506585,586.125 541.2668331506585,559.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(554, 555)">
+      <path d="M4 4v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-4H6c-1.1 0-2 .9-2 2zm9 0l5 4h-5V4zM7 8h4v2H7V8zm0 4h10v2H7v-2zm0 4h10v2H7v-2z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="591" cy="550" r="10" fill="#10b981"/>
+    <text x="591" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="564" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Repos</text>
+
+    <!-- value -->
+    <text x="564" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">16</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="650,543.25 675.764255762587,558.125 675.764255762587,587.875 650,602.75 624.235744237413,587.875 624.235744237413,558.125" fill="#3b82f6" opacity="0.12" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="650,543.25 675.764255762587,558.125 675.764255762587,587.875 650,602.75 624.235744237413,587.875 624.235744237413,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="650,543.25 675.764255762587,558.125 675.764255762587,587.875 650,602.75 624.235744237413,587.875 624.235744237413,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="650,543.25 675.764255762587,558.125 675.764255762587,587.875 650,602.75 624.235744237413,587.875 624.235744237413,558.125" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="650,546.75 672.7331668493415,559.875 672.7331668493415,586.125 650,599.25 627.2668331506585,586.125 627.2668331506585,559.875" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(640, 555)">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#3b82f6" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="677" cy="550" r="10" fill="#3b82f6"/>
+    <text x="677" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">B</text>
+
+    <!-- label -->
+    <text x="650" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Stars</text>
+
+    <!-- value -->
+    <text x="650" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">321</text>
+  </g>
+
+  <g>
+    <!-- outer glow -->
+    <polygon points="736,543.25 761.764255762587,558.125 761.764255762587,587.875 736,602.75 710.235744237413,587.875 710.235744237413,558.125" fill="#10b981" opacity="0.075" filter="url(#softGlow)"/>
+
+    <!-- main hexagon background -->
+    <polygon points="736,543.25 761.764255762587,558.125 761.764255762587,587.875 736,602.75 710.235744237413,587.875 710.235744237413,558.125" fill="#12121a"/>
+
+    <!-- gradient overlay -->
+    <polygon points="736,543.25 761.764255762587,558.125 761.764255762587,587.875 736,602.75 710.235744237413,587.875 710.235744237413,558.125" fill="url(#mainGradient)" opacity="0.4"/>
+
+    <!-- tier colored border -->
+    <polygon points="736,543.25 761.764255762587,558.125 761.764255762587,587.875 736,602.75 710.235744237413,587.875 710.235744237413,558.125" fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+
+    <!-- inner hexagon accent -->
+    <polygon points="736,546.75 758.7331668493415,559.875 758.7331668493415,586.125 736,599.25 713.2668331506585,586.125 713.2668331506585,559.875" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+
+    <!-- icon -->
+    <g transform="translate(726, 555)">
+      <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="#10b981" opacity="0.9" transform="scale(0.9)"/>
+    </g>
+
+    <!-- tier badge -->
+    <circle cx="763" cy="550" r="10" fill="#10b981"/>
+    <text x="763" y="554" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#0a0a0f" text-anchor="middle">C</text>
+
+    <!-- label -->
+    <text x="736" y="622" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle">Followers</text>
+
+    <!-- value -->
+    <text x="736" y="636" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">99</text>
+  </g>
+</svg>"
+`;
+
 exports[`Visual Regression: Structural Snapshots Snapshots theme: aurora 1`] = `
 "
 <svg
