@@ -273,15 +273,6 @@
       </div>
 
       <!-- Theme Comparison CTA - In the middle -->
-      <div class="theme-comparison-cta">
-        <a href="/theme-comparison" class="btn btn-outline theme-comparison-btn">
-          View Theme Comparison
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </a>
-        <p class="theme-comparison-hint">Compare all themes side-by-side with full dashboard previews</p>
-      </div>
 
       <div class="themes-grid" id="themesGrid">
         <div class="theme-card" data-theme="" data-cat="minimal" data-colors="black purple white" tabindex="0"
@@ -581,24 +572,27 @@
         </div>
         <!-- Show More / Show Less button -->
         <div class="theme-show-more-wrapper" id="themeShowMoreWrapper">
-          <button class="theme-show-more-btn" id="themeShowMoreBtn">
-            Show All Themes
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </button>
-          <!-- Theme Comparison Link -->
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="/theme-comparison" class="btn btn-outline theme-comparison-btn">
-            View Theme Comparison
-            <p class="theme-comparison-hint">(Compare all themes side-by-side with full dashboard previews)</p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
-          
-        
-        </div>
+
+  <button class="theme-show-more-btn" id="themeShowMoreBtn">
+    Show All Themes
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  </button>
+
+  <br><br>
+  &nbsp;&nbsp;&nbsp;
+
+  <a href="/theme-comparison"
+     class="theme-show-more-btn"
+     style="text-decoration: none; display: inline-flex; align-items: center;">
+    View Theme Comparison
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  </a>
+
+</div>
         <!-- Empty state shown when nothing matches -->
         <div class="theme-empty-state" id="themeEmptyState" style="display:none;">
           <p>No themes match your search.</p>
