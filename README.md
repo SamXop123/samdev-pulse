@@ -247,22 +247,188 @@ http://localhost:3000/api/profile?username=SamXop123
 
 ---
 
-# 🔍 API
+# 🔍 API Reference
 
-## GET `/api/profile`
-
-Returns an SVG dashboard.
-
-### Response Headers
-
-* `Content-Type: image/svg+xml`
-* `Cache-Control: public, max-age=1800`
+Base URL: `https://samdev-pulse.vercel.app` (production) or `http://localhost:3000` (local)
 
 ---
 
-## GET `/health`
+## `GET /health`
 
-Health check endpoint.
+Returns a simple health check response.
+
+### Example Request
+
+```http
+GET /health
+```
+
+### Example Response
+
+```json
+{
+  "status": "ok",
+  "timestamp": "2026-06-13T09:30:00.000Z"
+}
+```
+
+### Response Headers
+
+| Header         | Value            |
+| -------------- | ---------------- |
+| `Content-Type` | `application/json` |
+
+---
+
+## `GET /api/profile`
+
+Returns the main profile SVG dashboard with GitHub stats, contribution activity, language breakdown, and optional competitive programming stats.
+
+### Required Parameters
+
+| Parameter | Type     | Description    |
+| --------- | -------- | -------------- |
+| `username` | `string` | GitHub username |
+
+### Optional Parameters
+
+| Parameter  | Type           | Default  | Description                                          |
+| ---------- | -------------- | -------- | ---------------------------------------------------- |
+| `theme`    | `string`       | `dark`   | Visual theme. See [Available Themes](#available-themes) |
+| `align`    | `string`       | `left`   | Header alignment: `left`, `center`, `right`          |
+| `hide_trophies` | `boolean` | `false`  | Hide the achievement trophies row                    |
+| `leetcode` | `string` / `false` | —    | LeetCode username (omit or set to `false` to skip)   |
+| `codeforces` | `string`    | —        | Codeforces username                                  |
+| `codechef` | `string`      | —        | CodeChef username                                    |
+
+### Custom Theme Overrides
+
+You can override individual theme colors by passing hex color values as query parameters:
+
+| Parameter    | Description         |
+| ------------ | ------------------- |
+| `bg`         | Background color    |
+| `text`       | Primary text color  |
+| `sec_text`   | Secondary text color |
+| `muted_text` | Muted text color    |
+| `accent`     | Accent color        |
+| `card_bg`    | Card background     |
+| `border`     | Border color        |
+
+Example:
+
+```md
+![custom theme](https://samdev-pulse.vercel.app/api/profile?username=SamXop123&bg=%231e1e2e&accent=%23cba6f7&text=%23cdd6f4)
+```
+
+### Example Request
+
+```http
+GET /api/profile?username=SamXop123&theme=tokyonight&align=center
+```
+
+### Response Headers
+
+| Header          | Value                      |
+| --------------- | -------------------------- |
+| `Content-Type`  | `image/svg+xml`            |
+| `Cache-Control` | `public, max-age=1800`     |
+
+### Status Codes
+
+| Status | Description                     |
+| ------ | ------------------------------- |
+| `200`  | Returns the SVG dashboard       |
+| `400`  | Invalid username                |
+| `500`  | GitHub API error or server error |
+
+---
+
+## `GET /api/profile/loading`
+
+Returns an animated loading spinner SVG for use as a placeholder while the full dashboard loads.
+
+### Optional Parameters
+
+| Parameter            | Type     | Default | Description                                          |
+| -------------------- | -------- | ------- | ---------------------------------------------------- |
+| `theme`              | `string` | `dark`  | Visual theme                                         |
+| `bg`, `text`, `accent`, `card_bg`, `border`, `sec_text`, `muted_text` | `hex` | — | Custom theme overrides (same as `/api/profile`) |
+
+### Example Request
+
+```http
+GET /api/profile/loading?theme=catppuccin
+```
+
+### Response Headers
+
+| Header          | Value                      |
+| --------------- | -------------------------- |
+| `Content-Type`  | `image/svg+xml`            |
+| `Cache-Control` | `no-cache, no-store`       |
+
+### Status Codes
+
+| Status | Description                     |
+| ------ | ------------------------------- |
+| `200`  | Returns the loading spinner SVG |
+
+---
+
+## `GET /api/cache/stats`
+
+Returns in-memory cache performance metrics. Useful for monitoring and debugging.
+
+### Authentication (Optional)
+
+If the `ADMIN_API_KEY` environment variable is set, this endpoint requires a bearer token:
+
+```http
+Authorization: Bearer your_admin_key_here
+```
+
+If `ADMIN_API_KEY` is not configured, the endpoint is publicly accessible.
+
+### Example Request
+
+```http
+GET /api/cache/stats
+Authorization: Bearer your_admin_key_here
+```
+
+### Example Response
+
+```json
+{
+  "hits": 42,
+  "misses": 7,
+  "evictions": 0,
+  "size": 15
+}
+```
+
+### Response Fields
+
+| Field       | Type     | Description                        |
+| ----------- | -------- | ---------------------------------- |
+| `hits`      | `number` | Number of cache hits               |
+| `misses`    | `number` | Number of cache misses             |
+| `evictions` | `number` | Number of LRU evictions            |
+| `size`      | `number` | Current number of cached entries   |
+
+### Response Headers
+
+| Header         | Value                    |
+| -------------- | ------------------------ |
+| `Content-Type` | `application/json`       |
+
+### Status Codes
+
+| Status | Description                     |
+| ------ | ------------------------------- |
+| `200`  | Returns cache stats metrics     |
+| `401`  | Missing or invalid API key      |
 
 ---
 
