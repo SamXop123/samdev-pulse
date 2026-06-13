@@ -1,6 +1,7 @@
 // GitHub REST API Service
 
 import { githubCache } from '../utils/cache.js';
+import { loadConfig } from '../config/index.js';
 import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
 
 const GITHUB_API_BASE = 'https://api.github.com';
@@ -49,13 +50,14 @@ function errorFromStatus(status) {
 
 /* function to get authorization headers once to use it everywhere */
 function getHeaders() {
+  const config = loadConfig();
   const headers = {
     'Accept': 'application/vnd.github.v3+json',
     'User-Agent': 'samdev-pulse',
   };
 
-  if (process.env.GITHUB_TOKEN) {
-    headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  if (config.github.token) {
+    headers['Authorization'] = `Bearer ${config.github.token}`;
   }
 
   return headers;

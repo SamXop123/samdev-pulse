@@ -227,8 +227,14 @@ Create a `.env` file:
 
 ```env
 GITHUB_TOKEN=your_github_personal_access_token
+DEFAULT_USERNAME=SamXop123
 PORT=3000
 NODE_ENV=development
+ADMIN_API_KEY=
+MONGODB_URI=
+MONGODB_DB=
+ANALYTICS_DISABLED=false
+CACHE_MAX_SIZE=1000
 ```
 
 ---

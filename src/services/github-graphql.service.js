@@ -1,19 +1,21 @@
 // GitHub GraphQL API Service - Contribution Calendar & Streaks
 
 import { githubCache } from "../utils/cache.js";
+import { loadConfig } from "../config/index.js";
 import { HttpErrorCode, httpRequest } from "../utils/http-client.js";
 
 const GITHUB_GRAPHQL_URL = "https://api.github.com/graphql";
 
 /* authorization headers for GraphQL API*/
 function getHeaders() {
+  const config = loadConfig();
   const headers = {
     "Content-Type": "application/json",
     "User-Agent": "samdev-pulse",
   };
 
-  if (process.env.GITHUB_TOKEN) {
-    headers["Authorization"] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  if (config.github.token) {
+    headers["Authorization"] = `Bearer ${config.github.token}`;
   }
 
   return headers;
@@ -51,7 +53,7 @@ query($username: String!) {
 
 /* fetch contribution data from GitHub GraphQL API */
 async function fetchContributionData(username) {
-  if (!process.env.GITHUB_TOKEN) {
+  if (!loadConfig().github.enabled) {
     throw new Error("GITHUB_TOKEN required for contribution data");
   }
 

@@ -1,9 +1,8 @@
 // TTL-based in-memory cache with LRU eviction
+import config from '../config/index.js';
 
-// Production cache TTL: 30 minutes (1800000ms)
-// Development cache TTL: 5 minutes (300000ms)
-const DEFAULT_CACHE_TTL = process.env.NODE_ENV === 'production' ? 1800000 : 300000;
-const DEFAULT_MAX_SIZE = parseInt(process.env.CACHE_MAX_SIZE, 10) || 1000;
+const DEFAULT_CACHE_TTL = config.cache.defaultTtlMs;
+const DEFAULT_MAX_SIZE = config.cache.maxSize;
 
 class Cache {
   constructor(defaultTTL = DEFAULT_CACHE_TTL, maxSize = DEFAULT_MAX_SIZE) {

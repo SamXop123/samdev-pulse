@@ -81,13 +81,13 @@ describe('query-validation.js', () => {
     });
   });
 
-  test('normalizeProfileQuery rejects missing username', () => {
+  test('normalizeProfileQuery falls back to the configured default username', () => {
     const result = normalizeProfileQuery(
       {}
     );
 
-    expect(result.isUsernameValid).toBe(false);
-    expect(result.username).toBe('');
+    expect(result.isUsernameValid).toBe(true);
+    expect(result.username).toBe('SamXop123');
   });
 
   test('normalizeProfileQuery rejects invalid platform handles securely', () => {
