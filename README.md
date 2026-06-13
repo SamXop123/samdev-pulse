@@ -247,6 +247,51 @@ http://localhost:3000/api/profile?username=SamXop123
 
 ---
 
+# 🐳 Docker Development (Alternative)
+
+Prefer a containerized environment? Use Docker to run the entire stack (app + MongoDB) without installing anything locally besides Docker.
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) (24+)
+- [Docker Compose](https://docs.docker.com/compose/install/) (v2+)
+
+## Setup
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/SamXop123/samdev-pulse.git
+cd samdev-pulse
+
+# 2. Create environment file
+cp .env.example .env
+# Then edit .env and set your GITHUB_TOKEN
+
+# 3. Build and start
+docker compose up --build
+```
+
+The app will be available at:
+
+```txt
+http://localhost:3000/api/profile?username=SamXop123
+```
+
+MongoDB is automatically started on `mongodb://localhost:27017` (only needed for analytics logging).
+
+## Useful Commands
+
+| Command                              | Description                          |
+| ------------------------------------ | ------------------------------------ |
+| `docker compose up --build`          | Build images and start services      |
+| `docker compose up -d`               | Start in detached (background) mode  |
+| `docker compose down`                | Stop and remove containers           |
+| `docker compose down -v`             | Stop, remove containers + volumes    |
+| `docker compose logs -f app`         | Follow app logs                      |
+| `docker compose exec app sh`         | Open a shell in the running app      |
+
+---
+
 # 🔍 API
 
 ## GET `/api/profile`
