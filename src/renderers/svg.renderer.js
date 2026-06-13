@@ -36,6 +36,11 @@ import oceanicNextTheme from '../themes/oceanicnext.theme.js';
 import emberGlowTheme from '../themes/emberglow.theme.js';
 import midnightNeonTheme from '../themes/midnightneon.theme.js';
 import pastelDreamTheme from '../themes/pasteldream.theme.js';
+import androidstudioTheme from '../themes/androidstudio.theme.js';
+import xcodeTheme from '../themes/xcode.theme.js';
+import webdevTheme from '../themes/webdev.theme.js';
+import aimlTheme from '../themes/aiml.theme.js';
+import gamedevTheme from '../themes/gamedev.theme.js';
 import { sanitizeSvgValue, sanitizeSvgHref } from '../utils/svg-sanitizer.js';
 import { validateThemeAccessibility }
   from '../utils/theme-accessibility.js';
@@ -43,7 +48,7 @@ import { validateThemeAccessibility }
 
 import cobalt2Theme from '../themes/cobalt2.theme.js';
 import oneDarkTheme from '../themes/one-dark.theme.js';
-import githubLightTheme from '../themes/github-light.theme.js'; 
+import githubLightTheme from '../themes/github-light.theme.js';
 const LAYOUT = {
   width: 960,
   padding: 28,
@@ -74,6 +79,11 @@ const themes = {
   emberglow: emberGlowTheme,
   midnightneon: midnightNeonTheme,
   pasteldream: pastelDreamTheme,
+  androidstudio: androidstudioTheme,
+  xcode: xcodeTheme,
+  webdev: webdevTheme,
+  aiml: aimlTheme,
+  gamedev: gamedevTheme,
  'cobalt2': cobalt2Theme,
 'one-dark': oneDarkTheme,
 'github-light': githubLightTheme,
@@ -171,6 +181,7 @@ export function renderDefs() {
 // render the main background with gradient overlay
 export function renderBackground(width, height) {
   const { colors } = currentTheme;
+  const watermark = currentTheme.domainConfig?.watermark || '';
 
   return `
   <g aria-hidden="true">
@@ -188,6 +199,9 @@ export function renderBackground(width, height) {
 
   <!-- border with glow -->
   <rect x="1" y="1" width="${width - 2}" height="${height - 2}" rx="${LAYOUT.borderRadius}" ry="${LAYOUT.borderRadius}" fill="none" stroke="url(#accentGradient)" stroke-width="1" opacity="0.4"/>
+
+  <!-- watermark -->
+  ${watermark}
 </g>`;
 }
 // render a modern card container
@@ -196,6 +210,9 @@ export function renderCard({ x, y, width, height, title, glowColor }) {
   const glow = glowColor || colors.glow;
   const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
   const cardId = `card-${String(title).toLowerCase().replace(/[^a-z0-9]/g, '-')}-${x}-${y}`;
+  const cardDecorations = typeof currentTheme.domainConfig?.cardAccent === 'function'
+    ? currentTheme.domainConfig.cardAccent(x, y, width, height, colors)
+    : '';
 
   return `
   <g role="group" aria-labelledby="${cardId}-title">
@@ -214,6 +231,9 @@ export function renderCard({ x, y, width, height, title, glowColor }) {
     <text id="${cardId}-title" x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
     <!-- title underline accent -->
     <rect x="${x + 20}" y="${y + 36}" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+
+    <!-- domain card decorations -->
+    ${cardDecorations}
   </g>`;
 }
 
@@ -291,7 +311,7 @@ function renderVerticalEMH({ x, y, easy, medium, hard, accentColor }) {
       <text id="${easyLblId}" x="${x}" y="${y - 18}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${easyColor}">E</text>
       <text id="${easyValId}" x="${x + labelWidth}" y="${y - 18}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="${colors.primaryText}">${safeEasy}</text>
     </g>
-    
+
     <!-- medium -->
     <g role="group" aria-labelledby="${medLblId} ${medValId}">
       <text id="${medLblId}" x="${x}" y="${y}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${medColor}">M</text>
@@ -313,6 +333,9 @@ export function renderCardWithStats({ x, y, width, height, title, stats, cardAcc
   const statSpacing = (width - 40) / stats.length;
   const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
   const cardId = `card-${String(title).toLowerCase().replace(/[^a-z0-9]/g, '-')}-${x}-${y}`;
+  const cardDecorations = typeof currentTheme.domainConfig?.cardAccent === 'function'
+    ? currentTheme.domainConfig.cardAccent(x, y, width, height, colors)
+    : '';
 
   const statsContent = stats.map((stat, index) => {
     const statX = x + 20 + (index * statSpacing);
@@ -362,6 +385,9 @@ export function renderCardWithStats({ x, y, width, height, title, stats, cardAcc
     <rect x="${x + 20}" y="${y + 40}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
 
     ${statsContent}
+
+    <!-- domain card decorations -->
+    ${cardDecorations}
   </g>`;
 }
 
@@ -419,6 +445,10 @@ export function renderHeader({ x, y, title, subtitle, avatarUrl, align = 'left' 
   const brandingX = align === 'right' ? LAYOUT.padding : LAYOUT.width - LAYOUT.padding;
   const brandingAnchor = align === 'right' ? 'start' : 'end';
 
+  const headerDecorations = typeof currentTheme.domainConfig?.headerAccent === 'function'
+    ? currentTheme.domainConfig.headerAccent(titleX, y, contentWidth, align, colors, Boolean(safeSubtitle))
+    : '';
+
   return `
   <g>
     ${avatarElement}
@@ -428,6 +458,9 @@ export function renderHeader({ x, y, title, subtitle, avatarUrl, align = 'left' 
 
     <!-- branding -->
     <text x="${brandingX}" y="${y}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="500" fill="${colors.mutedText}" text-anchor="${brandingAnchor}" opacity="0.6">samdev-pulse</text>
+
+    <!-- domain header decorations -->
+    ${headerDecorations}
   </g>`;
 }
 
@@ -556,15 +589,17 @@ export function renderTrophyRow({ x, y, width, height, data }) {
   const totalWidth = (trophySize * totalTrophies) + (trophyGap * (totalTrophies - 1));
   const startX = x + (width - totalWidth) / 2;
 
+  const customLabels = currentTheme.domainConfig?.trophyLabels || {};
+
   // trophy data
   const trophies = [
-    { key: 'commits', label: 'Commits', value: data.commits },
-    { key: 'prs', label: 'PRs', value: data.prs },
-    { key: 'reviews', label: 'Reviews', value: data.reviews },
-    { key: 'issues', label: 'Issues', value: data.issues },
-    { key: 'repos', label: 'Repos', value: data.repos },
-    { key: 'stars', label: 'Stars', value: data.stars },
-    { key: 'followers', label: 'Followers', value: data.followers },
+    { key: 'commits', label: customLabels.commits || 'Commits', value: data.commits },
+    { key: 'prs', label: customLabels.prs || 'PRs', value: data.prs },
+    { key: 'reviews', label: customLabels.reviews || 'Reviews', value: data.reviews },
+    { key: 'issues', label: customLabels.issues || 'Issues', value: data.issues },
+    { key: 'repos', label: customLabels.repos || 'Repos', value: data.repos },
+    { key: 'stars', label: customLabels.stars || 'Stars', value: data.stars },
+    { key: 'followers', label: customLabels.followers || 'Followers', value: data.followers },
   ];
 
   // card background
@@ -618,6 +653,181 @@ export function renderTrophyRow({ x, y, width, height, data }) {
   }).join('\n');
 
   return cardContent + trophyContent;
+}
+
+export const DOMAIN_DNA_RULES = [
+  { name: 'Android', languages: ['kotlin', 'java'], keywords: ['android', 'compose', 'jetpack', 'gradle', 'firebase'] },
+  { name: 'iOS/macOS', languages: ['swift', 'objective-c'], keywords: ['ios', 'swiftui', 'uikit', 'xcode', 'macos', 'cocoapods'] },
+  { name: 'Web Dev', languages: ['javascript', 'typescript', 'html', 'css', 'scss', 'vue', 'svelte'], keywords: ['web', 'frontend', 'backend', 'react', 'nextjs', 'node', 'express', 'fullstack'] },
+  { name: 'AI / ML', languages: ['python', 'r', 'julia'], keywords: ['ai', 'ml', 'tensorflow', 'pytorch', 'openai', 'llm', 'langchain', 'data-science'] },
+  { name: 'Game Dev', languages: ['c#', 'c++', 'gdscript'], keywords: ['game', 'unity', 'unreal', 'godot', 'opengl', 'vulkan', 'directx'] }
+];
+
+export function matchesConfig(repo, config) {
+  const lang = (repo.language || '').toLowerCase();
+  const name = (repo.name || '').toLowerCase();
+  const desc = (repo.description || '').toLowerCase();
+
+  let topics = [];
+  if (Array.isArray(repo.topics)) {
+    topics = repo.topics.map(t => String(t).toLowerCase());
+  }
+
+  if (config.languages && config.languages.map(l => l.toLowerCase()).includes(lang)) {
+    return true;
+  }
+
+  if (config.keywords) {
+    for (const kw of config.keywords) {
+      const kwLower = kw.toLowerCase();
+      if (name.includes(kwLower) || desc.includes(kwLower) || topics.includes(kwLower)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+export function calculateDeveloperDNA(repos) {
+  if (!Array.isArray(repos) || repos.length === 0) return [];
+
+  const scores = DOMAIN_DNA_RULES.map(rule => {
+    let score = 0;
+    repos.forEach(repo => {
+      if (matchesConfig(repo, rule)) {
+        score++;
+      }
+    });
+    return { name: rule.name, score };
+  });
+
+  const totalScore = scores.reduce((sum, s) => sum + s.score, 0);
+  if (totalScore === 0) return [];
+
+  return scores
+    .map(s => ({
+      name: s.name,
+      percentage: Math.round((s.score / totalScore) * 100)
+    }))
+    .filter(s => s.percentage > 0)
+    .sort((a, b) => b.percentage - a.percentage);
+}
+
+export function calculateDomainInsights(theme, repos) {
+  if (!theme.domainConfig?.insightsConfig || !Array.isArray(repos) || repos.length === 0) {
+    return null;
+  }
+
+  const { title, metrics } = theme.domainConfig.insightsConfig;
+  const totalRepos = repos.length;
+
+  const stats = metrics.map(m => {
+    const matchingCount = repos.filter(r => matchesConfig(r, m)).length;
+    let valStr = String(matchingCount);
+
+    if (m.isRatio) {
+      const ratio = Math.round((matchingCount / totalRepos) * 100);
+      valStr = `${ratio}%`;
+    }
+
+    return {
+      label: m.label,
+      value: valStr
+    };
+  });
+
+  return { title, stats };
+}
+
+export function renderDeveloperPersonaCard({ x, y, width, height, dna, badges }) {
+  const { colors } = getTheme();
+  const cardId = `developer-persona-${x}-${y}`;
+
+  // Left side: Developer DNA
+  let dnaContent = `
+    <text x="${x + 20}" y="${y + 50}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">DEVELOPER DNA</text>
+  `;
+
+  if (dna.length === 0) {
+    dnaContent += `
+      <text x="${x + 20}" y="${y + 80}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" fill="${colors.mutedText}">No repository metrics detected</text>
+    `;
+  } else {
+    dna.slice(0, 3).forEach((item, index) => {
+      const itemY = y + 72 + index * 18;
+      const barWidth = 140;
+      const filledWidth = Math.round((item.percentage / 100) * barWidth);
+
+      dnaContent += `
+        <text x="${x + 20}" y="${itemY}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${colors.primaryText}">${sanitizeSvgValue(item.name)}</text>
+
+        <!-- progress bar background -->
+        <rect x="${x + 105}" y="${itemY - 8}" width="${barWidth}" height="8" rx="4" ry="4" fill="${colors.border}" />
+
+        <!-- progress bar fill -->
+        <rect x="${x + 105}" y="${itemY - 8}" width="${filledWidth}" height="8" rx="4" ry="4" fill="${colors.accent}" />
+
+        <text x="${x + 105 + barWidth + 12}" y="${itemY - 1}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="700" fill="${colors.accent}">${item.percentage}%</text>
+      `;
+    });
+  }
+
+  // Right side: Tech Badges
+  let badgesContent = `
+    <text x="${x + 380}" y="${y + 50}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">TECH STACK DIRECTORY</text>
+  `;
+
+  if (badges.length === 0) {
+    badgesContent += `
+      <text x="${x + 380}" y="${y + 80}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" fill="${colors.mutedText}">No specialized technologies detected</text>
+    `;
+  } else {
+    let startX = x + 380;
+    let badgeY = y + 68;
+    let rowCount = 0;
+
+    badges.slice(0, 8).forEach((badgeName, index) => {
+      const pillWidth = 24 + badgeName.length * 6;
+
+      if (startX + pillWidth > x + width - 20) {
+        startX = x + 380;
+        badgeY += 24;
+        rowCount++;
+      }
+
+      if (rowCount < 2) {
+        badgesContent += `
+          <g>
+            <rect x="${startX}" y="${badgeY}" width="${pillWidth}" height="18" rx="9" ry="9" fill="${colors.accent}" opacity="0.08" />
+            <rect x="${startX}" y="${badgeY}" width="${pillWidth}" height="18" rx="9" ry="9" fill="none" stroke="${colors.accent}" stroke-width="1" opacity="0.3" />
+            <text x="${startX + pillWidth / 2}" y="${badgeY + 13}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="9.5" font-weight="600" fill="${colors.accent}" text-anchor="middle">${sanitizeSvgValue(badgeName)}</text>
+          </g>
+        `;
+        startX += pillWidth + 8;
+      }
+    });
+  }
+
+  return `
+  <g role="group" aria-labelledby="${cardId}-title">
+    <!-- card background -->
+    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>
+    <!-- inner gradient -->
+    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="0.3"/>
+    <!-- border -->
+    <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
+
+    <!-- title -->
+    <text id="${cardId}-title" x="${x + 20}" y="${y + 26}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">DEVELOPER PERSONA PROFILE</text>
+    <rect x="${x + 20}" y="${y + 34}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+
+    <!-- divider -->
+    <line x1="${x + 350}" y1="${y + 45}" x2="${x + 350}" y2="${y + height - 25}" stroke="${colors.border}" stroke-width="1" opacity="0.4" />
+
+    ${dnaContent}
+    ${badgesContent}
+  </g>`;
 }
 
 // wrap content in SVG root element

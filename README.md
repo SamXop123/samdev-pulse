@@ -33,22 +33,31 @@ That’s it. Your profile now renders a live dashboard.
 
 ### Available Themes
 
-`dark` (default), `light`, `dracula`, `nord`, `tokyonight`, `monokai`, `gruvbox`, `solarized`, `catppuccin`, `rose-pine`, `aurora`, `midnight-sunset`, `onedarkpro`, `material`, `synthwave84`, `forestnight`, `oceanicnext`, `emberglow`, `midnightneon`, `pasteldream`
+* **Standard Themes:** `dark` (default), `light`, `dracula`, `nord`, `tokyonight`, `monokai`, `gruvbox`, `solarized`, `catppuccin`, `rose-pine`, `aurora`, `midnight-sunset`, `onedarkpro`, `material`, `synthwave84`, `forestnight`, `oceanicnext`, `emberglow`, `midnightneon`, `pasteldream`, `cobalt2`, `one-dark`, `github-light`
+* **Domain Themes (Developer Persona):** `androidstudio`, `xcode`, `webdev`, `aiml`, `gamedev`
 
 ---
 
 ## ✨ Newly Added Themes
 
-| Theme         | Description                             |
-| ------------- | --------------------------------------- |
-| One Dark Pro  | VS Code inspired modern editor palette  |
-| Material      | Material UI inspired clean modern tones |
-| Synthwave 84  | Retro neon cyberpunk aesthetics         |
-| Forest Night  | Deep green nature-inspired palette      |
-| Oceanic Next  | Cool ocean blues with coding vibes      |
-| Ember Glow    | Warm fiery orange and crimson tones     |
-| Midnight Neon | Futuristic glowing cyber aesthetics     |
-| Pastel Dream  | Soft dreamy pastel gradients and tones  |
+| Theme          | Description                                                      |
+| -------------- | ---------------------------------------------------------------- |
+| One Dark Pro   | VS Code inspired modern editor palette                          |
+| Material       | Material UI inspired clean modern tones                         |
+| Synthwave 84   | Retro neon cyberpunk aesthetics                                 |
+| Forest Night   | Deep green nature-inspired palette                              |
+| Oceanic Next   | Cool ocean blues with coding vibes                              |
+| Ember Glow     | Warm fiery orange and crimson tones                             |
+| Midnight Neon  | Futuristic glowing cyber aesthetics                             |
+| Pastel Dream   | Soft dreamy pastel gradients and tones                          |
+| Cobalt2        | Modern cobalt blue palette with bright accents                  |
+| One Dark       | Atom One Dark inspired editor palette                           |
+| GitHub Light   | Clean GitHub-style light mode                                    |
+| androidstudio  | Android developer theme with Material accents & robot watermark |
+| xcode          | Apple developer theme with compass watermark & Swift focus     |
+| webdev         | Web developer theme with code window watermark & JS accents   |
+| aiml           | Machine learning theme with neural net watermark & ML stats    |
+| gamedev        | Game developer theme with retro crosshair & game console vibe  |
 
 ---
 
@@ -84,6 +93,16 @@ Options:
 
 ```md
 ![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_GITHUB_USERNAME&hide_trophies=true)
+```
+
+---
+
+## 🎨 Custom Color Overrides (Optional)
+
+You can customize the dashboard colors directly by passing hex values (without `#`) to match your profile theme:
+
+```md
+![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_GITHUB_USERNAME&bg=0f172a&accent=3ddc84)
 ```
 
 ---
@@ -155,10 +174,19 @@ Options:
 
 ## 🎨 Extensive Theme Support
 
-* 20+ handcrafted dashboard themes
+* 25+ handcrafted dashboard themes
 * Modern dark, pastel, neon, and nature-inspired palettes
 * Consistent SVG rendering across charts and trophies
 * Optimized text contrast and readability
+
+---
+
+## 🧬 Developer Persona & Domain Dashboards (Domain Themes Only)
+
+* **Domain-Specific Insights:** Replaces the repository stats card with specialized stats (e.g. Kotlin ratio, Swift ratio, web project counts, trained models).
+* **Theme Accents & Watermarks:** Dynamic background watermarks (compass, robot head, code window, neural net, crosshair) and card accents.
+* **Trophy Customization:** Dynamically maps trophy titles to Developer Persona levels (e.g. `Compose Wizard`, `DOM Builder`).
+* **Interactive Language Charts:** Adds radius popouts (+5px) to top slices and domain emoji prefixes to legend items.
 
 ---
 
@@ -174,9 +202,7 @@ A visual trophy system highlighting GitHub milestones:
 | 🐛 Issues        | Issues opened       |
 | 📦 Repositories  | Public repos        |
 | ⭐ Stars          | Total stars         |
-| 👥 Followers     | GitHub followers    |
-
-<details>
+| 👥 Followers     | GitHub followers    |<details>
 <summary>📊 Trophy tier requirements</summary>
 
 * 🥉 Bronze: Entry level (1+)
@@ -186,6 +212,18 @@ A visual trophy system highlighting GitHub milestones:
 
 </details>
 
+### 🧬 Developer Persona Trophy Mappings
+
+When using a domain-specific theme, trophy titles dynamically change to match your developer persona:
+
+| Theme | 💪 Commits | 🔀 Pull Requests | ⭐ Stars | 👥 Followers |
+| --- | --- | --- | --- | --- |
+| **Android Studio** | Android Builder | Compose Wizard | Material Designer | Kotlin Expert |
+| **Xcode** | iOS Builder | Swift Guru | Cocoa Master | Apple Dev |
+| **Web Dev** | DOM Builder | PR Deployer | JS Artisan | Net Citizen |
+| **AI / ML** | Model Builder | Data Wrangler | Loss Optimizer | Neural Wizard |
+| **Game Dev** | Game Director | Engine Optimizer | Shader Artist | Level Designer |
+
 ---
 
 # ⚙️ Query Parameters
@@ -193,12 +231,19 @@ A visual trophy system highlighting GitHub milestones:
 | Parameter       | Type           | Default     | Description                         |
 | --------------- | -------------- | ----------- | ----------------------------------- |
 | `username`      | string         | Required    | GitHub username                     |
-| `theme`         | string         | `dark`      | Visual theme (20+ supported themes) |
+| `theme`         | string         | `dark`      | Visual theme (25+ supported themes, including domain themes) |
 | `leetcode`      | string / false | –           | LeetCode username                   |
 | `codeforces`    | string / false | –           | Codeforces username                 |
 | `codechef`      | string / false | –           | CodeChef username                   |
-| `align`         | string         | `left`      | Header alignment                    |
+| `align`         | string         | `left`      | Header alignment (`left`, `center`, `right`) |
 | `hide_trophies` | boolean        | `false`     | Hide the achievements trophies row  |
+| `bg`            | string         | –           | Custom background color override (hex) |
+| `card_bg`       | string         | –           | Custom card background color override (hex) |
+| `border`        | string         | –           | Custom border color override (hex)  |
+| `text`          | string         | –           | Custom primary text color override (hex) |
+| `sec_text`      | string         | –           | Custom secondary text color override (hex) |
+| `muted_text`    | string         | –           | Custom muted text color override (hex) |
+| `accent`        | string         | –           | Custom accent color override (hex)  |
 
 ---
 

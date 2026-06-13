@@ -194,6 +194,7 @@ function normalizeUserData(profile, repos, avatarDataUri) {
       stars: repo.stargazers_count,
       forks: repo.forks_count,
       language: repo.language,
+      topics: repo.topics || [],
       url: repo.html_url,
       updatedAt: repo.updated_at,
     })),
