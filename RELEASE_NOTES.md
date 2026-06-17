@@ -1,4 +1,4 @@
-# Release Notes: Pulse v2.0: The Polyglot & Visual Fusion Release
+# Release Notes: Pulse v2.0: The Multi-Platform & Visual Fusion Release
 
 We are excited to announce the release of **samdev-pulse v2.0.0**! Since the release of `v1.5.0`, the project has undergone substantial growth with **224 commits**, introducing robust multi-platform capabilities, enhanced design options, optimized performance, and solid security features.
 
@@ -14,49 +14,46 @@ We are excited to announce the release of **samdev-pulse v2.0.0**! Since the rel
 
 ---
 
-## 🚀 Key Features Added (Comprehensive List)
+## 🚀 Key Features Added
 
-1. **Codeforces Stats Integration**: Real-time stats retrieval for Codeforces users including rank, rating, and solved problems count.
-2. **CodeChef Stats Integration**: Real-time stats retrieval for CodeChef users including rating, stars, division, and global rank.
-3. **Adaptive Competitive Programming (CP) Card Layout**: A dynamic grid section for CP platforms that auto-adjusts layout spacing and sizing based on which platforms are enabled.
-4. **Interactive Theme Preview Gallery**: A beautiful visual showcase gallery on the landing page showing how themes look.
-5. **Theme Search Filter & Category Chips**: A searchable and filterable gallery with category chips and a "Show More" option to easily locate themes.
-6. **Autocomplete Suggestions for Themes**: Auto-suggest suggestions list while searching for themes.
-7. **Interactive Clickable Theme Cards**: Clickable gallery cards that auto-select theme dropdown configs and scroll the page down directly to the live preview.
-8. **Dynamic Custom Themes via URL**: Ability to define custom themes on-the-fly using query parameters directly in the request URL.
-9. **Domain-Specific Developer Persona Themes**: Handcrafted profile themes tailored for specific engineering domains (e.g. AI/ML, Game Dev, Web Dev, Mobile/Android Studio).
-10. **Interactive Landing Page Navbar**: A header navbar with smooth section scroll transitions.
-11. **Mobile Hamburger Menu**: Fully responsive navigation menu for small-screen users.
-12. **Navbar Animated Underline Transitions**: Sleek micro-animations added to landing page navbar links.
-13. **Light/Dark Mode Theme Toggle**: Ability to toggle the entire application landing page between dark and light modes.
-14. **Smooth Scroll-to-Top Button**: Floating UI button for easy back-to-top page navigation.
-15. **Live Loading Spinner Indicator**: A modern loading overlay that displays while fetching and rendering dashboard previews.
-16. **Dashboard Form Reset**: Dedicated button to instantly clear/reset user configuration inputs in the dashboard.
-17. **Quick Start Guide Copy Buttons**: One-click copy buttons in the integration guide to copy Markdown snippets.
-18. **Download PNG & SVG Buttons**: Added dedicated download buttons to save generated SVGs or convert and download them to PNG files.
-19. **Trophy Customization Controls**: Added a `hide_trophies` configuration parameter to specify which cards to hide, fully integrated with the docs and dashboard generator UI.
-20. **Pull Request Reviews Trophy**: A new trophy metric counting PRs reviewed by the user.
-21. **Semantic SVG Accessibility (A11y)**: Built-in screen reader support, descriptions, roles, and accessible labels for all generated dashboard SVGs.
-22. **Graceful Failures with Error SVGs**: Returns clean, styled Error SVG cards when external APIs fail rather than failing the request or returning empty pages.
-23. **Theme Comparison Board**: A side-by-side theme explorer preview at `/theme-comparison.html` that lets developers check how various themes render their stats.
+### 1. 🏆 Multi-Platform Competitive Programming Integration
+- **Codeforces Integration**: Render real-time Codeforces stats directly in your profile dashboard, showing current rating, current rank, and solved problem counts (via user status lookup).
+- **CodeChef Integration**: Displays current rating, star ratings, global rank, and calculated division layout directly in a dedicated competitive programming section.
+- **Adaptive CP Cards Section**: Automatically restructures and sizes platform cards based on which parameters are provided, preventing clutter and keeping layouts clean.
 
----
+### 2. 🎨 Theme Exploration & Gallery UI
+- **Searchable & Filterable Theme Gallery**: Filter themes by category chips and search by theme name with autocomplete suggestions.
+- **Clickable Theme Cards**: Selecting themes from the gallery scrolls directly to the live preview and updates setup configs instantly.
+- **Theme Comparison Page**: Compare different themes side-by-side on a dedicated comparison dashboard layout at `/theme-comparison.html`.
+- **Theme Preview Gallery**: A visual preview showcase gallery displaying dashboard samples on the landing page.
 
-## 🔒 Security & Reliability
+### 🖌️ 3. Themes & Customizations
+- **20+ New Dashboard Themes**: Added Cobalt2, One Dark, GitHub Light, AI/ML, Android Studio, Ember Glow, Forest Night, Game Dev, Material, Midnight Neon, Monokai, Nord, Oceanic Next, One Dark Pro, Pastel Dream, Synthwave '84, Tokyo Night, Web Dev, Xcode, and more.
+- **Developer Persona Themes**: Handcrafted profile themes tailored for specific engineering domains (e.g., AI/ML, Game Dev, Web Dev).
+- **Dynamic Custom Themes**: Support for defining your own custom themes on-the-fly using query parameters directly in the URL.
+- **Light/Dark Mode**: A modern toggle for switching the landing page between light and dark visual aesthetics.
 
-- **Content Security Policy (CSP)**: Fully implemented CSP headers and input hardening on endpoints.
-- **Query Validation & Normalization**: Centralized input sanitization and strict validation regex rules (preventing consecutive hyphens, etc.) to defend against injection and ReDoS vulnerabilities.
-- **API Cache & Authentication**: Added Bearer token authentication to request stats for cache usage (`GET /api/cache/stats`).
-- **Anonymization**: Masks the last octet of user IP addresses before writing logs to MongoDB.
+### 🛠️ 4. Customization & Interactive Tools
+- **Trophy Customizability**: Added the `hide_trophies` query parameter to allow hiding individual trophies in both the backend and frontend generator UI, as well as a new Pull Request reviews trophy.
+- **Reset Form Functionality**: Added a dedicated button to instantly clear/reset user configuration inputs in the generator.
+- **Quick Start Copy Buttons**: One-click copy buttons in the integration guide to copy Markdown snippets.
+- **Download PNG & SVG Buttons**: Dedicated download buttons to save generated SVGs or convert and download them to PNG files.
+- **Semantic SVG Accessibility (A11y)**: Built-in screen reader support, descriptions, roles, and accessible labels for all generated dashboard SVGs.
+- **Graceful Failures with Error SVGs**: Returns clean, styled Error SVG cards when external APIs fail rather than failing the request or returning empty pages.
 
----
+### 📱 5. UI/UX & Responsive Layouts
+- **Responsive Mobile Navbar**: Smooth hamburger menu for small screen devices.
+- **Mobile Optimizations**: Cap avatar sizes, wrap code blocks with horizontal overflow, and remove hardcoded table widths to ensure the README generator is 100% responsive.
+- **Interactive Enhancements**: Animated underline transitions on navbar links and smooth scroll-to-top buttons.
+- **Visual Indicators**: Live loading spinner indicates preview generation states.
 
-## ⚡ Performance & Caching
-
+### ⚡ 6. Performance & Security Hardening
 - **Size-Limited LRU Cache**: Replaced standard cache implementation with a strict LRU eviction cache to completely eliminate memory leak risks.
 - **Fetch Timeouts**: Implemented a hard 8-second fetch timeout for Codeforces, CodeChef, GitHub, and LeetCode API requests to prevent server hang-ups.
 - **MongoDB Connection Breaker**: Integrated a circuit breaker on MongoDB logger connection logic to prevent repeating 10s connection timeouts from blocking request execution.
-- **Repository Pagination Upper-bound**: Added pagination limits to prevent timeout exceptions when loading users with 500+ GitHub repositories.
+- **Content Security Policy (CSP)**: Fully implemented CSP headers and input hardening on endpoints.
+- **Query Validation & Normalization**: Centralized input sanitization and strict validation regex rules to defend against injection and ReDoS vulnerabilities.
+- **Anonymization**: Masks the last octet of user IP addresses before writing logs to MongoDB.
 
 ---
 
