@@ -206,7 +206,7 @@ router.get('/:themeName', (req, res) => {
     res.send(svg);
   } catch (error) {
     console.error('Theme preview render failed:', error.message);
-    res.status(500).send('Error rendering theme preview');
+    res.status(500).json({ error: 'Error rendering theme preview'});
   }
 });
 
