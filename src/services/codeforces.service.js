@@ -48,6 +48,6 @@ export async function getCodeforcesData(handle) {
       }
     };
   } catch (err) {
-    return { success: false, error: err.message };
+    return { success: false, error: "Codeforces API error" };
   }
 }
