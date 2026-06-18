@@ -385,10 +385,15 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
   let currentAngle = -Math.PI / 2;
   const slices = [];
 
+  const activeTheme = getTheme();
+  const highlightLangs = activeTheme.domainConfig?.highlightedLanguages || [];
+
   data.forEach((item, i) => {
     const value = Number(item.value) || 0;
     const sliceAngle = (value / total) * Math.PI * 2;
-    const path = describeArc(centerX, centerY, outerRadius, innerRadius, currentAngle, currentAngle + sliceAngle);
+    const isHighlighted = highlightLangs.includes(item.label.toLowerCase());
+    const outerR = isHighlighted ? outerRadius + 5 : outerRadius;
+    const path = describeArc(centerX, centerY, outerR, innerRadius, currentAngle, currentAngle + sliceAngle);
     const color = chartColors[i % chartColors.length];
 
     if (path) {
@@ -416,14 +421,21 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
     const itemY = legendStartY + i * legendItemHeight;
     const percentage = (((Number(item.value) || 0) / total) * 100).toFixed(0);
     const color = chartColors[i % chartColors.length];
-    const safeLabel = sanitizeSvgValue(item.label);
+
+    const isHighlighted = highlightLangs.includes(item.label.toLowerCase());
+    const prefix = (isHighlighted && activeTheme.domainConfig?.languagePrefix)
+      ? activeTheme.domainConfig.languagePrefix + ' '
+      : '';
+    const displayLabel = prefix + item.label;
+    const safeLabel = sanitizeSvgValue(displayLabel);
+    const labelWeight = isHighlighted ? '700' : '500';
     const safePercentage = sanitizeSvgValue(`${percentage}%`);
 
     return `
       <g>
         <rect x="${legendX - 2}" y="${itemY - 8}" width="${width - chartAreaWidth - 50}" height="24" rx="6" fill="${color}" opacity="0.08"/>
         <circle cx="${legendX + 6}" cy="${itemY + 4}" r="4" fill="${color}"/>
-        <text x="${legendX + 18}" y="${itemY + 8}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="500" fill="${colors.primaryText}">${safeLabel}</text>
+        <text x="${legendX + 18}" y="${itemY + 8}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="${labelWeight}" fill="${colors.primaryText}">${safeLabel}</text>
         <text x="${x + width - 24}" y="${itemY + 8}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${color}" text-anchor="end">${safePercentage}</text>
       </g>
     `;

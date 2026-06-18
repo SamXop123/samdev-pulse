@@ -1,14 +1,8 @@
 import mongoose from 'mongoose';
-
-const ENABLED_VALUES = new Set(['true', '1', 'yes']);
+import { loadConfig } from '../config/index.js';
 
 let analyticsState = 'uninitialized';
 let connectingPromise = null;
-
-function analyticsDisabledByEnv() {
-  return ENABLED_VALUES.has(String(process.env.ANALYTICS_DISABLED || '').toLowerCase())
-    || ENABLED_VALUES.has(String(process.env.DISABLE_ANALYTICS || '').toLowerCase());
-}
 
 function getQueryValue(query, key) {
   const value = query?.[key];
@@ -86,20 +80,22 @@ export async function initializeAnalytics() {
     return isAnalyticsAvailable();
   }
 
-  if (analyticsDisabledByEnv()) {
+  const config = loadConfig();
+
+  if (config.analytics.disabled) {
     analyticsState = 'disabled';
     console.info('Analytics disabled by configuration.');
     return false;
   }
 
-  const mongoUri = process.env.MONGODB_URI;
+  const mongoUri = config.analytics.mongoUri;
   if (!mongoUri) {
     analyticsState = 'disabled';
     console.info('Analytics disabled: MONGODB_URI is not configured.');
     return false;
   }
 
-  const dbName = process.env.MONGODB_DB || undefined;
+  const dbName = config.analytics.dbName;
   analyticsState = 'connecting';
 
   connectingPromise = mongoose.connect(mongoUri, {

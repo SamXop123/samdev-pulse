@@ -10,7 +10,7 @@ describe('theme-accessibility.js & query-validation.js Custom Themes', () => {
       expect(isValidHexColor('#58a6ff')).toBe(true);
       expect(isValidHexColor('f00')).toBe(true);
       expect(isValidHexColor('#f00')).toBe(true);
-      
+
       expect(isValidHexColor('invalid')).toBe(false);
       expect(isValidHexColor('1234')).toBe(false);
       expect(isValidHexColor('#12345')).toBe(false);
@@ -37,7 +37,7 @@ describe('theme-accessibility.js & query-validation.js Custom Themes', () => {
 
       expect(hybrid.colors.background).toBe('#0d1117');
       expect(hybrid.colors.primaryText).toBe('#58a6ff');
-      
+
       // Derived colors should be calculated based on overrides
       expect(hybrid.colors.cardBackground).toBeDefined();
       expect(hybrid.colors.backgroundAlt).toBeDefined();

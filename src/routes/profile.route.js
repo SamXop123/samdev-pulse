@@ -159,14 +159,23 @@ router.get('/', async (req, res) => {
   let card3Title;
   let card3Stats;
 
+  const domainInsights = typeof activeTheme.domainConfig?.calculateInsights === 'function'
+    ? activeTheme.domainConfig.calculateInsights(data.repos)
+    : null;
+
   if (!codeforcesData && !codechefData) {
     if (showRepositoryStats) {
-      card3Title = 'Repository Stats';
-      card3Stats = [
-        { label: 'Repositories', value: formatNumber(data.publicRepos) },
-        { label: 'Stars', value: formatNumber(data.totalStars) },
-        { label: 'Followers', value: formatNumber(data.followers) },
-      ];
+      if (domainInsights) {
+        card3Title = domainInsights.title;
+        card3Stats = domainInsights.stats;
+      } else {
+        card3Title = 'Repository Stats';
+        card3Stats = [
+          { label: 'Repositories', value: formatNumber(data.publicRepos) },
+          { label: 'Stars', value: formatNumber(data.totalStars) },
+          { label: 'Followers', value: formatNumber(data.followers) },
+        ];
+      }
     } else {
       const getRatingOrRanking = () => {
         if (!leetcodeData) return { label: 'Rating', value: '-' };
@@ -208,12 +217,17 @@ router.get('/', async (req, res) => {
       ];
     }
   } else {
-    card3Title = 'Repository Stats';
-    card3Stats = [
-      { label: 'Repositories', value: formatNumber(data.publicRepos) },
-      { label: 'Stars', value: formatNumber(data.totalStars) },
-      { label: 'Followers', value: formatNumber(data.followers) },
-    ];
+    if (domainInsights) {
+      card3Title = domainInsights.title;
+      card3Stats = domainInsights.stats;
+    } else {
+      card3Title = 'Repository Stats';
+      card3Stats = [
+        { label: 'Repositories', value: formatNumber(data.publicRepos) },
+        { label: 'Stars', value: formatNumber(data.totalStars) },
+        { label: 'Followers', value: formatNumber(data.followers) },
+      ];
+    }
   }
 
   let chartData;

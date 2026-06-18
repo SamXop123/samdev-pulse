@@ -1,8 +1,8 @@
 import { describe, test, expect, beforeEach } from '@jest/globals';
-import { 
+import {
   getTheme,
-  setTheme, 
-  SUPPORTED_THEME_NAMES, 
+  setTheme,
+  SUPPORTED_THEME_NAMES,
   wrapSvg,
   renderBackground,
   renderCard,
@@ -43,7 +43,7 @@ describe('Visual Regression: Structural Snapshots', () => {
     'glow',
     'glowSecondary',
   ];
-  
+
   const mockChartData = [10, 40, 20, 80, 50, 90, 70];
   const mockLeetCode = {
     username: 'TestUser',
@@ -151,7 +151,7 @@ describe('Visual Regression: Structural Snapshots', () => {
   SUPPORTED_THEME_NAMES.forEach(themeName => {
     test(`Snapshots theme: ${themeName}`, () => {
       setTheme(themeName);
-      
+
       const chart = renderLineChart({
         x: LAYOUT.padding,
         y: 100,

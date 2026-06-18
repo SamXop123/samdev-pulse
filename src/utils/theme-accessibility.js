@@ -77,12 +77,12 @@ export function createHybridTheme(baseTheme, overrides = {}) {
   function adjustColorBrightness(hex, percent) {
     const rgb = hexToRgb(hex);
     if (!rgb) return hex;
-    
+
     let { r, g, b } = rgb;
     r = Math.min(255, Math.max(0, r + (percent * 255) / 100));
     g = Math.min(255, Math.max(0, g + (percent * 255) / 100));
     b = Math.min(255, Math.max(0, b + (percent * 255) / 100));
-    
+
     const toHex = (c) => Math.round(c).toString(16).padStart(2, '0');
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
@@ -90,10 +90,10 @@ export function createHybridTheme(baseTheme, overrides = {}) {
   // 1. Override background
   if (overrides.bg) {
     newTheme.colors.background = overrides.bg;
-    
+
     const rgb = hexToRgb(overrides.bg);
     const isDark = rgb ? (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000 < 128 : true;
-    
+
     const bgPercent = isDark ? 2 : -2;
     const cardPercent = isDark ? 4 : -4;
     const cardAltPercent = isDark ? 6 : -6;
@@ -106,10 +106,10 @@ export function createHybridTheme(baseTheme, overrides = {}) {
   // 2. Override text
   if (overrides.text) {
     newTheme.colors.primaryText = overrides.text;
-    
+
     const rgb = hexToRgb(overrides.text);
     const isDarkText = rgb ? (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000 < 128 : false;
-    
+
     newTheme.colors.secondaryText = overrides.sec_text || adjustColorBrightness(overrides.text, isDarkText ? 15 : -15);
     newTheme.colors.mutedText = overrides.muted_text || adjustColorBrightness(overrides.text, isDarkText ? 30 : -30);
   }
