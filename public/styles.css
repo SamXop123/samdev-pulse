@@ -2053,9 +2053,15 @@ html {
   transition: width 0.3s ease;
 }
 
-.navbtn ul li a:hover::after {
+.navbtn ul li a:hover::after,
+.navbtn ul li a.active::after {
   width: 100%;
 }
+
+.navbtn ul li a.active {
+  color: var(--accent-purple);
+}
+
 
 
 
