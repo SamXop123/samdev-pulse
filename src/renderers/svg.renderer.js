@@ -204,11 +204,38 @@ export function renderBackground(width, height) {
   ${watermark}
 </g>`;
 }
-// render a modern card container
-export function renderCard({ x, y, width, height, title, glowColor }) {
+
+// render a card background frame with title and accent line
+// Shared helper to eliminate duplicated card frame markup across renderers.
+// All parameters have sensible defaults; callers only override what differs.
+export function renderCardFrame({ x, y, width, height, title, titleId, glowColor, glowOpacity = 0.03, gradOpacity = 0.3, borderOpacity = 0.4, titleY = 28, accentWidth = 28, accentY = 36, accentOpacity = 0.7, centerTitle = false, titleComment = '<!-- title -->', accentComment = '<!-- title accent -->' }) {
   const { colors } = currentTheme;
   const glow = glowColor || colors.glow;
   const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
+  const tId = titleId || `card-${String(title).toLowerCase().replace(/[^a-z0-9]/g, '-')}-${x}-${y}-title`;
+  const titleX = centerTitle ? x + width / 2 : x + 20;
+  const accentX = centerTitle ? x + width / 2 - accentWidth / 2 : x + 20;
+  const textAnchor = centerTitle ? ' text-anchor="middle"' : '';
+
+  return [
+    '<!-- card glow -->',
+    `<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${glow}" opacity="${glowOpacity}" filter="url(#cardGlow)"/>`,
+    '<!-- card background -->',
+    `<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>`,
+    '<!-- inner gradient -->',
+    `<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="${gradOpacity}"/>`,
+    '<!-- border -->',
+    `<rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="${borderOpacity}"/>`,
+    titleComment,
+    `<text id="${tId}" x="${titleX}" y="${y + titleY}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5"${textAnchor}>${safeTitle}</text>`,
+    accentComment,
+    `<rect x="${accentX}" y="${y + accentY}" width="${accentWidth}" height="2" rx="1" fill="url(#accentGradient)" opacity="${accentOpacity}"/>`,
+  ].filter(Boolean);
+}
+
+// render a modern card container
+export function renderCard({ x, y, width, height, title, glowColor }) {
+  const { colors } = currentTheme;
   const cardId = `card-${String(title).toLowerCase().replace(/[^a-z0-9]/g, '-')}-${x}-${y}`;
   const cardDecorations = typeof currentTheme.domainConfig?.cardAccent === 'function'
     ? currentTheme.domainConfig.cardAccent(x, y, width, height, colors)
@@ -216,21 +243,20 @@ export function renderCard({ x, y, width, height, title, glowColor }) {
 
   return `
   <g role="group" aria-labelledby="${cardId}-title">
-    <!-- card glow -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${glow}" opacity="0.03" filter="url(#cardGlow)"/>
-
-    <!-- card background -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>
-
-    <!-- inner gradient -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="0.5"/>
-
-    <!-- border -->
-    <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.5"/>
-
-    <text id="${cardId}-title" x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
-    <!-- title underline accent -->
-    <rect x="${x + 20}" y="${y + 36}" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+    ${renderCardFrame({
+      x, y, width, height, title,
+      titleId: `${cardId}-title`,
+      glowColor,
+      glowOpacity: 0.03,
+      gradOpacity: 0.5,
+      borderOpacity: 0.5,
+      titleY: 28,
+      accentWidth: 32,
+      accentY: 36,
+      accentOpacity: 0.6,
+      titleComment: '',
+      accentComment: '<!-- title underline accent -->',
+    }).join('\n    ')}
 
     <!-- domain card decorations -->
     ${cardDecorations}
@@ -328,10 +354,8 @@ function renderVerticalEMH({ x, y, easy, medium, hard, accentColor }) {
 // renders a card with stats
 export function renderCardWithStats({ x, y, width, height, title, stats, cardAccent }) {
   const { colors, chartColors } = currentTheme;
-  const glow = cardAccent || colors.glow;
   const statsStartY = y + 85;
   const statSpacing = (width - 40) / stats.length;
-  const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
   const cardId = `card-${String(title).toLowerCase().replace(/[^a-z0-9]/g, '-')}-${x}-${y}`;
   const cardDecorations = typeof currentTheme.domainConfig?.cardAccent === 'function'
     ? currentTheme.domainConfig.cardAccent(x, y, width, height, colors)
@@ -367,22 +391,18 @@ export function renderCardWithStats({ x, y, width, height, title, stats, cardAcc
 
   return `
   <g role="group" aria-labelledby="${cardId}-title">
-    <!-- card glow -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${glow}" opacity="0.04" filter="url(#cardGlow)"/>
-
-    <!-- card background -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>
-
-    <!-- inner gradient -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="0.3"/>
-
-    <!-- border -->
-    <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
-
-    <!-- title -->
-    <text id="${cardId}-title" x="${x + 20}" y="${y + 30}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
-    <!-- title accent line -->
-    <rect x="${x + 20}" y="${y + 40}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+    ${renderCardFrame({
+      x, y, width, height, title,
+      titleId: `${cardId}-title`,
+      glowColor: cardAccent,
+      glowOpacity: 0.04,
+      gradOpacity: 0.3,
+      borderOpacity: 0.4,
+      titleY: 30,
+      accentY: 40,
+      accentOpacity: 0.7,
+      accentComment: '<!-- title accent line -->',
+    }).join('\n    ')}
 
     ${statsContent}
 
@@ -607,26 +627,23 @@ export function renderTrophyRow({ x, y, width, height, data }) {
   <g
   role="group"
   aria-labelledby="trophy-title"
->
+  >
   <title id="trophy-title">Achievement Trophies</title>
   <desc>${trophyDescription}</desc>
-    <!-- card glow -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.glow}" opacity="0.03" filter="url(#cardGlow)"/>
-
-    <!-- card background -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>
-
-    <!-- inner gradient -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="0.25"/>
-
-    <!-- border -->
-    <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
-
-    <!-- title -->
-    <text x="${x + width / 2}" y="${y + 24}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5" text-anchor="middle">ACHIEVEMENT TROPHIES</text>
-
-    <!-- title accent line -->
-    <rect x="${x + width / 2 - 40}" y="${y + 32}" width="80" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+    ${renderCardFrame({
+      x, y, width, height,
+      title: 'Achievement Trophies',
+      titleId: 'trophy-title',
+      glowOpacity: 0.03,
+      gradOpacity: 0.25,
+      borderOpacity: 0.4,
+      titleY: 24,
+      accentWidth: 80,
+      accentY: 32,
+      accentOpacity: 0.6,
+      centerTitle: true,
+      accentComment: '<!-- title accent line -->',
+    }).join('\n    ')}
   </g>`;
 
   // renders trophies
