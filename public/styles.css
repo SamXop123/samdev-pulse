@@ -2057,6 +2057,13 @@ html {
   width: 100%;
 }
 
+.navbtn ul li a.active {
+  color: var(--accent-purple);
+}
+
+.navbtn ul li a.active::after {
+  width: 100%;
+}
 
 
 @media (max-width: 768px) {
