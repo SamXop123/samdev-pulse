@@ -106,7 +106,7 @@
       </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-value">20+</div>
+          <div class="stat-value">30+</div>
           <div class="stat-label">Themes</div>
         </div>
         <div class="stat-divider"></div>
@@ -221,7 +221,7 @@
             </svg>
           </div>
           <h3 class="feature-title">Multi-Theme Support</h3>
-          <p class="feature-description">Choose from 20+ stunning themes including Dark, Light, Dracula, Nord, Tokyo
+          <p class="feature-description">Choose from 30+ stunning themes including Dark, Light, Dracula, Nord, Tokyo
             Night, Monokai, Gruvbox, Solarized, Catppuccin, Rose Pine, Aurora, and Midnight Sunset.</p>
         </div>
 
@@ -650,6 +650,36 @@
             <p class="theme-desc">Unity and Unreal Engine editor inspired accents</p>
           </div>
         </div>
+
+        <div class="theme-card" data-theme="hc-light" data-cat="minimal" data-colors="white blue black" tabindex="0"
+          role="button" aria-label="Select High Contrast Light theme">
+          <div class="theme-preview">
+            <div class="theme-swatch-group">
+              <div class="theme-swatch" style="background: #ffffff;"></div>
+              <div class="theme-swatch" style="background: #0055cc;"></div>
+              <div class="theme-swatch" style="background: #000000;"></div>
+            </div>
+          </div>
+          <div class="theme-info">
+            <h4 class="theme-name">High Contrast Light</h4>
+            <p class="theme-desc">WCAG AAA compliant — pure white, pure black, no gradients</p>
+          </div>
+        </div>
+
+        <div class="theme-card" data-theme="hc-dark" data-cat="minimal" data-colors="black blue white" tabindex="0"
+          role="button" aria-label="Select High Contrast Dark theme">
+          <div class="theme-preview">
+            <div class="theme-swatch-group">
+              <div class="theme-swatch" style="background: #000000;"></div>
+              <div class="theme-swatch" style="background: #66b3ff;"></div>
+              <div class="theme-swatch" style="background: #ffffff;"></div>
+            </div>
+          </div>
+          <div class="theme-info">
+            <h4 class="theme-name">High Contrast Dark</h4>
+            <p class="theme-desc">WCAG AAA compliant — pure black, pure white, no gradients</p>
+          </div>
+        </div>
         <!-- Show More / Show Less button -->
         <div class="theme-show-more-wrapper" id="themeShowMoreWrapper">
 
@@ -729,6 +759,8 @@
                 <option value="webdev">Web Development</option>
                 <option value="aiml">AI/ML</option>
                 <option value="gamedev">Game Development</option>
+                <option value="hc-light">High Contrast Light</option>
+                <option value="hc-dark">High Contrast Dark</option>
               </select>
             </div>
           </div>
@@ -911,7 +943,7 @@
               <td><code>dark</code></td>
               <td>Theme: dark, light, dracula, nord, tokyonight, monokai, gruvbox, solarized, catppuccin, rose-pine,
                 aurora, midnight-sunset, onedarkpro, material, synthwave84, forestnight, oceanicnext, emberglow,
-                midnightneon, pasteldream</td>
+                midnightneon, pasteldream, hc-light, hc-dark</td>
             </tr>
             <tr>
               <td><code>leetcode</code></td>

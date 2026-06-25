@@ -49,6 +49,8 @@ import { validateThemeAccessibility }
 import cobalt2Theme from '../themes/cobalt2.theme.js';
 import oneDarkTheme from '../themes/one-dark.theme.js';
 import githubLightTheme from '../themes/github-light.theme.js';
+import hcLightTheme from '../themes/hc-light.theme.js';
+import hcDarkTheme from '../themes/hc-dark.theme.js';
 const LAYOUT = {
   width: 960,
   padding: 28,
@@ -87,6 +89,8 @@ const themes = {
  'cobalt2': cobalt2Theme,
 'one-dark': oneDarkTheme,
 'github-light': githubLightTheme,
+'hc-light': hcLightTheme,
+'hc-dark': hcDarkTheme,
 };
 Object.entries(themes).forEach(
   ([name, theme]) => {
@@ -110,11 +114,16 @@ export const SUPPORTED_THEME_NAMES = Object.freeze(Object.keys(themes));
 let currentTheme = darkTheme;
 
 // set active theme
+const themeAliases = {
+  'high-contrast': 'hc-light',
+};
+
 export function setTheme(themeInput) {
   if (themeInput && typeof themeInput === 'object' && themeInput.colors) {
     currentTheme = themeInput;
   } else {
-    currentTheme = themes[themeInput] || darkTheme;
+    const resolved = themeAliases[themeInput] || themeInput;
+    currentTheme = themes[resolved] || darkTheme;
   }
   return currentTheme;
 }

@@ -33,7 +33,7 @@ That’s it. Your profile now renders a live dashboard.
 
 ### Available Themes
 
-* **Standard Themes:** `dark` (default), `light`, `dracula`, `nord`, `tokyonight`, `monokai`, `gruvbox`, `solarized`, `catppuccin`, `rose-pine`, `aurora`, `midnight-sunset`, `onedarkpro`, `material`, `synthwave84`, `forestnight`, `oceanicnext`, `emberglow`, `midnightneon`, `pasteldream`, `cobalt2`, `one-dark`, `github-light`
+* **Standard Themes:** `dark` (default), `light`, `dracula`, `nord`, `tokyonight`, `monokai`, `gruvbox`, `solarized`, `catppuccin`, `rose-pine`, `aurora`, `midnight-sunset`, `onedarkpro`, `material`, `synthwave84`, `forestnight`, `oceanicnext`, `emberglow`, `midnightneon`, `pasteldream`, `cobalt2`, `one-dark`, `github-light`, `hc-light`, `hc-dark`
 * **Domain Themes (Developer Persona):** `androidstudio`, `xcode`, `webdev`, `aiml`, `gamedev`
 
 ---
@@ -58,6 +58,10 @@ That’s it. Your profile now renders a live dashboard.
 | webdev         | Web developer theme with code window watermark & JS accents   |
 | aiml           | Machine learning theme with neural net watermark & ML stats    |
 | gamedev        | Game developer theme with retro crosshair & game console vibe  |
+| hc-light       | WCAG AAA high-contrast light — pure white, pure black, no gradients |
+| hc-dark        | WCAG AAA high-contrast dark — pure black, pure white, no gradients |
+
+> **Tip:** Use `?theme=high-contrast` as a shortcut alias for `hc-light`.
 
 ---
 
@@ -174,7 +178,7 @@ You can customize the dashboard colors directly by passing hex values (without `
 
 ## 🎨 Extensive Theme Support
 
-* 25+ handcrafted dashboard themes
+* 30+ handcrafted dashboard themes
 * Modern dark, pastel, neon, and nature-inspired palettes
 * Consistent SVG rendering across charts and trophies
 * Optimized text contrast and readability
