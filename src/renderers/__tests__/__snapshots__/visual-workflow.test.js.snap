@@ -5186,16 +5186,12 @@ exports[`Visual Regression: Structural Snapshots Snapshots theme: hc-dark 1`] = 
   <g role="group" aria-labelledby="card-test-card-50-50-title">
     <!-- card glow -->
     <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#66B3FF" opacity="0.03" filter="url(#cardGlow)"/>
-
     <!-- card background -->
     <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#111111"/>
-
     <!-- inner gradient -->
     <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.5"/>
-
     <!-- border -->
     <rect x="50.5" y="50.5" width="199" height="99" rx="16" ry="16" fill="none" stroke="#444444" stroke-width="1" opacity="0.5"/>
-
     <text id="card-test-card-50-50-title" x="70" y="78" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#CCCCCC" letter-spacing="0.5">TEST CARD</text>
     <!-- title underline accent -->
     <rect x="70" y="86" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
@@ -5249,27 +5245,16 @@ exports[`Visual Regression: Structural Snapshots Snapshots theme: hc-dark 1`] = 
   <desc>LeetCode statistics available, Codeforces statistics available</desc>
   
       <g role="group" aria-labelledby="cp-leetcode-stats-28-320-title">
-        <rect x="28" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="#66B3FF" opacity="0.04" filter="url(#cardGlow)"/>
-        <rect x="28" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="#111111"/>
-        <rect x="28" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="url(#mainGradient)" opacity="0.3"/>
-        <rect x="28.5" y="320.5" width="441" height="139"
-          rx="16" ry="16"
-          fill="none" stroke="#444444" stroke-width="1" opacity="0.4"/>
-        <text
-          id="cp-leetcode-stats-28-320-title"
-          x="48" y="350"
-          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-          font-size="13" font-weight="600"
-          fill="#CCCCCC"
-          letter-spacing="0.5">LEETCODE STATS</text>
-        <rect x="48" y="360" width="28" height="2"
-          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        <!-- card glow -->
+        <rect x="28" y="320" width="442" height="140" rx="16" ry="16" fill="#66B3FF" opacity="0.04" filter="url(#cardGlow)"/>
+        <!-- card background -->
+        <rect x="28" y="320" width="442" height="140" rx="16" ry="16" fill="#111111"/>
+        <!-- inner gradient -->
+        <rect x="28" y="320" width="442" height="140" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.3"/>
+        <!-- border -->
+        <rect x="28.5" y="320.5" width="441" height="139" rx="16" ry="16" fill="none" stroke="#444444" stroke-width="1" opacity="0.4"/>
+        <text id="cp-leetcode-stats-28-320-title" x="48" y="350" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#CCCCCC" letter-spacing="0.5">LEETCODE STATS</text>
+        <rect x="48" y="360" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
         
     <g role="group" aria-labelledby="lbl-solved-lc-48-405 val-solved-lc-48-405">
       <text id="val-solved-lc-48-405" x="48" y="405"
@@ -5321,27 +5306,16 @@ exports[`Visual Regression: Structural Snapshots Snapshots theme: hc-dark 1`] = 
       </g>
     
       <g role="group" aria-labelledby="cp-codeforces-stats-486-320-title">
-        <rect x="486" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="#66B3FF" opacity="0.04" filter="url(#cardGlow)"/>
-        <rect x="486" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="#111111"/>
-        <rect x="486" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="url(#mainGradient)" opacity="0.3"/>
-        <rect x="486.5" y="320.5" width="441" height="139"
-          rx="16" ry="16"
-          fill="none" stroke="#444444" stroke-width="1" opacity="0.4"/>
-        <text
-          id="cp-codeforces-stats-486-320-title"
-          x="506" y="350"
-          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-          font-size="13" font-weight="600"
-          fill="#CCCCCC"
-          letter-spacing="0.5">CODEFORCES STATS</text>
-        <rect x="506" y="360" width="28" height="2"
-          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        <!-- card glow -->
+        <rect x="486" y="320" width="442" height="140" rx="16" ry="16" fill="#66B3FF" opacity="0.04" filter="url(#cardGlow)"/>
+        <!-- card background -->
+        <rect x="486" y="320" width="442" height="140" rx="16" ry="16" fill="#111111"/>
+        <!-- inner gradient -->
+        <rect x="486" y="320" width="442" height="140" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.3"/>
+        <!-- border -->
+        <rect x="486.5" y="320.5" width="441" height="139" rx="16" ry="16" fill="none" stroke="#444444" stroke-width="1" opacity="0.4"/>
+        <text id="cp-codeforces-stats-486-320-title" x="506" y="350" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#CCCCCC" letter-spacing="0.5">CODEFORCES STATS</text>
+        <rect x="506" y="360" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
         
     <!-- Rating -->
     <g role="group" aria-labelledby="lbl-rating-cf-506-405 val-rating-cf-506-405">
@@ -5479,16 +5453,12 @@ exports[`Visual Regression: Structural Snapshots Snapshots theme: hc-light 1`] =
   <g role="group" aria-labelledby="card-test-card-50-50-title">
     <!-- card glow -->
     <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#0055CC" opacity="0.03" filter="url(#cardGlow)"/>
-
     <!-- card background -->
     <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="#FFFFFF"/>
-
     <!-- inner gradient -->
     <rect x="50" y="50" width="200" height="100" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.5"/>
-
     <!-- border -->
     <rect x="50.5" y="50.5" width="199" height="99" rx="16" ry="16" fill="none" stroke="#BBBBBB" stroke-width="1" opacity="0.5"/>
-
     <text id="card-test-card-50-50-title" x="70" y="78" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#333333" letter-spacing="0.5">TEST CARD</text>
     <!-- title underline accent -->
     <rect x="70" y="86" width="32" height="2" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
@@ -5542,27 +5512,16 @@ exports[`Visual Regression: Structural Snapshots Snapshots theme: hc-light 1`] =
   <desc>LeetCode statistics available, Codeforces statistics available</desc>
   
       <g role="group" aria-labelledby="cp-leetcode-stats-28-320-title">
-        <rect x="28" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="#0055CC" opacity="0.04" filter="url(#cardGlow)"/>
-        <rect x="28" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="#FFFFFF"/>
-        <rect x="28" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="url(#mainGradient)" opacity="0.3"/>
-        <rect x="28.5" y="320.5" width="441" height="139"
-          rx="16" ry="16"
-          fill="none" stroke="#BBBBBB" stroke-width="1" opacity="0.4"/>
-        <text
-          id="cp-leetcode-stats-28-320-title"
-          x="48" y="350"
-          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-          font-size="13" font-weight="600"
-          fill="#333333"
-          letter-spacing="0.5">LEETCODE STATS</text>
-        <rect x="48" y="360" width="28" height="2"
-          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        <!-- card glow -->
+        <rect x="28" y="320" width="442" height="140" rx="16" ry="16" fill="#0055CC" opacity="0.04" filter="url(#cardGlow)"/>
+        <!-- card background -->
+        <rect x="28" y="320" width="442" height="140" rx="16" ry="16" fill="#FFFFFF"/>
+        <!-- inner gradient -->
+        <rect x="28" y="320" width="442" height="140" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.3"/>
+        <!-- border -->
+        <rect x="28.5" y="320.5" width="441" height="139" rx="16" ry="16" fill="none" stroke="#BBBBBB" stroke-width="1" opacity="0.4"/>
+        <text id="cp-leetcode-stats-28-320-title" x="48" y="350" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#333333" letter-spacing="0.5">LEETCODE STATS</text>
+        <rect x="48" y="360" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
         
     <g role="group" aria-labelledby="lbl-solved-lc-48-405 val-solved-lc-48-405">
       <text id="val-solved-lc-48-405" x="48" y="405"
@@ -5614,27 +5573,16 @@ exports[`Visual Regression: Structural Snapshots Snapshots theme: hc-light 1`] =
       </g>
     
       <g role="group" aria-labelledby="cp-codeforces-stats-486-320-title">
-        <rect x="486" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="#0055CC" opacity="0.04" filter="url(#cardGlow)"/>
-        <rect x="486" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="#FFFFFF"/>
-        <rect x="486" y="320" width="442" height="140"
-          rx="16" ry="16"
-          fill="url(#mainGradient)" opacity="0.3"/>
-        <rect x="486.5" y="320.5" width="441" height="139"
-          rx="16" ry="16"
-          fill="none" stroke="#BBBBBB" stroke-width="1" opacity="0.4"/>
-        <text
-          id="cp-codeforces-stats-486-320-title"
-          x="506" y="350"
-          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-          font-size="13" font-weight="600"
-          fill="#333333"
-          letter-spacing="0.5">CODEFORCES STATS</text>
-        <rect x="506" y="360" width="28" height="2"
-          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        <!-- card glow -->
+        <rect x="486" y="320" width="442" height="140" rx="16" ry="16" fill="#0055CC" opacity="0.04" filter="url(#cardGlow)"/>
+        <!-- card background -->
+        <rect x="486" y="320" width="442" height="140" rx="16" ry="16" fill="#FFFFFF"/>
+        <!-- inner gradient -->
+        <rect x="486" y="320" width="442" height="140" rx="16" ry="16" fill="url(#mainGradient)" opacity="0.3"/>
+        <!-- border -->
+        <rect x="486.5" y="320.5" width="441" height="139" rx="16" ry="16" fill="none" stroke="#BBBBBB" stroke-width="1" opacity="0.4"/>
+        <text id="cp-codeforces-stats-486-320-title" x="506" y="350" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="#333333" letter-spacing="0.5">CODEFORCES STATS</text>
+        <rect x="506" y="360" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
         
     <!-- Rating -->
     <g role="group" aria-labelledby="lbl-rating-cf-506-405 val-rating-cf-506-405">
