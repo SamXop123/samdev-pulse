@@ -97,4 +97,99 @@ describe('http-client.js', () => {
       'User-Agent': 'samdev-pulse',
     });
   });
+
+  // ── In-flight request deduplication tests ──
+
+  test('deduplicates concurrent same-key requests — single fetch call', async () => {
+    expect.assertions(3);
+
+    let callCount = 0;
+    const fetchImpl = jest.fn(() => {
+      callCount++;
+      // Return a promise that stays pending until awaited — both calls
+      // start synchronously before either microtask can resolve.
+      return Promise.resolve(jsonResponse({ data: 'shared' }));
+    });
+
+    // Fire both requests concurrently (no await between them)
+    const [result1, result2] = await Promise.all([
+      httpRequest('https://example.test/data', { fetchImpl }),
+      httpRequest('https://example.test/data', { fetchImpl }),
+    ]);
+
+    expect(callCount).toBe(1);
+    expect(result1.success).toBe(true);
+    expect(result1).toEqual(result2);
+  });
+
+  test('does not deduplicate concurrent different-key requests', async () => {
+    expect.assertions(1);
+
+    let callCount = 0;
+    const fetchImpl = jest.fn(() => {
+      callCount++;
+      return Promise.resolve(jsonResponse({ data: 'ok' }));
+    });
+
+    await Promise.all([
+      httpRequest('https://example.test/a', { fetchImpl }),
+      httpRequest('https://example.test/b', { fetchImpl }),
+    ]);
+
+    expect(callCount).toBe(2);
+  });
+
+  test('propagates failure to all concurrent waiters', async () => {
+    expect.assertions(3);
+
+    let callCount = 0;
+    const fetchImpl = jest.fn(() => {
+      callCount++;
+      return Promise.reject(new Error('Service unavailable'));
+    });
+
+    const [result1, result2] = await Promise.all([
+      httpRequest('https://example.test/data', { fetchImpl }),
+      httpRequest('https://example.test/data', { fetchImpl }),
+    ]);
+
+    expect(callCount).toBe(1);
+    expect(result1.success).toBe(false);
+    expect(result2.success).toBe(false);
+  });
+
+  test('bypasses deduplication when deduplicate option is false', async () => {
+    expect.assertions(1);
+
+    let callCount = 0;
+    const fetchImpl = jest.fn(() => {
+      callCount++;
+      return Promise.resolve(jsonResponse({ data: 'ok' }));
+    });
+
+    await Promise.all([
+      httpRequest('https://example.test/data', { fetchImpl, deduplicate: false }),
+      httpRequest('https://example.test/data', { fetchImpl, deduplicate: false }),
+    ]);
+
+    expect(callCount).toBe(2);
+  });
+
+  test('cleans up dedup entry after request completes — subsequent identical request makes a new call', async () => {
+    expect.assertions(2);
+
+    let callCount = 0;
+    const fetchImpl = jest.fn(() => {
+      callCount++;
+      return Promise.resolve(jsonResponse({ data: 'ok' }));
+    });
+
+    // First request — completes immediately
+    await httpRequest('https://example.test/data', { fetchImpl });
+    expect(callCount).toBe(1);
+
+    // Second, identical request after cleanup — should make a fresh fetch
+    await httpRequest('https://example.test/data', { fetchImpl });
+    expect(callCount).toBe(2);
+  });
 });

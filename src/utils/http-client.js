@@ -8,6 +8,13 @@ export const HttpErrorCode = {
   TIMEOUT: 'TIMEOUT',
 };
 
+/** @type {Map<string, Promise<Object>>} */
+const inflightRequests = new Map();
+
+function buildDedupKey(method, url, body) {
+  return `${method}:${url}:${body !== undefined ? JSON.stringify(body) : ''}`;
+}
+
 function normalizeHeaders(headers = {}) {
   return {
     'User-Agent': DEFAULT_USER_AGENT,
@@ -49,33 +56,11 @@ async function parseBody(response, responseType) {
   }
 }
 
-export async function httpRequest(url, options = {}) {
-  const {
-    headers,
-    timeoutMs = DEFAULT_TIMEOUT_MS,
-    responseType = 'json',
-    fetchImpl = globalThis.fetch,
-    ...fetchOptions
-  } = options;
-
-  if (typeof fetchImpl !== 'function') {
-    return {
-      success: false,
-      error: buildError({
-        code: HttpErrorCode.NETWORK_ERROR,
-        message: 'Fetch is not available',
-        url,
-      }),
-    };
-  }
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
+async function executeRequest(url, fetchImpl, fetchOptions, headers, responseType, controller) {
   try {
     const response = await fetchImpl(url, {
       ...fetchOptions,
-      headers: normalizeHeaders(headers),
+      headers,
       signal: controller.signal,
     });
 
@@ -119,7 +104,57 @@ export async function httpRequest(url, options = {}) {
         url,
       }),
     };
-  } finally {
-    clearTimeout(timeout);
   }
+}
+
+export async function httpRequest(url, options = {}) {
+  const {
+    headers,
+    timeoutMs = DEFAULT_TIMEOUT_MS,
+    responseType = 'json',
+    fetchImpl = globalThis.fetch,
+    deduplicate = true,
+    ...fetchOptions
+  } = options;
+
+  if (typeof fetchImpl !== 'function') {
+    return {
+      success: false,
+      error: buildError({
+        code: HttpErrorCode.NETWORK_ERROR,
+        message: 'Fetch is not available',
+        url,
+      }),
+    };
+  }
+
+  // ── In-flight request deduplication ──
+  let dedupKey;
+  if (deduplicate) {
+    const method = fetchOptions.method || 'GET';
+    dedupKey = buildDedupKey(method, url, fetchOptions.body);
+    const existing = inflightRequests.get(dedupKey);
+    if (existing) return existing;
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  const promise = executeRequest(
+    url,
+    fetchImpl,
+    fetchOptions,
+    normalizeHeaders(headers),
+    responseType,
+    controller,
+  ).finally(() => {
+    clearTimeout(timeout);
+  });
+
+  if (dedupKey) {
+    inflightRequests.set(dedupKey, promise);
+    promise.finally(() => inflightRequests.delete(dedupKey));
+  }
+
+  return promise;
 }

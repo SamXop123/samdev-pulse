@@ -1,4 +1,5 @@
 import { SUPPORTED_THEME_NAMES } from '../renderers/svg.renderer.js';
+import config from '../config/index.js';
 
 const DEFAULT_THEME = 'dark';
 const DEFAULT_ALIGN = 'left';
@@ -81,7 +82,7 @@ export function normalizeHexColor(value) {
 }
 
 export function normalizeProfileQuery(query) {
-  const usernameResult = normalizeGitHubUsername(query.username);
+  const usernameResult = normalizeGitHubUsername(query.username || config.defaults.username);
   const leetcode = normalizeCPHandle(query.leetcode);
   const codeforces = normalizeCPHandle(query.codeforces);
   const codechef = normalizeCPHandle(query.codechef);

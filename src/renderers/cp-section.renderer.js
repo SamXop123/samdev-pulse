@@ -1,9 +1,12 @@
-import { getTheme } from './svg.renderer.js';
+import { getTheme, LAYOUT, renderCardFrame } from './svg.renderer.js';
 import { sanitizeSvgValue } from '../utils/svg-sanitizer.js';
 import { CF_RANK_MAP } from '../constants.js';
 
-const CARD_RADIUS = 16;
-const CARD_GAP = 16;
+// compute column X positions for N-column stat layouts (default 3 columns)
+function getColumnXs(x, width, numCols = 3) {
+  const step = (width - 40) / numCols;
+  return Array.from({ length: numCols }, (_, i) => x + 20 + step * i);
+}
 
 export function renderCPSection({ x, y, width, leetcode, codeforces, codechef }) {
   const { colors } = getTheme();
@@ -33,39 +36,30 @@ export function renderCPSection({ x, y, width, leetcode, codeforces, codechef })
 
   if (platforms.length === 0) return '';
 
-  const totalGaps = (platforms.length - 1) * CARD_GAP;
+  const totalGaps = (platforms.length - 1) * LAYOUT.cardGap;
   const cardWidth = (width - totalGaps) / platforms.length;
   const cardHeight = 140;
 
   const cards = platforms.map((platform, i) => {
-    const cardX = x + i * (cardWidth + CARD_GAP);
+    const cardX = x + i * (cardWidth + LAYOUT.cardGap);
     const cardY = y;
-    const safePlatformTitle = sanitizeSvgValue(platform.title.toUpperCase());
     const cardId = `cp-${platform.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${cardX}-${cardY}`;
 
     return `
       <g role="group" aria-labelledby="${cardId}-title">
-        <rect x="${cardX}" y="${cardY}" width="${cardWidth}" height="${cardHeight}"
-          rx="${CARD_RADIUS}" ry="${CARD_RADIUS}"
-          fill="${colors.glow}" opacity="0.04" filter="url(#cardGlow)"/>
-        <rect x="${cardX}" y="${cardY}" width="${cardWidth}" height="${cardHeight}"
-          rx="${CARD_RADIUS}" ry="${CARD_RADIUS}"
-          fill="${colors.cardBackground}"/>
-        <rect x="${cardX}" y="${cardY}" width="${cardWidth}" height="${cardHeight}"
-          rx="${CARD_RADIUS}" ry="${CARD_RADIUS}"
-          fill="url(#mainGradient)" opacity="0.3"/>
-        <rect x="${cardX + 0.5}" y="${cardY + 0.5}" width="${cardWidth - 1}" height="${cardHeight - 1}"
-          rx="${CARD_RADIUS}" ry="${CARD_RADIUS}"
-          fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
-        <text
-          id="${cardId}-title"
-          x="${cardX + 20}" y="${cardY + 30}"
-          font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-          font-size="13" font-weight="600"
-          fill="${colors.secondaryText}"
-          letter-spacing="0.5">${safePlatformTitle}</text>
-        <rect x="${cardX + 20}" y="${cardY + 40}" width="28" height="2"
-          rx="1" fill="url(#accentGradient)" opacity="0.7"/>
+        ${renderCardFrame({
+          x: cardX, y: cardY, width: cardWidth, height: cardHeight,
+          title: platform.title,
+          titleId: `${cardId}-title`,
+          glowOpacity: 0.04,
+          gradOpacity: 0.3,
+          borderOpacity: 0.4,
+          titleY: 30,
+          accentY: 40,
+          accentOpacity: 0.7,
+          titleComment: '',
+          accentComment: '',
+        }).join('\n        ')}
         ${platform.render(cardX, cardY, cardWidth)}
       </g>
     `;
@@ -95,9 +89,7 @@ return `
 
 function renderLeetCodeCard(x, y, width, data, colors) {
   const statsY = y + 85;
-  const col1X = x + 20;
-  const col2X = x + 20 + (width - 40) / 3;
-  const col3X = x + 20 + ((width - 40) / 3) * 2;
+  const [col1X, col2X, col3X] = getColumnXs(x, width);
 
   const solved = String(data.totalSolved ?? 0);
   const hasContestRating =
@@ -183,9 +175,7 @@ const safeStatLabel = sanitizeSvgValue(statLabel);
 
 function renderCodeforcesCard(x, y, width, data, colors) {
   const statsY = y + 85;
-  const col1X = x + 20;
-  const col2X = x + 20 + (width - 40) / 3;
-  const col3X = x + 20 + ((width - 40) / 3) * 2;
+  const [col1X, col2X, col3X] = getColumnXs(x, width);
 
   const rankShort = CF_RANK_MAP[data.rank?.toLowerCase()] ?? data.rank ?? 'unrated';
   const solved = data.problemsSolved ?? 0;
@@ -252,9 +242,7 @@ function renderCodeforcesCard(x, y, width, data, colors) {
 
 function renderCodeChefCard(x, y, width, data, colors) {
   const statsY = y + 85;
-  const col1X = x + 20;
-  const col2X = x + 20 + (width - 40) / 3;
-  const col3X = x + 20 + ((width - 40) / 3) * 2;
+  const [col1X, col2X, col3X] = getColumnXs(x, width);
 
   const globalRank = data.globalRank ?? 'N/A';
   const division = data.division ?? 'Div 4';
