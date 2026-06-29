@@ -7,11 +7,20 @@ function getDivision(rating) {
   return 'Div 4';
 }
 
+async function fetchWithRetry(url, options, retries = 2) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const res = await httpRequest(url, options);
+    if (res.success || attempt === retries) return res;
+    await new Promise(r => setTimeout(r, 1000 * attempt));
+  }
+  return { success: false, error: { code: HttpErrorCode.TIMEOUT, message: 'Request failed after retries' } };
+}
+
 export async function getCodeChefData(handle) {
   try {
     const safeHandle = encodeURIComponent(handle);
 
-    const res = await httpRequest(`https://competeapi.vercel.app/user/codechef/${safeHandle}/`);
+    const res = await fetchWithRetry(`https://competeapi.vercel.app/user/codechef/${safeHandle}/`);
     if (!res.success) {
       if (res.error?.code === HttpErrorCode.TIMEOUT) {
         return { success: false, error: 'CodeChef API timeout' };

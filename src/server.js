@@ -7,6 +7,7 @@ import profileRoute from './routes/profile.route.js';
 import themeComparisonRoute from './routes/theme-comparison.route.js';
 import { initializeAnalytics } from './services/analytics.service.js';
 import { githubCache } from './utils/cache.js';
+import { rateLimiter } from './middleware/rateLimiter.middleware.js';
 
 dotenv.config();
 inject();
@@ -20,6 +21,9 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 // render html file
 app.use(express.static(join(__dirname, '..', 'public')));
+
+// rate limiter for badge generation endpoints
+app.use('/api', rateLimiter);
 
 // validates env on startup
 function validateEnv() {

@@ -642,8 +642,8 @@ export function wrapSvg(
   xml:lang="en"
   lang="en"
 >
-<title id="dashboard-title">${title}</title>
-<desc id="dashboard-desc">${description}</desc>
+<title id="dashboard-title">${sanitizeSvgValue(title)}</title>
+<desc id="dashboard-desc">${sanitizeSvgValue(description)}</desc>
 
 ${renderDefs()}
 ${content}
