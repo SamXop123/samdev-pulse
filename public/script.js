@@ -645,6 +645,42 @@
   }
 })();
 
+// Active scrollspy navbar
+(function () {
+  'use strict';
+
+  function initActiveNavbar() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navbtn a');
+
+    if (!sections.length || !navLinks.length) return;
+
+    window.addEventListener('scroll', function () {
+      let current = '';
+
+      sections.forEach(function (section) {
+        const sectionTop = section.offsetTop - 120;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(function (link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    }, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initActiveNavbar);
+  } else {
+    initActiveNavbar();
+  }
+})();
+
 // ── Theme Gallery: Search & Filter + Show More ──
 (function () {
   function initThemeFilter() {

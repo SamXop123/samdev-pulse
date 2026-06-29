@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { 
-  setTheme, 
-  SUPPORTED_THEME_NAMES, 
+import {
+  setTheme,
+  SUPPORTED_THEME_NAMES,
   wrapSvg,
   renderBackground,
   renderCard,
@@ -42,7 +42,7 @@ console.log('🚀 Generating theme previews...');
 
 SUPPORTED_THEME_NAMES.forEach(themeName => {
   setTheme(themeName);
-  
+
   const chart = renderLineChart({
     x: LAYOUT.padding,
     y: 100,
@@ -68,7 +68,7 @@ SUPPORTED_THEME_NAMES.forEach(themeName => {
   ].join('\n');
 
   const svg = wrapSvg(content, 960, 600);
-  
+
   const filePath = path.join(PREVIEW_DIR, `${themeName}.svg`);
   fs.writeFileSync(filePath, svg);
   console.log(`✅ Generated: ${themeName}.svg`);

@@ -1573,14 +1573,93 @@ td code {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: var(--spacing-xs);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-logo a img {
+  height: 50px;
+  width: 50px;
+}
+
+.footer-logo a {
+  display: inline-flex;
+  align-items: center;
 }
 
 .footer-tagline {
   color: var(--text-secondary);
   font-size: 0.9375rem;
   margin: 0;
+  text-align: center;
 }
+
+.footer-brand {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: #6366F1;
+}
+
+.footer-links-section {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+}
+
+.footer-links a {
+  color: var(--text-secondary) #475569;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.footer-subsections {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-links a::before {
+  color: #8b5cf6;
+  font-size: 1.2rem;
+  font-weight: 700;
+  transition: transform 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #a78bfa;
+  transform: translateX(4px);
+}
+
+.footer-links a:hover::before {
+  transform: translateX(4px);
+}
+
+.footer-content ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 
 .footer-column {
   display: flex;
@@ -1609,6 +1688,19 @@ td code {
     text-align: center;
     gap: var(--spacing-md);
   }
+
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1024px) {
+  .footer-links-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
 }
 
 .footer-nav a:hover {
@@ -1620,6 +1712,9 @@ td code {
   text-align: center;
   color: var(--text-tertiary);
   font-size: 0.875rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .footer-bottom p {
@@ -2053,7 +2148,8 @@ html {
   transition: width 0.3s ease;
 }
 
-.navbtn ul li a:hover::after {
+.navbtn ul li a:hover::after,
+.navbtn ul li a.active::after {
   width: 100%;
 }
 
@@ -2061,9 +2157,7 @@ html {
   color: var(--accent-purple);
 }
 
-.navbtn ul li a.active::after {
-  width: 100%;
-}
+
 
 
 @media (max-width: 768px) {
