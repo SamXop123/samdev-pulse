@@ -12,6 +12,8 @@ import {
 } from '../renderers/svg.renderer.js';
 import { renderContributionChart, renderDonutChart } from '../renderers/chart.renderer.js';
 
+import { sanitizeErrorForLogging } from '../utils/error-sanitizer.js';
+
 const router = Router();
 
 // Mock data for theme preview
@@ -205,7 +207,7 @@ router.get('/:themeName', (req, res) => {
     res.setHeader('Cache-Control', 'public, max-age=1800');
     res.send(svg);
   } catch (error) {
-    console.error('Theme preview render failed:', error.message);
+    console.error('Theme preview render failed:', JSON.stringify(sanitizeErrorForLogging(error)));
     res.status(500).json({ error: 'Error rendering theme preview'});
   }
 });
