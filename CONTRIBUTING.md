@@ -35,13 +35,16 @@ npm install
 
 ## 3. Create Environment File
 
-Create a `.env` file:
+Copy `.env.example` (in the project root) to `.env` and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file and set at least your GitHub token:
 
 ```env
-GITHUB_TOKEN=your_github_token
-DEFAULT_USERNAME=octocat
-PORT=3000
-NODE_ENV=development
+GITHUB_TOKEN=ghp_your_token_here
 ```
 
 ## 4. Start Development Server

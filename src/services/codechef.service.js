@@ -48,6 +48,6 @@ export async function getCodeChefData(handle) {
       }
     };
   } catch (err) {
-    return { success: false, error: err.message };
+    return { success: false, error: "CodeChef API error" };
   }
 }

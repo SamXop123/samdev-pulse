@@ -1,6 +1,7 @@
 // GitHub REST API Service
 
 import { githubCache } from '../utils/cache.js';
+import { loadConfig } from '../config/index.js';
 import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
 
 const pendingRequests = new Map();
@@ -51,13 +52,14 @@ function errorFromStatus(status) {
 
 /* function to get authorization headers once to use it everywhere */
 function getHeaders() {
+  const config = loadConfig();
   const headers = {
     'Accept': 'application/vnd.github.v3+json',
     'User-Agent': 'samdev-pulse',
   };
 
-  if (process.env.GITHUB_TOKEN) {
-    headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  if (config.github.token) {
+    headers['Authorization'] = `Bearer ${config.github.token}`;
   }
 
   return headers;
@@ -196,6 +198,7 @@ function normalizeUserData(profile, repos, avatarDataUri) {
       stars: repo.stargazers_count,
       forks: repo.forks_count,
       language: repo.language,
+      topics: repo.topics || [],
       url: repo.html_url,
       updatedAt: repo.updated_at,
     })),
