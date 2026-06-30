@@ -4,6 +4,8 @@ import { githubCache } from '../utils/cache.js';
 import { loadConfig } from '../config/index.js';
 import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
 
+const pendingRequests = new Map();
+
 const GITHUB_API_BASE = 'https://api.github.com';
 
 export const GitHubErrorCode = {
@@ -210,34 +212,46 @@ export async function getGitHubUserData(username) {
     return cached;
   }
 
-  try {
-    const profilePromise = fetchUserProfile(username);
-    const reposPromise = fetchUserRepos(username);
-    const [profile, repos] = await Promise.all([profilePromise, reposPromise]);
-    const avatarDataUri = await fetchAvatarDataUri(profile.avatar_url);
+  // Deduplicate concurrent requests for the same username
+  if (pendingRequests.has(username)) {
+    return pendingRequests.get(username);
+  }
 
-    const result = {
-      success: true,
-      data: normalizeUserData(profile, repos, avatarDataUri),
-    };
+  const promise = (async () => {
+    try {
+      const profilePromise = fetchUserProfile(username);
+      const reposPromise = fetchUserRepos(username);
+      const [profile, repos] = await Promise.all([profilePromise, reposPromise]);
+      const avatarDataUri = await fetchAvatarDataUri(profile.avatar_url);
 
-    githubCache.set(username, result);
+      const result = {
+        success: true,
+        data: normalizeUserData(profile, repos, avatarDataUri),
+      };
 
-    return result;
-  } catch (error) {
-    if (error instanceof GitHubRequestError) {
+      githubCache.set(username, result);
+
+      return result;
+    } catch (error) {
+      if (error instanceof GitHubRequestError) {
+        return {
+          success: false,
+          error: error.message,
+          code: error.code,
+          status: error.status,
+        };
+      }
+
       return {
         success: false,
-        error: error.message,
-        code: error.code,
-        status: error.status,
+        error: error.message || 'Failed to fetch GitHub data',
+        code: GitHubErrorCode.NETWORK,
       };
+    } finally {
+      pendingRequests.delete(username);
     }
+  })();
 
-    return {
-      success: false,
-      error: error.message || 'Failed to fetch GitHub data',
-      code: GitHubErrorCode.NETWORK,
-    };
-  }
+  pendingRequests.set(username, promise);
+  return promise;
 }

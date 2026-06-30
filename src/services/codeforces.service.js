@@ -1,12 +1,21 @@
 import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
 
+async function fetchWithRetry(url, options, retries = 2) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const res = await httpRequest(url, options);
+    if (res.success || attempt === retries) return res;
+    await new Promise(r => setTimeout(r, 1000 * attempt));
+  }
+  return { success: false, error: { code: HttpErrorCode.TIMEOUT, message: 'Request failed after retries' } };
+}
+
 export async function getCodeforcesData(handle) {
   try {
     const safeHandle = encodeURIComponent(handle);
 
     const [infoRes, statusRes] = await Promise.all([
-      httpRequest(`https://codeforces.com/api/user.info?handles=${safeHandle}`),
-      httpRequest(`https://codeforces.com/api/user.status?handle=${safeHandle}&from=1&count=10000`),
+      fetchWithRetry(`https://codeforces.com/api/user.info?handles=${safeHandle}`),
+      fetchWithRetry(`https://codeforces.com/api/user.status?handle=${safeHandle}&from=1&count=10000`),
     ]);
 
     if (!infoRes.success) {
