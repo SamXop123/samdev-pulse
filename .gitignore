@@ -35,3 +35,6 @@ DEPLOYMENT.md
 
 # Coverage reports
 coverage/
+
+# Database backups
+api_logs_backup.json
