@@ -204,9 +204,11 @@ function normalizeContributionData(userData) {
 /* Fetch calendars for all years using dynamic aliases */
 async function fetchAllYearsData(username, startYear, endYear) {
   let queryFields = "";
+  const currentIso = new Date().toISOString();
   for (let y = startYear; y <= endYear; y++) {
+    const toDate = y === endYear ? currentIso : `${y}-12-31T23:59:59Z`;
     queryFields += `
-      y${y}: contributionsCollection(from: "${y}-01-01T00:00:00Z", to: "${y}-12-31T23:59:59Z") {
+      y${y}: contributionsCollection(from: "${y}-01-01T00:00:00Z", to: "${toDate}") {
         totalCommitContributions
         totalPullRequestContributions
         totalPullRequestReviewContributions
