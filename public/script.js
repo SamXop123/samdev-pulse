@@ -921,3 +921,44 @@
     initThemeFilter();
   }
 })();
+
+// Active Section Highlighting for Navbar
+(function () {
+  'use strict';
+
+  function initScrollSpy() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navbtn a.nav-link');
+
+    if (!sections.length || !navLinks.length) return;
+
+    const observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            navLinks.forEach(function (link) {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === '#' + entry.target.id) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      },
+      {
+        rootMargin: '-80px 0px -50% 0px',
+        threshold: 0,
+      }
+    );
+
+    sections.forEach(function (section) {
+      observer.observe(section);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollSpy);
+  } else {
+    initScrollSpy();
+  }
+})();
