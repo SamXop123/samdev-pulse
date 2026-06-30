@@ -25,6 +25,7 @@ function getHeaders() {
 const CONTRIBUTION_QUERY = `
 query($username: String!) {
   user(login: $username) {
+    createdAt
     contributionsCollection {
       totalCommitContributions
       totalPullRequestContributions
@@ -200,8 +201,105 @@ function normalizeContributionData(userData) {
   };
 }
 
+/* Fetch calendars for all years using dynamic aliases */
+async function fetchAllYearsData(username, startYear, endYear) {
+  let queryFields = "";
+  for (let y = startYear; y <= endYear; y++) {
+    queryFields += `
+      y${y}: contributionsCollection(from: "${y}-01-01T00:00:00Z", to: "${y}-12-31T23:59:59Z") {
+        totalCommitContributions
+        totalPullRequestContributions
+        totalPullRequestReviewContributions
+        totalIssueContributions
+        restrictedContributionsCount
+        contributionCalendar {
+          totalContributions
+          weeks {
+            contributionDays {
+              contributionCount
+              date
+            }
+          }
+        }
+      }
+    `;
+  }
+
+  const query = `
+    query($username: String!) {
+      user(login: $username) {
+        ${queryFields}
+      }
+    }
+  `;
+
+  const response = await httpRequest(GITHUB_GRAPHQL_URL, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({
+      query,
+      variables: { username },
+    }),
+  });
+
+  if (!response.success) {
+    throw new Error(`GitHub GraphQL API error when fetching multi-year data: ${response.status || 0}`);
+  }
+
+  const json = response.data;
+  if (json.errors) {
+    throw new Error(json.errors[0]?.message || "GraphQL query for multi-year data failed");
+  }
+
+  return json.data?.user;
+}
+
+/* normalize multi-year contribution data */
+function normalizeMultiYearData(userData, initialUserData, startYear, currentYear) {
+  let totalContributions = 0;
+  let totalCommits = 0;
+  let totalPRs = 0;
+  let totalReviews = 0;
+  let totalIssues = 0;
+  let allDays = [];
+
+  for (let y = startYear; y <= currentYear; y++) {
+    const collection = userData[`y${y}`];
+    if (!collection) continue;
+
+    totalCommits += collection.totalCommitContributions || 0;
+    totalPRs += collection.totalPullRequestContributions || 0;
+    totalReviews += collection.totalPullRequestReviewContributions || 0;
+    totalIssues += collection.totalIssueContributions || 0;
+
+    const calendar = collection.contributionCalendar;
+    if (calendar) {
+      totalContributions += calendar.totalContributions || 0;
+      const days = flattenContributionDays(calendar);
+      allDays.push(...days);
+    }
+  }
+
+  // sort days to ensure chronological order for streak calculation
+  allDays.sort((a, b) => a.date.localeCompare(b.date));
+
+  return {
+    totalContributions,
+    currentStreak: calculateCurrentStreak(allDays),
+    longestStreak: calculateLongestStreak(allDays),
+    totalContributionDays: calculateTotalContributionDays(allDays),
+    totalCommits,
+    totalPRs,
+    totalReviews,
+    totalIssues,
+    prsMerged: initialUserData?.pullRequests?.totalCount || 0,
+    issuesClosed: initialUserData?.issues?.totalCount || 0,
+    days: allDays,
+  };
+}
+
 /* fetch and normalize contribution data for a user */
-export async function getContributionData(username) {
+export async function getContributionData(username, createdAt = null) {
   const cacheKey = `contributions:${username}`;
 
   // check cache first
@@ -220,9 +318,23 @@ export async function getContributionData(username) {
       };
     }
 
+    const userCreatedAt = createdAt || userData.createdAt;
+    const currentYear = new Date().getFullYear();
+    const startYear = userCreatedAt ? new Date(userCreatedAt).getFullYear() : null;
+
+    let resultData;
+
+    // if the user has contribution history in previous years, fetch them
+    if (userCreatedAt && startYear && startYear < currentYear) {
+      const multiYearData = await fetchAllYearsData(username, startYear, currentYear);
+      resultData = normalizeMultiYearData(multiYearData, userData, startYear, currentYear);
+    } else {
+      resultData = normalizeContributionData(userData);
+    }
+
     const result = {
       success: true,
-      data: normalizeContributionData(userData),
+      data: resultData,
     };
 
     // store in cache
