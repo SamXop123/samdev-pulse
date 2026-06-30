@@ -18,6 +18,7 @@ import { getCodeforcesData } from '../services/codeforces.service.js';
 import { getCodeChefData } from '../services/codechef.service.js';
 import { renderCPSection } from '../renderers/cp-section.renderer.js';
 import { sendGracefulErrorSvg } from '../renderers/error.renderer.js';
+import { sanitizeErrorForLogging } from '../utils/error-sanitizer.js';
 import { sendLoadingSpinner } from '../renderers/loading.renderer.js';
 import { GitHubErrorCode } from '../services/github.service.js';
 import { trackProfileRequest } from '../services/analytics.service.js';
@@ -342,11 +343,11 @@ if (topLanguages.length === 0) {
   res.setHeader('Cache-Control', 'public, max-age=1800');
   res.send(svg);
   } catch (error) {
-    console.error('Profile render failed:', error.message);
+    console.error('Profile render failed:', JSON.stringify(sanitizeErrorForLogging(error)));
     return sendGracefulErrorSvg(res, {
       code: GitHubErrorCode.API_ERROR,
       username: typeof req.query.username === 'string' ? req.query.username : undefined,
-      detail: error.message,
+      detail: 'An error occurred while rendering the profile.',
     });
   }
 });

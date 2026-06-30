@@ -9,6 +9,7 @@ import themeComparisonRoute from './routes/theme-comparison.route.js';
 import { initializeAnalytics } from './services/analytics.service.js';
 import { githubCache } from './utils/cache.js';
 import { renderGracefulError } from './renderers/error.renderer.js';
+import { sanitizeErrorForLogging } from './utils/error-sanitizer.js';
 
 inject();
 
@@ -85,6 +86,12 @@ app.use('/api/theme-preview', themeComparisonRoute);
 // Theme Comparison page
 app.get('/theme-comparison', (req, res) => {
   res.sendFile(join(__dirname, '..', 'public', 'theme-comparison.html'));
+});
+
+app.use((err, req, res, next) => {
+  const sanitized = sanitizeErrorForLogging(err);
+  console.error('Unhandled error:', JSON.stringify(sanitized));
+  res.status(err.status || err.statusCode || 500).json({ error: 'An internal error occurred. Please try again.' });
 });
 
 const server = app.listen(PORT, () => {
