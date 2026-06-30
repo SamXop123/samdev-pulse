@@ -107,7 +107,7 @@ router.get('/', async (req, res) => {
     }
     const { data } = result;
 
-    const contributionResult = await getContributionData(username);
+    const contributionResult = await getContributionData(username, data.createdAt);
     const contributionData = contributionResult.success ? contributionResult.data : null;
 
     const [leetcodeResult, codeforcesResult, codechefResult] = await Promise.all([
