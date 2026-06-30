@@ -1,6 +1,10 @@
 import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
+import { githubCache } from '../utils/cache.js';
 
 export async function getCodeforcesData(handle) {
+  const cacheKey = `codeforces:${handle}`;
+  const cached = githubCache.get(cacheKey);
+  if (cached) return cached;
   try {
     const safeHandle = encodeURIComponent(handle);
 
@@ -36,7 +40,7 @@ export async function getCodeforcesData(handle) {
       problemsSolved = solved.size;
     }
 
-    return {
+    const result = {
       success: true,
       data: {
         handle: user.handle,
@@ -47,6 +51,8 @@ export async function getCodeforcesData(handle) {
         problemsSolved,
       }
     };
+    githubCache.set(cacheKey, result);
+    return result;
   } catch (err) {
     return { success: false, error: "Codeforces API error" };
   }

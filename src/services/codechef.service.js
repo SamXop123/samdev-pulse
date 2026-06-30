@@ -1,4 +1,5 @@
 import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
+import { githubCache } from '../utils/cache.js';
 
 function getDivision(rating) {
   if (rating >= 2000) return 'Div 1';
@@ -8,6 +9,10 @@ function getDivision(rating) {
 }
 
 export async function getCodeChefData(handle) {
+  const cacheKey = `codechef:${handle}`;
+  const cached = githubCache.get(cacheKey);
+  if (cached) return cached;
+
   try {
     const safeHandle = encodeURIComponent(handle);
 
@@ -27,7 +32,7 @@ export async function getCodeChefData(handle) {
 
     const currentRating = data.rating_number ?? 0;
 
-    return {
+    const result = {
       success: true,
       data: {
         handle: data.username ?? handle,
@@ -38,6 +43,8 @@ export async function getCodeChefData(handle) {
         division: getDivision(currentRating),
       }
     };
+    githubCache.set(cacheKey, result);
+    return result;
   } catch (err) {
     return { success: false, error: "CodeChef API error" };
   }
