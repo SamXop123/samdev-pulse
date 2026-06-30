@@ -427,4 +427,92 @@ describe('github-graphql.service.js', () => {
     expect(githubCache.get('contributions:user1')).not.toBeNull();
     expect(githubCache.get('contributions:user2')).not.toBeNull();
   });
+
+  test('aggregates multi-year contribution data and calculates correct all-time streak', async () => {
+    // Current year is 2026 (faked to 2026-06-13)
+    // User registered in 2024
+    const firstResponse = {
+      data: {
+        user: {
+          createdAt: '2024-05-15T00:00:00Z',
+          contributionsCollection: {
+            totalCommitContributions: 10,
+            totalPullRequestContributions: 2,
+            totalPullRequestReviewContributions: 1,
+            totalIssueContributions: 0,
+            restrictedContributionsCount: 0,
+            contributionCalendar: buildCalendar([0, 0]),
+          },
+          pullRequests: { totalCount: 15 },
+          issues: { totalCount: 5 },
+        },
+      },
+    };
+
+    // Faked contribution days:
+    // y2024: 1 contribution day on 2024-06-01 (count: 5)
+    // y2025: 2 consecutive contribution days on 2025-06-01 (count: 3), 2025-06-02 (count: 4)
+    // y2026: 2 consecutive contribution days ending yesterday/today (2026-06-12 (count: 1), 2026-06-13 (count: 1))
+    const secondResponse = {
+      data: {
+        user: {
+          y2024: {
+            totalCommitContributions: 100,
+            totalPullRequestContributions: 12,
+            totalPullRequestReviewContributions: 3,
+            totalIssueContributions: 4,
+            contributionCalendar: buildCalendar([0, 0, 5, 0], '2024-05-30')
+          },
+          y2025: {
+            totalCommitContributions: 200,
+            totalPullRequestContributions: 22,
+            totalPullRequestReviewContributions: 13,
+            totalIssueContributions: 14,
+            contributionCalendar: buildCalendar([0, 3, 4, 0], '2025-05-31')
+          },
+          y2026: {
+            totalCommitContributions: 50,
+            totalPullRequestContributions: 5,
+            totalPullRequestReviewContributions: 2,
+            totalIssueContributions: 1,
+            contributionCalendar: buildCalendar([0, 1, 1], '2026-06-11')
+          }
+        }
+      }
+    };
+
+    globalThis.fetch = jest.fn()
+      .mockResolvedValueOnce(jsonResponse(firstResponse))
+      .mockResolvedValueOnce(jsonResponse(secondResponse));
+
+    const result = await getContributionData('multiyear-user');
+
+    expect(result.success).toBe(true);
+    // Aggregated stats:
+    // Commits: 100 + 200 + 50 = 350
+    // PRs: 12 + 22 + 5 = 39
+    // Reviews: 3 + 13 + 2 = 18
+    // Issues: 4 + 14 + 1 = 19
+    // Total Contributions: 5 + 7 + 2 = 14
+    expect(result.data.totalCommits).toBe(350);
+    expect(result.data.totalPRs).toBe(39);
+    expect(result.data.totalReviews).toBe(18);
+    expect(result.data.totalIssues).toBe(19);
+    expect(result.data.totalContributions).toBe(14);
+
+    // prsMerged and issuesClosed are fallback to first query values
+    expect(result.data.prsMerged).toBe(15);
+    expect(result.data.issuesClosed).toBe(5);
+
+    // Days:
+    // y2024: 1 day (Jun 1, 2024)
+    // y2025: 2 days (Jun 1 & Jun 2, 2025)
+    // y2026: 2 days (Jun 12 & Jun 13, 2026)
+    // Streaks:
+    // Current streak ending today (2026-06-13): 2 days (Jun 12, Jun 13)
+    // Longest streak: 2 days (Jun 1 & Jun 2, 2025, or Jun 12 & Jun 13, 2026)
+    expect(result.data.currentStreak).toBe(2);
+    expect(result.data.longestStreak).toBe(2);
+    expect(result.data.totalContributionDays).toBe(5);
+  });
 });
