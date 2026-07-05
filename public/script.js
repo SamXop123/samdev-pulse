@@ -32,6 +32,8 @@
       toggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
       toggle.title = isLight ? 'Switch to dark theme' : 'Switch to light theme';
     }
+    addRecentTheme(theme);
+    renderQuickThemeSections();
   }
 
   function initThemeToggle() {
@@ -339,15 +341,38 @@
   //   }
   // }
 
+  const FAVORITES_KEY = "favoriteThemes";
+  const RECENT_KEY = "recentThemes";
+  const MAX_RECENT = 5;
+
+  function getFavoriteThemes() {
+    return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+  }
+
+  function saveFavoriteThemes(arr) {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(arr));
+  }
+
+  function getRecentThemes() {
+    return JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+  }
+
+  function saveRecentThemes(arr) {
+    localStorage.setItem(RECENT_KEY, JSON.stringify(arr));
+  }
+
   function setupThemeCardClicks() {
     document.querySelectorAll('.theme-card').forEach(card => {
       card.addEventListener('click', () => {
-        const theme = card.dataset.theme || '';
+        const theme = card.dataset.theme || 'dark';
 
         // Update the dropdown
         if (themeSelect) {
           themeSelect.value = theme;
           updateSnippetOnly();
+
+          addRecentTheme(theme);
+          renderQuickThemeSections();
         }
 
         // Scroll to preview section
@@ -419,6 +444,101 @@
       hideTrophiesCheck.addEventListener('change', updateSnippetOnly);
     }
   }
+
+  function addRecentTheme(theme) {
+  if (!theme) return;
+  let recent = getRecentThemes();
+  recent = recent.filter(t => t !== theme);
+  recent.unshift(theme);
+  recent = recent.slice(0, MAX_RECENT);
+  saveRecentThemes(recent);
+
+}
+
+  function toggleFavoriteTheme(theme) {
+  let favorites = getFavoriteThemes();
+  if (favorites.includes(theme)) {
+    favorites = favorites.filter(t => t !== theme);
+  } else {
+    favorites.push(theme);
+  }
+  saveFavoriteThemes(favorites);
+  renderQuickThemeSections();
+ 
+}
+
+  function initializeFavoriteButtons() {
+    document.querySelectorAll("#themesGrid .theme-card").forEach(card => {
+
+      if (card.querySelector(".favorite-theme-btn")) return;
+
+      const theme = card.dataset.theme || "";
+
+      const btn = document.createElement("button");
+
+      btn.className = "favorite-theme-btn";
+      btn.type = "button";
+      btn.innerHTML = "☆";
+
+      if (getFavoriteThemes().includes(theme)) {
+        btn.innerHTML = "★";
+        btn.classList.add("active");
+        btn.style.color = "#facc15";
+    } else {
+        btn.style.color = "#999";
+    }
+
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        toggleFavoriteTheme(theme);
+
+        const active = getFavoriteThemes().includes(theme);
+
+        btn.innerHTML = active ? "★" : "☆";
+        btn.classList.toggle("active", active);
+
+        btn.style.color = active ? "#facc15" : "#999";
+    });
+
+      card.appendChild(btn);
+    });
+  }
+
+  function renderQuickThemeSections() {
+
+    const favoriteList = document.getElementById("favoriteThemesList");
+    const recentList = document.getElementById("recentThemesList");
+
+    const favoriteSection = document.getElementById("favoriteThemesSection");
+    const recentSection = document.getElementById("recentThemesSection");
+
+    favoriteList.innerHTML = "";
+    recentList.innerHTML = "";
+
+    const favorites = getFavoriteThemes();
+    const recent = getRecentThemes();
+
+    favoriteSection.hidden = favorites.length === 0;
+    recentSection.hidden = recent.length === 0;
+
+    favorites.forEach(theme=>{
+        const chip=document.createElement("button");
+        chip.className="quick-theme-chip";
+        chip.textContent=theme==="dark" ? "Dark" : theme;
+        chip.onclick=()=>applyTheme(theme);
+        favoriteList.appendChild(chip);
+    });
+
+    recent.forEach(theme=>{
+        const chip=document.createElement("button");
+        chip.className="quick-theme-chip";
+        chip.textContent=theme==="dark" ? "Dark" : theme;
+        chip.onclick=()=>applyTheme(theme);
+        recentList.appendChild(chip);
+    });
+
+}
 
   /* this function initialize all event listeners */
   function init() {
@@ -492,6 +612,8 @@
     setupRealTimeSync();
 
     setupThemeCardClicks();
+    initializeFavoriteButtons();
+    renderQuickThemeSections();
 
     if (usernameInput && usernameInput.value.trim()) {
       updateSnippetOnly();
