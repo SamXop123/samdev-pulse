@@ -51,4 +51,3 @@ const tokyonightTheme = {
 };
 
 export default tokyonightTheme;
-

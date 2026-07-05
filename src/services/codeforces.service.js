@@ -1,38 +1,39 @@
+import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
+
 export async function getCodeforcesData(handle) {
   try {
     const safeHandle = encodeURIComponent(handle);
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
 
     const [infoRes, statusRes] = await Promise.all([
-      fetch(`https://codeforces.com/api/user.info?handles=${safeHandle}`, { signal: controller.signal }),
-      fetch(`https://codeforces.com/api/user.status?handle=${safeHandle}&from=1&count=10000`, { signal: controller.signal }),
+      httpRequest(`https://codeforces.com/api/user.info?handles=${safeHandle}`),
+      httpRequest(`https://codeforces.com/api/user.status?handle=${safeHandle}&from=1&count=10000`),
     ]);
 
-    clearTimeout(timeout);
+    if (!infoRes.success) {
+      if (infoRes.error?.code === HttpErrorCode.TIMEOUT) {
+        return { success: false, error: 'Codeforces API timeout' };
+      }
+      return { success: false, error: infoRes.error?.message || 'Codeforces API error' };
+    }
 
-    const infoData = await infoRes.json();
+    const infoData = infoRes.data;
     if (infoData.status !== 'OK') {
       return { success: false, error: 'User not found' };
     }
 
     const user = infoData.result[0];
 
-    // Count distinct solved problems
+    // Count distinct solved problems. The status endpoint is optional; if it
+    // fails, profile stats still render with a solved count of 0.
     let problemsSolved = 0;
-    try {
-      const statusData = await statusRes.json();
-      if (statusData.status === 'OK') {
-        const solved = new Set();
-        for (const sub of statusData.result) {
-          if (sub.verdict === 'OK' && sub.problem) {
-            solved.add(`${sub.problem.contestId ?? ''}${sub.problem.index}`);
-          }
+    if (statusRes.success && statusRes.data?.status === 'OK') {
+      const solved = new Set();
+      for (const sub of statusRes.data.result) {
+        if (sub.verdict === 'OK' && sub.problem) {
+          solved.add(`${sub.problem.contestId ?? ''}${sub.problem.index}`);
         }
-        problemsSolved = solved.size;
       }
-    } catch (_) {
-      // non-critical — silently fall back to 0
+      problemsSolved = solved.size;
     }
 
     return {
@@ -47,9 +48,6 @@ export async function getCodeforcesData(handle) {
       }
     };
   } catch (err) {
-    if (err.name === 'AbortError') {
-      return { success: false, error: 'Codeforces API timeout' };
-    }
-    return { success: false, error: err.message };
+    return { success: false, error: "Codeforces API error" };
   }
 }

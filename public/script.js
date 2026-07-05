@@ -767,6 +767,42 @@
   }
 })();
 
+// Active scrollspy navbar
+(function () {
+  'use strict';
+
+  function initActiveNavbar() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navbtn a');
+
+    if (!sections.length || !navLinks.length) return;
+
+    window.addEventListener('scroll', function () {
+      let current = '';
+
+      sections.forEach(function (section) {
+        const sectionTop = section.offsetTop - 120;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(function (link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    }, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initActiveNavbar);
+  } else {
+    initActiveNavbar();
+  }
+})();
+
 // ── Theme Gallery: Search & Filter + Show More ──
 (function () {
   function initThemeFilter() {
@@ -777,6 +813,7 @@
     const countEl = document.getElementById('themeResultCount');
     const showMoreBtn = document.getElementById('themeShowMoreBtn');
     const showMoreWrap = document.getElementById('themeShowMoreWrapper');
+    const suggestionsBox = document.getElementById('themeSearchSuggestions');
 
     if (!searchInput || !emptyState || !countEl) return;
 
@@ -788,7 +825,85 @@
 
     let activeCategory = 'all';
     let searchQuery = '';
-    let showingAll = false;   // tracks whether user expanded the list
+    let showingAll = false;
+
+    const themeNames = Array.from(cards).map(card => {
+      const nameEl = card.querySelector('.theme-name');
+      if (!nameEl) return '';
+
+      const nameClone = nameEl.cloneNode(true);
+      nameClone.querySelectorAll('.default-badge').forEach(badge => badge.remove());
+      return nameClone.textContent.trim();
+    }).filter(Boolean);
+
+    let activeSuggestionIndex = -1;
+
+    function hideSuggestions() {
+      if (!suggestionsBox || !suggestionsBox.classList.contains('visible')) return;
+
+      suggestionsBox.innerHTML = '';
+      suggestionsBox.classList.remove('visible');
+      searchInput.setAttribute('aria-expanded', 'false');
+      searchInput.removeAttribute('aria-activedescendant');
+      activeSuggestionIndex = -1;
+    }
+
+    function selectSuggestion(themeName) {
+      searchInput.value = themeName;
+      searchQuery = themeName.toLowerCase();
+      showingAll = false;
+      filterThemes();
+      hideSuggestions();
+      searchInput.focus();
+    }
+
+    // Render case-insensitive theme-name suggestions as the user types. Empty
+    // queries or queries with no matching names keep the dropdown hidden.
+    function updateSuggestions() {
+      if (!suggestionsBox) return;
+
+      const query = searchInput.value.trim().toLowerCase();
+      if (!query) {
+        hideSuggestions();
+        return;
+      }
+
+      const matches = themeNames.filter(name => name.toLowerCase().includes(query));
+      if (!matches.length) {
+        hideSuggestions();
+        return;
+      }
+
+      suggestionsBox.innerHTML = '';
+      activeSuggestionIndex = -1;
+      searchInput.removeAttribute('aria-activedescendant');
+
+      matches.forEach((name, index) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.id = `theme-suggestion-${index}`;
+        item.className = 'theme-search-suggestion';
+        item.setAttribute('role', 'option');
+        item.textContent = name;
+        item.addEventListener('click', () => selectSuggestion(name));
+        suggestionsBox.appendChild(item);
+      });
+
+      suggestionsBox.classList.add('visible');
+      searchInput.setAttribute('aria-expanded', 'true');
+    }
+
+    function highlightSuggestion(suggestions) {
+      suggestions.forEach((item, index) => {
+        if (index === activeSuggestionIndex) {
+          item.classList.add('highlighted');
+          searchInput.setAttribute('aria-activedescendant', item.id);
+          item.scrollIntoView({ block: 'nearest' });
+        } else {
+          item.classList.remove('highlighted');
+        }
+      });
+    }
 
     // ── Core filter function ──
     function filterThemes() {
@@ -843,14 +958,11 @@
         countEl.textContent = `Showing ${Math.min(INITIAL_SHOW, visible)} of ${totalCount} themes`;
       }
 
-      // Show/hide the Show More button
-      // Hide it when: filtering is active, or all cards already visible
       if (isFiltering || visible <= INITIAL_SHOW) {
         showMoreWrap.style.display = 'none';
       } else {
         showMoreWrap.style.display = 'flex';
         showMoreBtn.textContent = showingAll ? 'Show Less' : `Show All Themes (${visible})`;
-        // re-attach the arrow SVG since we overwrote textContent
         showMoreBtn.innerHTML = showingAll
           ? `Show Less <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>`
           : `Show All Themes (${visible}) <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>`;
@@ -863,8 +975,6 @@
       showMoreBtn.addEventListener('click', () => {
         showingAll = !showingAll;
         filterThemes();
-
-        // If collapsing back to 5, scroll up to themes section
         if (!showingAll) {
           document.getElementById('themes')
             .scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -877,6 +987,39 @@
       searchQuery = e.target.value.trim().toLowerCase();
       showingAll = false;  // reset expansion on new search
       filterThemes();
+      updateSuggestions();
+    });
+
+    searchInput.addEventListener('focus', updateSuggestions);
+
+    searchInput.addEventListener('keydown', e => {
+      const suggestions = suggestionsBox.querySelectorAll('.theme-search-suggestion');
+      if (!suggestions.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activeSuggestionIndex = (activeSuggestionIndex + 1) % suggestions.length;
+        highlightSuggestion(suggestions);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activeSuggestionIndex = (activeSuggestionIndex - 1 + suggestions.length) % suggestions.length;
+        highlightSuggestion(suggestions);
+      } else if (e.key === 'Enter') {
+        if (activeSuggestionIndex >= 0 && activeSuggestionIndex < suggestions.length) {
+          e.preventDefault();
+          selectSuggestion(suggestions[activeSuggestionIndex].textContent);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        hideSuggestions();
+      }
+    });
+
+    // Close autocomplete when the user clicks away from the search area.
+    document.addEventListener('click', e => {
+      if (suggestionsBox.classList.contains('visible') && !searchInput.parentElement.contains(e.target)) {
+        hideSuggestions();
+      }
     });
 
     // ── Chip clicks ──

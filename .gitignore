@@ -14,6 +14,9 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Visual Previews
+previews/
+
 # IDE
 .idea/
 .vscode/
@@ -32,3 +35,6 @@ DEPLOYMENT.md
 
 # Coverage reports
 coverage/
+
+# Database backups
+api_logs_backup.json

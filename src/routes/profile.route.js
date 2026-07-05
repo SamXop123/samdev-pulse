@@ -10,7 +10,7 @@ import {
   LAYOUT,
   renderTrophyRow,
 } from '../renderers/svg.renderer.js';
-import { renderContributionChart, generateFakeContributionData, renderDonutChart } from '../renderers/chart.renderer.js';
+import { renderContributionChart, renderDonutChart } from '../renderers/chart.renderer.js';
 import { getGitHubUserData } from '../services/github.service.js';
 import { getContributionData } from '../services/github-graphql.service.js';
 import { getLeetCodeData } from '../services/leetcode.service.js';
@@ -20,9 +20,11 @@ import { renderCPSection } from '../renderers/cp-section.renderer.js';
 import { sendGracefulErrorSvg } from '../renderers/error.renderer.js';
 import { sendLoadingSpinner } from '../renderers/loading.renderer.js';
 import { GitHubErrorCode } from '../services/github.service.js';
-import { logApiAccess } from '../utils/logger.js';
+import { trackProfileRequest } from '../services/analytics.service.js';
 import { CF_RANK_MAP } from '../constants.js';
 import { normalizeProfileQuery, normalizeTheme } from '../utils/query-validation.js';
+import { buildDashboardAccessibility } from '../utils/svg-accessibility.js';
+import { createHybridTheme, validateThemeAccessibility } from '../utils/theme-accessibility.js';
 
 const router = Router();
 
@@ -35,8 +37,6 @@ router.use((req, res, next) => {
   next();
 });
 
-const DEFAULT_USERNAME = process.env.DEFAULT_USERNAME || 'SamXop123';
-
 function formatNumber(num) {
   if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
   if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
@@ -44,12 +44,17 @@ function formatNumber(num) {
 }
 
 function getTopLanguages(repos, max = 5) {
+  if (!Array.isArray(repos) || repos.length === 0) {
+  return [];
+}
   const langCounts = {};
   repos.forEach((repo) => {
-    if (repo.language) {
-      langCounts[repo.language] = (langCounts[repo.language] || 0) + 1;
-    }
-  });
+  const language = repo?.language;
+
+  if (typeof language === 'string' && language.trim()) {
+    langCounts[language] = (langCounts[language] || 0) + 1;
+  }
+});
   return Object.entries(langCounts)
     .map(([label, value]) => ({ label, value }))
     .sort((a, b) => b.value - a.value)
@@ -58,7 +63,7 @@ function getTopLanguages(repos, max = 5) {
 
 router.get('/', async (req, res) => {
   try {
-    logApiAccess(req).catch(err => console.error('Log failed:', err.message));
+    void trackProfileRequest(req);
 
   const {
     theme,
@@ -70,8 +75,18 @@ router.get('/', async (req, res) => {
     codeforces,
     codechef,
     shouldRenderLeetCode,
-  } = normalizeProfileQuery(req.query, { defaultUsername: DEFAULT_USERNAME });
-  setTheme(theme);
+    customThemeOverrides,
+  } = normalizeProfileQuery(req.query);
+
+  let activeTheme = setTheme(theme);
+  if (customThemeOverrides && Object.keys(customThemeOverrides).length > 0) {
+    const hybridTheme = createHybridTheme(activeTheme, customThemeOverrides);
+    const contrastResult = validateThemeAccessibility(hybridTheme);
+    if (!contrastResult.primaryPass || !contrastResult.secondaryPass) {
+      console.warn(`[Accessibility] Custom theme has low contrast:`, contrastResult);
+    }
+    activeTheme = setTheme(hybridTheme);
+  }
 
   if (!isUsernameValid) {
     return sendGracefulErrorSvg(res, {
@@ -92,7 +107,7 @@ router.get('/', async (req, res) => {
     }
     const { data } = result;
 
-    const contributionResult = await getContributionData(username);
+    const contributionResult = await getContributionData(username, data.createdAt);
     const contributionData = contributionResult.success ? contributionResult.data : null;
 
     const [leetcodeResult, codeforcesResult, codechefResult] = await Promise.all([
@@ -144,14 +159,23 @@ router.get('/', async (req, res) => {
   let card3Title;
   let card3Stats;
 
+  const domainInsights = typeof activeTheme.domainConfig?.calculateInsights === 'function'
+    ? activeTheme.domainConfig.calculateInsights(data.repos)
+    : null;
+
   if (!codeforcesData && !codechefData) {
     if (showRepositoryStats) {
-      card3Title = 'Repository Stats';
-      card3Stats = [
-        { label: 'Repositories', value: formatNumber(data.publicRepos) },
-        { label: 'Stars', value: formatNumber(data.totalStars) },
-        { label: 'Followers', value: formatNumber(data.followers) },
-      ];
+      if (domainInsights) {
+        card3Title = domainInsights.title;
+        card3Stats = domainInsights.stats;
+      } else {
+        card3Title = 'Repository Stats';
+        card3Stats = [
+          { label: 'Repositories', value: formatNumber(data.publicRepos) },
+          { label: 'Stars', value: formatNumber(data.totalStars) },
+          { label: 'Followers', value: formatNumber(data.followers) },
+        ];
+      }
     } else {
       const getRatingOrRanking = () => {
         if (!leetcodeData) return { label: 'Rating', value: '-' };
@@ -193,12 +217,17 @@ router.get('/', async (req, res) => {
       ];
     }
   } else {
-    card3Title = 'Repository Stats';
-    card3Stats = [
-      { label: 'Repositories', value: formatNumber(data.publicRepos) },
-      { label: 'Stars', value: formatNumber(data.totalStars) },
-      { label: 'Followers', value: formatNumber(data.followers) },
-    ];
+    if (domainInsights) {
+      card3Title = domainInsights.title;
+      card3Stats = domainInsights.stats;
+    } else {
+      card3Title = 'Repository Stats';
+      card3Stats = [
+        { label: 'Repositories', value: formatNumber(data.publicRepos) },
+        { label: 'Stars', value: formatNumber(data.totalStars) },
+        { label: 'Followers', value: formatNumber(data.followers) },
+      ];
+    }
   }
 
   let chartData;
@@ -206,20 +235,31 @@ router.get('/', async (req, res) => {
     const recentDays = contributionData.days.slice(-30);
     chartData = recentDays.map(day => day.count);
   } else {
-    chartData = generateFakeContributionData(30);
+    // Do not fall back to randomly generated data when the GitHub GraphQL
+    // API is unavailable. Embedding fake contribution bars in a README
+    // misleads viewers into believing they represent real activity.
+    // Use zeroed-out bars instead so the chart is visually consistent but
+    // clearly reflects that no data is available.
+    chartData = Array(30).fill(0);
   }
 
-  const topLanguages = getTopLanguages(data.repos, 5);
+const topLanguages = getTopLanguages(data?.repos ?? [], 5);
 
+if (topLanguages.length === 0) {
+  topLanguages.push({
+    label: 'No Data',
+    value: 1,
+  });
+}
   const trophyData = {
-    commits: contributionData?.totalContributions || 0,
-    prs: contributionData?.totalPRs || 0,
-    issues: contributionData?.totalIssues || 0,
-    repos: data.publicRepos || 0,
-    stars: data.totalStars || 0,
-    followers: data.followers || 0,
-    reviews: contributionData?.totalReviews || 0,
-  };
+  commits: Number(contributionData?.totalContributions) || 0,
+  prs: Number(contributionData?.totalPRs) || 0,
+  issues: Number(contributionData?.totalIssues) || 0,
+  repos: Number(data?.publicRepos) || 0,
+  stars: Number(data?.totalStars) || 0,
+  followers: Number(data?.followers) || 0,
+  reviews: Number(contributionData?.totalReviews) || 0,
+};
 
   const cpSectionHeight = showCPSection ? 156 : 0;
   const cpRowY = row2Y + row2Height + LAYOUT.cardGap;
@@ -274,7 +314,29 @@ router.get('/', async (req, res) => {
         }),
   ].join('\n');
 
-  const svg = wrapSvg(content, width, totalHeight);
+  const totalLangValue = topLanguages.reduce((sum, item) => sum + item.value, 0);
+  const languagesWithPct = topLanguages.map(item => ({
+    label: item.label,
+    percentage: totalLangValue ? Math.round((item.value / totalLangValue) * 100) : 0
+  }));
+
+  const accessibility = buildDashboardAccessibility({
+    username,
+    contributions: contributionData ? contributionData.totalContributions : 0,
+    prs: contributionData ? contributionData.totalPRs : 0,
+    issues: contributionData ? contributionData.totalIssues : 0,
+    currentStreak: contributionData ? contributionData.currentStreak : 0,
+    longestStreak: contributionData ? contributionData.longestStreak : 0,
+    languages: languagesWithPct,
+    trophies: trophyData,
+  });
+
+  const svg = wrapSvg(
+    content,
+    width,
+    totalHeight,
+    accessibility
+  );
 
   res.setHeader('Content-Type', 'image/svg+xml');
   res.setHeader('Cache-Control', 'public, max-age=1800');
@@ -291,7 +353,12 @@ router.get('/', async (req, res) => {
 
 // Loading spinner endpoint
 router.get('/loading', (req, res) => {
-  setTheme(normalizeTheme(req.query.theme));
+  const { theme, customThemeOverrides } = normalizeProfileQuery(req.query);
+  let activeTheme = setTheme(theme);
+  if (customThemeOverrides && Object.keys(customThemeOverrides).length > 0) {
+    const hybridTheme = createHybridTheme(activeTheme, customThemeOverrides);
+    activeTheme = setTheme(hybridTheme);
+  }
   return sendLoadingSpinner(res);
 });
 

@@ -14,15 +14,18 @@ jobs:
         with:
           script: |
             const issue = context.payload.issue;
-            const title = issue.title.toLowerCase();
-            const body = (issue.body || "").toLowerCase();
-            const content = `${title} ${body}`;
+            const title = (issue.title || "").trim().toLowerCase();
+            const labels = ['gssoc26'];
             
-            if (content.includes('gssoc') || content.includes('girlscript')) {
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.number,
-                labels: ['gssoc26']
-              });
+            if (title.startsWith('feat:') || title.startsWith('feat ')) {
+              labels.push('type:feature');
+            } else if (title.startsWith('fix:') || title.startsWith('fix ') || title.startsWith('bug:') || title.startsWith('bug ')) {
+              labels.push('type:bug');
             }
+            
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: labels
+            });

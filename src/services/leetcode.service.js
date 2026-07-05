@@ -1,6 +1,7 @@
 // LeetCode Service
 
 import { githubCache } from '../utils/cache.js';
+import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
 
 const LEETCODE_GRAPHQL_URL = 'https://leetcode.com/graphql';
 
@@ -29,50 +30,41 @@ query getUserProfile($username: String!) {
 
 /* fetch LC stats using graphQL api */
 async function fetchLeetCodeStats(username) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+  const response = await httpRequest(LEETCODE_GRAPHQL_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Origin': 'https://leetcode.com',
+      'Referer': 'https://leetcode.com',
+    },
+    body: JSON.stringify({
+      query: USER_STATS_QUERY,
+      variables: { username },
+    }),
+  });
 
-  try {
-    const response = await fetch(LEETCODE_GRAPHQL_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'samdev-pulse',
-        'Origin': 'https://leetcode.com',
-        'Referer': 'https://leetcode.com',
-      },
-      body: JSON.stringify({
-        query: USER_STATS_QUERY,
-        variables: { username },
-      }),
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeout);
-
-    if (!response.ok) {
-      throw new Error(`LeetCode API error: ${response.status}`);
-    }
-
-    const json = await response.json();
-
-    if (json.errors) {
-      throw new Error(json.errors[0]?.message || 'GraphQL query failed');
-    }
-
-    if (!json.data?.matchedUser) {
-      throw new Error('LeetCode user not found');
-    }
-
-    return json.data;
-  } catch (error) {
-    clearTimeout(timeout);
-    if (error.name === 'AbortError') {
+  if (!response.success) {
+    if (response.error?.code === HttpErrorCode.TIMEOUT) {
       throw new Error('LeetCode API timeout');
     }
-    throw error;
+    if (response.error?.code === HttpErrorCode.INVALID_JSON) {
+      throw new Error('LeetCode API returned invalid JSON');
+    }
+    throw new Error(`LeetCode API error: ${response.status || 0}`);
   }
+
+  const json = response.data;
+
+  if (json.errors) {
+    throw new Error(json.errors[0]?.message || 'GraphQL query failed');
+  }
+
+  if (!json.data?.matchedUser) {
+    throw new Error('LeetCode user not found');
+  }
+
+  return json.data;
 }
 
 /* normalize LC data into a clean object */
@@ -142,4 +134,3 @@ export async function getLeetCodeData(username) {
     };
   }
 }
-

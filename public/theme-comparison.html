@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Compare all available samdev-pulse themes side-by-side. Find the perfect theme for your GitHub profile README.">
+  <meta name="keywords" content="GitHub, README, themes, comparison, profile, stats">
+  <title>Theme Comparison | samdev-pulse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="./logo-samdev-pulse.png">
+  <style>
+    /* Theme Comparison Page Styles */
+    .comparison-header {
+      padding: var(--spacing-3xl) 0 var(--spacing-2xl);
+      text-align: center;
+    }
+
+    .comparison-header .section-title {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-md);
+      background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .comparison-header .section-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto var(--spacing-xl);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-purple);
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: var(--spacing-lg);
+      transition: color var(--transition-base), transform var(--transition-base);
+    }
+
+    .back-link:hover {
+      color: var(--accent-blue);
+      transform: translateX(-4px);
+    }
+
+    .themes-comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+      gap: var(--spacing-xl);
+      padding-bottom: var(--spacing-3xl);
+    }
+
+    .theme-preview-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+    }
+
+    .theme-preview-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-purple);
+    }
+
+    .theme-preview-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: var(--radius-lg);
+      margin: var(--spacing-md);
+    }
+
+    .theme-preview-footer {
+      padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+      border-top: 1px solid var(--border);
+    }
+
+    .theme-preview-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .theme-preview-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .theme-preview-code {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: all var(--transition-base);
+    }
+
+    .theme-preview-code:hover {
+      border-color: var(--accent-purple);
+      color: var(--text-primary);
+    }
+
+    .copy-icon {
+      width: 14px;
+      height: 14px;
+      opacity: 0.7;
+    }
+
+    .loading-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-lg);
+      margin: var(--spacing-md);
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent-purple);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .themes-comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-header .section-title {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="navlogo">
+      <a href="https://samdev-pulse.vercel.app/">
+        <img src="./logo-samdev-pulse.png" alt="logo-samdev-pulse">
+      </a>
+    </div>
+
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false"
+      aria-controls="nav-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="navbtn" id="nav-menu">
+      <ul>
+        <li><a href="/" class="nav-link">HOME</a></li>
+        <li><a href="/#features" class="nav-link">FEATURES</a></li>
+        <li><a href="/#themes" class="nav-link">THEMES</a></li>
+        <li><a href="/#preview" class="nav-link">TRY IT LIVE</a></li>
+        <li><a href="/#guide" class="nav-link">GUIDE</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme"
+        aria-pressed="false">
+        <svg class="theme-toggle-icon sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+        <svg class="theme-toggle-icon moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0 9 7.46A9 9 0 1 1 12 3Z"></path>
+        </svg>
+        <span class="sr-only">Toggle color theme</span>
+      </button>
+    </div>
+  </div>
+
+  <main class="container">
+    <a href="/" class="back-link">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Home
+    </a>
+
+    <header class="comparison-header">
+      <h1 class="section-title">Theme Comparison</h1>
+      <p class="section-subtitle">
+        Explore all available themes and find the perfect one for your GitHub profile.
+        Each preview shows the same dashboard data with different color schemes.
+      </p>
+    </header>
+
+    <div class="themes-comparison-grid" id="themesGrid">
+      <!-- Theme cards will be dynamically inserted here -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">samdev-pulse</div>
+          <p class="footer-tagline">Elevate your GitHub presence</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <a href="/#preview">Try Live</a>
+            <a href="https://github.com/SamXop123/samdev-pulse#readme" target="_blank" rel="noopener">Documentation</a>
+            <a href="https://github.com/SamXop123/samdev-pulse" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 samdev-pulse.</p>
+        <p>Built with ❤️ by <a href="https://github.com/SamXop123" target="_blank" rel="noopener">SamXop123</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme configuration
+    const themes = [
+      { name: 'Dark', id: 'dark', description: 'Purple accents on dark background' },
+      { name: 'Light', id: 'light', description: 'Clean white with blue accents' },
+      { name: 'Dracula', id: 'dracula', description: 'Dark mode with vibrant colors' },
+      { name: 'Nord', id: 'nord', description: 'Arctic, north-inspired colors' },
+      { name: 'Monokai', id: 'monokai', description: 'Classic code editor aesthetic' },
+      { name: 'Gruvbox', id: 'gruvbox', description: 'Retro terminal warmth' },
+      { name: 'Tokyo Night', id: 'tokyonight', description: 'Neon Tokyo night vibes' },
+      { name: 'Solarized', id: 'solarized', description: 'Precision colors for readability' },
+      { name: 'Catppuccin', id: 'catppuccin', description: 'Soothing pastel palette' },
+      { name: 'Rose Pine', id: 'rose-pine', description: 'Gentle rose and pine tones' },
+      { name: 'Aurora', id: 'aurora', description: 'Northern lights inspired' },
+      { name: 'Midnight Sunset', id: 'midnight-sunset', description: 'Warm sunset gradients' },
+      { name: 'One Dark Pro', id: 'onedarkpro', description: 'Atom One Dark theme' },
+      { name: 'Material', id: 'material', description: 'Google Material Design colors' },
+      { name: 'Synthwave 84', id: 'synthwave84', description: 'Retro synthwave aesthetic' },
+      { name: 'Forest Night', id: 'forestnight', description: 'Deep forest greens' },
+      { name: 'Oceanic Next', id: 'oceanicnext', description: 'Deep sea exploration' },
+      { name: 'Emberglow', id: 'emberglow', description: 'Warm ember and glow' },
+      { name: 'Midnight Neon', id: 'midnightneon', description: 'Neon lights at midnight' },
+      { name: 'Pastel Dream', id: 'pasteldream', description: 'Soft pastel aesthetics' },
+      { name: 'Cobalt 2', id: 'cobalt2', description: 'Bold blue Cobalt theme' },
+      { name: 'One Dark', id: 'one-dark', description: 'Clean dark theme' },
+      { name: 'GitHub Light', id: 'github-light', description: 'GitHub light mode colors' },
+      { name: 'High Contrast Light', id: 'hc-light', description: 'WCAG AAA — pure white, pure black, no gradients' },
+      { name: 'High Contrast Dark', id: 'hc-dark', description: 'WCAG AAA — pure black, pure white, no gradients' },
+    ];
+
+    const baseUrl = window.location.hostname === 'localhost'
+      ? window.location.origin
+      : 'https://samdev-pulse.vercel.app';
+
+    function generateThemeCard(theme) {
+      const previewUrl = `${baseUrl}/api/theme-preview/${theme.id}`;
+      const markdownUrl = `${baseUrl}/api/profile?username=YOUR_USERNAME&theme=${theme.id}`;
+
+      return `
+        <article class="theme-preview-card">
+          <img
+            src="${previewUrl}"
+            alt="${theme.name} theme preview"
+            loading="lazy"
+            onerror="this.parentElement.querySelector('.loading-placeholder')?.remove(); this.style.display='block';"
+          />
+          <div class="theme-preview-footer">
+            <h3 class="theme-preview-name">${theme.name}</h3>
+            <p class="theme-preview-desc">${theme.description}</p>
+            <button class="theme-preview-code" data-url="${markdownUrl}" onclick="copyToClipboard(this.dataset.url, this)">
+              <code>theme=${theme.id}</code>
+              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function copyToClipboard(text, button) {
+      navigator.clipboard.writeText(`![samdev-pulse](${text})`).then(() => {
+        const originalContent = button.innerHTML;
+        button.innerHTML = `
+          <code>Copied!</code>
+          <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        `;
+        button.style.borderColor = '#10b981';
+        setTimeout(() => {
+          button.innerHTML = originalContent;
+          button.style.borderColor = '';
+        }, 2000);
+      });
+    }
+
+    // Initialize theme comparison grid
+    function initThemeComparison() {
+      const grid = document.getElementById('themesGrid');
+      if (!grid) return;
+
+      // Generate theme cards
+      grid.innerHTML = themes.map(generateThemeCard).join('');
+
+      // Lazy load images when they come into view
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              observer.unobserve(img);
+            }
+          }
+        });
+      }, { rootMargin: '100px' });
+
+      grid.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
+
+    // Navbar theme toggle (same as main site)
+    (function() {
+      const THEME_KEY = 'theme';
+      const LIGHT_THEME = 'light';
+
+      function getStoredTheme() {
+        try {
+          return localStorage.getItem(THEME_KEY);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function storeTheme(theme) {
+        try {
+          localStorage.setItem(THEME_KEY, theme);
+        } catch (error) {}
+      }
+
+      function applyTheme(theme) {
+        const isLight = theme === LIGHT_THEME;
+        document.body.classList.toggle('light-theme', isLight);
+
+        const toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+          toggle.setAttribute('aria-pressed', String(isLight));
+          toggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+        }
+      }
+
+      function initThemeToggle() {
+        const toggle = document.getElementById('theme-toggle');
+        const savedTheme = getStoredTheme();
+        applyTheme(savedTheme === LIGHT_THEME ? LIGHT_THEME : 'dark');
+
+        if (!toggle) return;
+
+        toggle.addEventListener('click', function() {
+          const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : LIGHT_THEME;
+          applyTheme(nextTheme);
+          storeTheme(nextTheme);
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initThemeToggle);
+      } else {
+        initThemeToggle();
+      }
+    })();
+
+    // Hamburger menu (same as main site)
+    (function() {
+      function initHamburger() {
+        const hamburger = document.getElementById('nav-hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        if (!hamburger || !navMenu) return;
+
+        hamburger.addEventListener('click', function() {
+          const isOpen = navMenu.classList.toggle('is-open');
+          hamburger.classList.toggle('is-open', isOpen);
+          hamburger.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        navMenu.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            navMenu.classList.remove('is-open');
+            hamburger.classList.remove('is-open');
+            hamburger.setAttribute('aria-expanded', 'false');
+          });
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('is-open');
+            hamburger.classList.remove('is-open');
+            hamburger.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHamburger);
+      } else {
+        initHamburger();
+      }
+    })();
+
+    // Initialize on DOM ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initThemeComparison);
+    } else {
+      initThemeComparison();
+    }
+  </script>
+</body>
+
+</html>

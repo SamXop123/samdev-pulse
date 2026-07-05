@@ -51,4 +51,3 @@ const nordTheme = {
 };
 
 export default nordTheme;
-

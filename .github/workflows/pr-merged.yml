@@ -26,7 +26,7 @@ jobs:
             - **Support the Project:** If you enjoyed contributing to samdev-pulse, **please take a second to [star our repository](https://github.com/${context.repo.owner}/${context.repo.repo})**! It helps increase the project's visibility and supports our community. ⭐
 
             💬 **Stay Connected:**
-            Have any questions, want feedback, or just want to discuss further contributions? Feel free to reach out directly to the maintainer on Discord: **dot_notsam**!
+            Have any questions, want feedback, or just want to discuss further contributions? Feel free to reach out directly to the maintainer on Discord: **dot_notsam**
 
             Thank you again, and keep up the amazing work! 💻✨`;
 

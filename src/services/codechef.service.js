@@ -1,3 +1,5 @@
+import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
+
 function getDivision(rating) {
   if (rating >= 2000) return 'Div 1';
   if (rating >= 1600) return 'Div 2';
@@ -8,15 +10,16 @@ function getDivision(rating) {
 export async function getCodeChefData(handle) {
   try {
     const safeHandle = encodeURIComponent(handle);
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
 
-    const res = await fetch(
-      `https://competeapi.vercel.app/user/codechef/${safeHandle}/`,
-      { signal: controller.signal }
-    );
-    clearTimeout(timeout);
-    const data = await res.json();
+    const res = await httpRequest(`https://competeapi.vercel.app/user/codechef/${safeHandle}/`);
+    if (!res.success) {
+      if (res.error?.code === HttpErrorCode.TIMEOUT) {
+        return { success: false, error: 'CodeChef API timeout' };
+      }
+      return { success: false, error: res.error?.message || 'CodeChef API error' };
+    }
+
+    const data = res.data;
 
     if (!data || !data.username) {
       return { success: false, error: 'User not found' };
@@ -29,16 +32,13 @@ export async function getCodeChefData(handle) {
       data: {
         handle: data.username ?? handle,
         currentRating,
-        stars: data.rating ?? '1★',
+        stars: data.rating ?? '1\u2605',
         globalRank: data.globalRank ?? data.global_rank ?? 'N/A',
         problemsSolved: data.problemsSolved ?? data.problems_solved ?? 0,
         division: getDivision(currentRating),
       }
     };
   } catch (err) {
-    if (err.name === 'AbortError') {
-      return { success: false, error: 'CodeChef API timeout' };
-    }
-    return { success: false, error: err.message };
+    return { success: false, error: "CodeChef API error" };
   }
 }

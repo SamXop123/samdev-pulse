@@ -1,0 +1,20 @@
+# Version control
+.git
+.gitignore
+
+# Dependencies (rebuilt inside container)
+node_modules
+
+# Test & coverage output
+coverage
+.tmp
+
+# Environment files (user-specific)
+.env
+.env.example
+
+# Documentation (not needed at runtime)
+*.md
+
+# Generated previews
+previews

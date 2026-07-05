@@ -1,4 +1,5 @@
 import { SUPPORTED_THEME_NAMES } from '../renderers/svg.renderer.js';
+import config from '../config/index.js';
 
 const DEFAULT_THEME = 'dark';
 const DEFAULT_ALIGN = 'left';
@@ -37,11 +38,13 @@ export function normalizeAlign(value) {
   return ALIGNMENTS.includes(align) ? align : DEFAULT_ALIGN;
 }
 
-export function normalizeGitHubUsername(value, defaultUsername) {
+export function normalizeGitHubUsername(value) {
   const username = normalizeString(value);
+
   if (!username) {
-  return { username: '', isValid: false };
- }
+    return { username: '', isValid: false };
+  }
+
   return {
     username,
     isValid: GITHUB_USERNAME_REGEX.test(username),
@@ -62,8 +65,24 @@ export function normalizeCPHandle(value) {
   return handle || null;
 }
 
-export function normalizeProfileQuery(query, { defaultUsername }) {
-  const usernameResult = normalizeGitHubUsername(query.username, defaultUsername);
+export function isValidHexColor(value) {
+  const normalized = normalizeString(value);
+  if (!normalized) return false;
+  return /^#?([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/.test(normalized);
+}
+
+export function normalizeHexColor(value) {
+  const normalized = normalizeString(value);
+  if (!isValidHexColor(normalized)) return null;
+  let clean = normalized.replace('#', '');
+  if (clean.length === 3) {
+    clean = clean.split('').map(c => c + c).join('');
+  }
+  return `#${clean.toLowerCase()}`;
+}
+
+export function normalizeProfileQuery(query) {
+  const usernameResult = normalizeGitHubUsername(query.username || config.defaults.username);
   const leetcode = normalizeCPHandle(query.leetcode);
   const codeforces = normalizeCPHandle(query.codeforces);
   const codechef = normalizeCPHandle(query.codechef);
@@ -80,6 +99,14 @@ export function normalizeProfileQuery(query, { defaultUsername }) {
 
   const isPlatformHandlesValid = isLeetcodeValid && isCodeforcesValid && isCodechefValid;
 
+  const customThemeOverrides = {};
+  const overrideKeys = ['bg', 'text', 'accent', 'card_bg', 'border', 'sec_text', 'muted_text'];
+  overrideKeys.forEach(key => {
+    if (query[key] && isValidHexColor(query[key])) {
+      customThemeOverrides[key] = normalizeHexColor(query[key]);
+    }
+  });
+
   return {
     theme: normalizeTheme(query.theme),
     align: normalizeAlign(query.align),
@@ -90,5 +117,6 @@ export function normalizeProfileQuery(query, { defaultUsername }) {
     codeforces,
     codechef,
     shouldRenderLeetCode: Boolean(leetcode),
+    customThemeOverrides,
   };
 }

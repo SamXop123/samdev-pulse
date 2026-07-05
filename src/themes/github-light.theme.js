@@ -1,0 +1,32 @@
+const theme = {
+  name: 'github-light',
+  colors: {
+    background: '#FFFFFF',
+    backgroundAlt: '#F6F8FA',
+    cardBackground: '#F6F8FA',
+    cardBackgroundAlt: '#EFF3F6',
+    border: '#D0D7DE',
+    borderLight: '#e1e4e8',
+    borderGlow: '#0969DA33',
+    primaryText: '#1F2328',
+    secondaryText: '#656D76',
+    mutedText: '#8c959f',
+    accent: '#0969DA',
+    accentSecondary: '#8250DF',
+    accentTertiary: '#1A7F37',
+    accentWarm: '#9A6700',
+    accentHot: '#CF222E',
+    glow: '#0969DA',
+    glowSecondary: '#8250DF',
+    gradientStart: '#0969DA',
+    gradientMid: '#8250DF',
+    gradientEnd: '#1A7F37',
+    success: '#1A7F37',
+    warning: '#9A6700',
+    error: '#CF222E',
+    danger: '#CF222E',
+  },
+  chartColors: ['#0969DA','#8250DF','#1A7F37','#9A6700','#CF222E'],
+};
+
+export default theme;

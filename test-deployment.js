@@ -1,6 +1,6 @@
 /**
  * Deployment Verification Script
- * Run this to test your deployment before going live
+ * Run this to test your deployment before going live.
  *
  * Usage: node test-deployment.js https://your-project.vercel.app
  */
@@ -9,10 +9,8 @@ import https from 'https';
 import http from 'http';
 
 const baseUrl = process.argv[2] || 'http://localhost:3000';
-const isHttps = baseUrl.startsWith('https');
-const httpModule = isHttps ? https : http;
 
-console.log('🧪 Testing deployment at:', baseUrl);
+console.log('Testing deployment at:', baseUrl);
 console.log('='.repeat(50));
 
 let passedTests = 0;
@@ -23,166 +21,200 @@ function test(name, fn) {
   return fn()
     .then(() => {
       passedTests++;
-      console.log(`✅ ${name}`);
+      console.log(`PASS ${name}`);
     })
     .catch((err) => {
-      console.log(`❌ ${name}`);
+      console.log(`FAIL ${name}`);
       console.log(`   Error: ${err.message}`);
     });
 }
 
 function fetch(path) {
   return new Promise((resolve, reject) => {
-    const url = `${baseUrl}${path}`;
+    const url = new URL(path, baseUrl).toString();
+    const httpModule = url.startsWith('https') ? https : http;
     const request = httpModule.get(url, (res) => {
       let data = '';
       res.on('data', (chunk) => (data += chunk));
       res.on('end', () => {
-        resolve({ status: res.statusCode, headers: res.headers, body: data });
+        resolve({
+          url,
+          status: res.statusCode,
+          headers: res.headers,
+          body: data,
+        });
       });
     });
-    request.on('error', reject);
+
+    request.on('error', (error) => {
+      reject(new Error(`${url} request failed: ${error.message}`));
+    });
     request.setTimeout(10000, () => {
       request.destroy();
-      reject(new Error('Request timeout'));
+      reject(new Error(`${url} request timeout`));
     });
   });
 }
 
+function responseSummary(res) {
+  const contentType = res.headers['content-type'] || 'missing';
+  const snippet = res.body
+    .replace(/\s+/g, ' ')
+    .slice(0, 180);
+  return `${res.url} returned status=${res.status}, content-type=${contentType}, body="${snippet}"`;
+}
+
+function assertStatus(res, expected = 200) {
+  if (res.status !== expected) {
+    throw new Error(responseSummary(res));
+  }
+}
+
+function assertSvgResponse(res) {
+  assertStatus(res);
+
+  const contentType = String(res.headers['content-type'] || '').toLowerCase();
+  const mediaType = contentType.split(';')[0].trim();
+
+  if (mediaType !== 'image/svg+xml') {
+    throw new Error(`Expected image/svg+xml. ${responseSummary(res)}`);
+  }
+
+  const trimmed = res.body.trim();
+  const withoutXmlDeclaration = trimmed.replace(/^<\?xml[^>]*>\s*/i, '');
+
+  if (/<!doctype\s+html|<html[\s>]/i.test(withoutXmlDeclaration)) {
+    throw new Error(`Expected SVG, received HTML. ${responseSummary(res)}`);
+  }
+
+  if (
+    !/^<svg[\s>]/i.test(withoutXmlDeclaration) ||
+    !/<\/svg>\s*$/i.test(withoutXmlDeclaration)
+  ) {
+    throw new Error(`Response is not a complete SVG. ${responseSummary(res)}`);
+  }
+}
+
 async function runTests() {
-  // Test 1: Health check
   await test('Health check endpoint', async () => {
     const res = await fetch('/health');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
-    const json = JSON.parse(res.body);
-    if (json.status !== 'ok') throw new Error('Health check failed');
+    assertStatus(res);
+
+    let json;
+    try {
+      json = JSON.parse(res.body);
+    } catch {
+      throw new Error(`Health response is not JSON. ${responseSummary(res)}`);
+    }
+
+    if (json.status !== 'ok') {
+      throw new Error(`Health check failed. ${responseSummary(res)}`);
+    }
   });
 
-  // Test 2: Profile endpoint returns SVG
   await test('Profile endpoint returns SVG', async () => {
     const res = await fetch('/api/profile?username=octocat');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
-    if (res.headers['content-type'] !== 'image/svg+xml') {
-      throw new Error(`Wrong content-type: ${res.headers['content-type']}`);
-    }
-    if (!res.body.includes('<svg')) throw new Error('Response is not SVG');
+    assertSvgResponse(res);
   });
 
-  // Test 3: Dark theme
   await test('Dark theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=dark');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
-    if (!res.body.includes('<svg')) throw new Error('No SVG in response');
+    assertSvgResponse(res);
   });
 
-  // Test 4: Light theme
   await test('Light theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=light');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 5: Dracula theme
   await test('Dracula theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=dracula');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 6: Nord theme
   await test('Nord theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=nord');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 7: Tokyo Night theme
   await test('Tokyo Night theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=tokyonight');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 8: Monokai theme
   await test('Monokai theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=monokai');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 9: Gruvbox theme
   await test('Gruvbox theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=gruvbox');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 10: Aurora theme
   await test('Aurora theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=aurora');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 11: Midnight Sunset theme
   await test('Midnight Sunset theme works', async () => {
     const res = await fetch('/api/profile?username=octocat&theme=midnight-sunset');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 12: LeetCode parameter
   await test('LeetCode parameter works', async () => {
     const res = await fetch('/api/profile?username=octocat&leetcode=uwi');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 13: LeetCode disabled
   await test('LeetCode=false works', async () => {
     const res = await fetch('/api/profile?username=octocat&leetcode=false');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 14: Left alignment
   await test('Left alignment works', async () => {
     const res = await fetch('/api/profile?username=octocat&align=left');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 15: Center alignment
   await test('Center alignment works', async () => {
     const res = await fetch('/api/profile?username=octocat&align=center');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 16: Right alignment
   await test('Right alignment works', async () => {
     const res = await fetch('/api/profile?username=octocat&align=right');
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Test 17: Cache headers
   await test('Cache headers present', async () => {
     const res = await fetch('/api/profile?username=octocat');
+    assertSvgResponse(res);
     if (!res.headers['cache-control']) {
-      throw new Error('No cache-control header');
+      throw new Error(`No cache-control header. ${responseSummary(res)}`);
     }
   });
 
-  // Test 18: Complex query
   await test('Complex query works', async () => {
     const res = await fetch(
       '/api/profile?username=octocat&theme=dracula&leetcode=false&align=center'
     );
-    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    assertSvgResponse(res);
   });
 
-  // Results
   console.log('='.repeat(50));
-  console.log(`\n📊 Results: ${passedTests}/${totalTests} tests passed`);
+  console.log(`\nResults: ${passedTests}/${totalTests} tests passed`);
 
   if (passedTests === totalTests) {
-    console.log('\n🎉 All tests passed! Ready to deploy! 🚀\n');
+    console.log('\nAll tests passed. Ready to deploy.\n');
     process.exit(0);
-  } else {
-    console.log(`\n⚠️  ${totalTests - passedTests} test(s) failed. Fix issues before deploying.\n`);
-    process.exit(1);
   }
+
+  console.log(`\n${totalTests - passedTests} test(s) failed. Fix issues before deploying.\n`);
+  process.exit(1);
 }
 
 runTests().catch((err) => {
-  console.error('\n❌ Test suite failed:', err.message);
+  console.error('\nTest suite failed:', err.message);
   process.exit(1);
 });

@@ -51,4 +51,3 @@ const draculaTheme = {
 };
 
 export default draculaTheme;
-

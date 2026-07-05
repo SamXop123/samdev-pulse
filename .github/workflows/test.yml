@@ -1,4 +1,4 @@
-name: Unit Tests
+name: CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main, develop]
 
 jobs:
-  test:
+  quality:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,31 +16,39 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
+      - name: Run quality checks
+        run: npm run check
 
       - name: Generate coverage report
         run: npm run test:coverage
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
+        uses: codecov/codecov-action@v4
 
-      - name: Test results summary
-        if: always()
+      - name: Audit dependencies
+        run: npm run audit
+
+      - name: Run deployment smoke tests
         run: |
-          echo "✅ Tests completed"
-          echo "📊 Coverage report available in artifacts"
+          set -e
+          npm start > server.log 2>&1 &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          for i in {1..20}; do
+            if curl --fail http://localhost:3000/health; then
+              npm run test:deployment -- http://localhost:3000
+              exit 0
+            fi
+            sleep 1
+          done
+          cat server.log
+          exit 1

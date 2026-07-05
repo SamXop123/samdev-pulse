@@ -1,11 +1,21 @@
 // Chart Renderer
-
-import { getTheme, LAYOUT } from './svg.renderer.js';
+import {
+  buildContributionSummary,
+  buildLanguageSummary,
+} from '../utils/svg-accessibility.js';
+import { getTheme, LAYOUT, renderCardFrame } from './svg.renderer.js';
 import { sanitizeSvgValue } from '../utils/svg-sanitizer.js';
 
 // generate a smooth SVG path using cardinal spline interpolation
 function smoothPath(points) {
   if (points.length < 2) return '';
+  points = points.filter(
+  (p) =>
+    Number.isFinite(p?.x) &&
+    Number.isFinite(p?.y)
+);
+
+if (points.length < 2) return '';
 
   const tension = 0.3;
   let path = `M ${points[0].x} ${points[0].y}`;
@@ -29,21 +39,40 @@ function smoothPath(points) {
 
 // scale data points to fit within chart dimensions
 function scaleData(data, width, height, padding) {
-  const maxVal = Math.max(...data);
-  const minVal = Math.min(...data);
+  if (!Array.isArray(data) || data.length === 0) {
+  return [];
+}
+  const numericData = data
+  .map((v) => Number(v))
+  .filter(Number.isFinite);
+
+if (numericData.length === 0) {
+  return [];
+}
+
+const maxVal = Math.max(...numericData);
+const minVal = Math.min(...numericData);
   const range = maxVal - minVal || 1;
 
   const chartWidth = width - padding * 2;
   const chartHeight = height - padding * 2;
 
-  return data.map((val, i) => ({
-    x: padding + (i / (data.length - 1)) * chartWidth,
-    y: padding + chartHeight - ((val - minVal) / range) * chartHeight,
-    value: val,
-  }));
+  const denominator = Math.max(1, data.length - 1);
+
+return numericData.map((val, i) => ({
+  x: padding + (i / denominator) * chartWidth,
+  y: padding + chartHeight - ((val - minVal) / range) * chartHeight,
+  value: val,
+}));
 }
 
 function buildYAxisTicks(minVal, maxVal, count = 4) {
+  if (!Number.isFinite(minVal) || !Number.isFinite(maxVal)) {
+  return Array.from({ length: count + 1 }, (_, i) => ({
+    value: 0,
+    ratio: i / count,
+  }));
+}
   const range = maxVal - minVal;
   if (range === 0) {
     return Array.from({ length: count + 1 }, (_, i) => ({
@@ -213,6 +242,9 @@ export function renderLineChart({
 export function renderContributionChart({ x, y, width, height, title, data }) {
   const { colors } = getTheme();
   const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
+  const chartDescription = sanitizeSvgValue(
+  buildContributionSummary(data)
+);
   const chartX = 0;
   const chartY = 44;
   const chartWidth = width - 40;
@@ -226,25 +258,23 @@ export function renderContributionChart({ x, y, width, height, title, data }) {
   const xTickLabels = [formatAxisDate(startDate), formatAxisDate(middleDate), formatAxisDate(endDate)];
 
   return `
-  <g>
-    <!-- card glow -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.glow}" opacity="0.03" filter="url(#cardGlow)"/>
-    
-    <!-- card background -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>
-    
-    <!-- inner gradient -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="0.3"/>
-    
-    <!-- border -->
-    <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
-    
-    <!-- title -->
-    <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
-    
-    <!-- title accent -->
-    <rect x="${x + 20}" y="${y + 36}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
-    
+  <g
+  role="group"
+  aria-labelledby="contrib-title"
+  >
+  <title id="contrib-title">Contribution Activity</title>
+  <desc>${chartDescription}</desc>
+    ${renderCardFrame({
+      x, y, width, height, title,
+      titleId: 'contrib-title',
+      glowOpacity: 0.03,
+      gradOpacity: 0.3,
+      borderOpacity: 0.4,
+      titleY: 28,
+      accentY: 36,
+      accentOpacity: 0.7,
+    }).join('\n    ')}
+
     <!-- chart -->
     <g transform="translate(${x + 20}, ${y})">
       ${renderLineChart({
@@ -328,7 +358,9 @@ function describeArc(cx, cy, outerR, innerR, startAngle, endAngle) {
 export function renderDonutChart({ x, y, width, height, title, data }) {
   const { colors, chartColors } = getTheme();
   const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
-
+  const chartDescription = sanitizeSvgValue(
+  buildLanguageSummary(data)
+);
   // donut dimensions
   const chartAreaWidth = width * 0.42;
   const centerX = x + chartAreaWidth / 2 + 20;
@@ -337,15 +369,24 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
   const innerRadius = outerRadius * 0.62;
 
   // calculate total for percentages
-  const total = data.reduce((sum, item) => sum + item.value, 0);
+  const total = Math.max(
+  1,
+  data.reduce((sum, item) => sum + (Number(item.value) || 0), 0)
+);
 
   // build pie slices with shadows
   let currentAngle = -Math.PI / 2;
   const slices = [];
 
+  const activeTheme = getTheme();
+  const highlightLangs = activeTheme.domainConfig?.highlightedLanguages || [];
+
   data.forEach((item, i) => {
-    const sliceAngle = (item.value / total) * Math.PI * 2;
-    const path = describeArc(centerX, centerY, outerRadius, innerRadius, currentAngle, currentAngle + sliceAngle);
+    const value = Number(item.value) || 0;
+    const sliceAngle = (value / total) * Math.PI * 2;
+    const isHighlighted = highlightLangs.includes(item.label.toLowerCase());
+    const outerR = isHighlighted ? outerRadius + 5 : outerRadius;
+    const path = describeArc(centerX, centerY, outerR, innerRadius, currentAngle, currentAngle + sliceAngle);
     const color = chartColors[i % chartColors.length];
 
     if (path) {
@@ -371,45 +412,51 @@ export function renderDonutChart({ x, y, width, height, title, data }) {
 
   const legendItems = data.map((item, i) => {
     const itemY = legendStartY + i * legendItemHeight;
-    const percentage = ((item.value / total) * 100).toFixed(0);
+    const percentage = (((Number(item.value) || 0) / total) * 100).toFixed(0);
     const color = chartColors[i % chartColors.length];
-    const safeLabel = sanitizeSvgValue(item.label);
+
+    const isHighlighted = highlightLangs.includes(item.label.toLowerCase());
+    const prefix = (isHighlighted && activeTheme.domainConfig?.languagePrefix)
+      ? activeTheme.domainConfig.languagePrefix + ' '
+      : '';
+    const displayLabel = prefix + item.label;
+    const safeLabel = sanitizeSvgValue(displayLabel);
+    const labelWeight = isHighlighted ? '700' : '500';
     const safePercentage = sanitizeSvgValue(`${percentage}%`);
 
     return `
       <g>
         <rect x="${legendX - 2}" y="${itemY - 8}" width="${width - chartAreaWidth - 50}" height="24" rx="6" fill="${color}" opacity="0.08"/>
         <circle cx="${legendX + 6}" cy="${itemY + 4}" r="4" fill="${color}"/>
-        <text x="${legendX + 18}" y="${itemY + 8}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="500" fill="${colors.primaryText}">${safeLabel}</text>
+        <text x="${legendX + 18}" y="${itemY + 8}" font-family="'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="12" font-weight="${labelWeight}" fill="${colors.primaryText}">${safeLabel}</text>
         <text x="${x + width - 24}" y="${itemY + 8}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="${color}" text-anchor="end">${safePercentage}</text>
       </g>
     `;
   }).join('');
 
   return `
-  <g>
-    <!-- card glow -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.glowSecondary}" opacity="0.03" filter="url(#cardGlow)"/>
-    
-    <!-- card background -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="${colors.cardBackground}"/>
-    
-    <!-- inner gradient -->
-    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="url(#mainGradient)" opacity="0.3"/>
-    
-    <!-- border -->
-    <rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="0.4"/>
-    
-    <!-- title -->
-    <text x="${x + 20}" y="${y + 28}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5">${safeTitle}</text>
-    
-    <!-- title accent -->
-    <rect x="${x + 20}" y="${y + 36}" width="28" height="2" rx="1" fill="url(#accentGradient)" opacity="0.7"/>
-    
+  <g
+  role="group"
+  aria-labelledby="language-title"
+  >
+  <title id="language-title">Top Languages</title>
+  <desc>${chartDescription}</desc>
+    ${renderCardFrame({
+      x, y, width, height, title,
+      titleId: 'language-title',
+      glowColor: colors.glowSecondary,
+      glowOpacity: 0.03,
+      gradOpacity: 0.3,
+      borderOpacity: 0.4,
+      titleY: 28,
+      accentY: 36,
+      accentOpacity: 0.7,
+    }).join('\n    ')}
+
     <!-- donut chart -->
     ${slices.join('\n    ')}
     ${centerDeco}
-    
+
     <!-- legend -->
     ${legendItems}
   </g>`;

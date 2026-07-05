@@ -1,0 +1,32 @@
+const theme = {
+  name: 'cobalt2',
+  colors: {
+    background: '#193549',
+    backgroundAlt: '#143044',
+    cardBackground: '#1F4662',
+    cardBackgroundAlt: '#25506f',
+    border: '#1C4D6B',
+    borderLight: '#255a7a',
+    borderGlow: '#FFC60033',
+    primaryText: '#FFFFFF',
+    secondaryText: '#88B4CA',
+    mutedText: '#6a9bb5',
+    accent: '#FFC600',
+    accentSecondary: '#FF9D00',
+    accentTertiary: '#3AD900',
+    accentWarm: '#FFC600',
+    accentHot: '#FF2600',
+    glow: '#FFC600',
+    glowSecondary: '#FF9D00',
+    gradientStart: '#FFC600',
+    gradientMid: '#FF9D00',
+    gradientEnd: '#3AD900',
+    success: '#3AD900',
+    warning: '#FFC600',
+    error: '#FF2600',
+    danger: '#FF2600',
+  },
+  chartColors: ['#FFC600','#FF9D00','#3AD900','#80FFBB','#88B4CA'],
+};
+
+export default theme;
