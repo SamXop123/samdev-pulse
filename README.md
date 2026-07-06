@@ -311,3 +311,4 @@ MIT © [SamXop123](https://github.com/SamXop123)
 
 If this helped you, consider giving the repo a ⭐
 It helps more developers discover the project.
+# TODO: enhancement: add wakatime coding stats integration to the svg dashboard (#59)
