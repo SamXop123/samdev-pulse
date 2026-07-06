@@ -32,8 +32,6 @@
       toggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
       toggle.title = isLight ? 'Switch to dark theme' : 'Switch to light theme';
     }
-    addRecentTheme(theme);
-    renderQuickThemeSections();
   }
 
   function initThemeToggle() {
