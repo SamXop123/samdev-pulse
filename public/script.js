@@ -22,6 +22,7 @@
   }
 
   function applyTheme(theme) {
+    
     const isLight = theme === LIGHT_THEME;
     document.documentElement.classList.remove('light-theme-pending');
     document.body.classList.toggle('light-theme', isLight);
@@ -32,8 +33,7 @@
       toggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
       toggle.title = isLight ? 'Switch to dark theme' : 'Switch to light theme';
     }
-    addRecentTheme(theme);
-    renderQuickThemeSections();
+    
   }
 
   function initThemeToggle() {
@@ -43,9 +43,15 @@
     applyTheme(savedTheme === LIGHT_THEME ? LIGHT_THEME : 'dark');
 
     if (!toggle) return;
-
+    
     toggle.addEventListener('click', function () {
-      const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : LIGHT_THEME;
+
+      const nextTheme =
+        document.body.classList.contains('light-theme')
+          ? 'dark'
+          : LIGHT_THEME;
+
+
       applyTheme(nextTheme);
       storeTheme(nextTheme);
     });
