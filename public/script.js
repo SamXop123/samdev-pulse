@@ -22,8 +22,7 @@
   }
 
   function applyTheme(theme) {
-    console.log("applyTheme:", theme);
-
+    
     const isLight = theme === LIGHT_THEME;
     document.documentElement.classList.remove('light-theme-pending');
     document.body.classList.toggle('light-theme', isLight);
@@ -44,16 +43,14 @@
     applyTheme(savedTheme === LIGHT_THEME ? LIGHT_THEME : 'dark');
 
     if (!toggle) return;
-    console.log("Theme toggle initialized");
+    
     toggle.addEventListener('click', function () {
-      console.log("Toggle clicked");
 
       const nextTheme =
         document.body.classList.contains('light-theme')
           ? 'dark'
           : LIGHT_THEME;
 
-      console.log("Next theme:", nextTheme);
 
       applyTheme(nextTheme);
       storeTheme(nextTheme);
