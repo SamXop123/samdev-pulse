@@ -573,5 +573,6 @@ MIT © [SamXop123](https://github.com/SamXop123)
 
 # ⭐ Support
 
-If this helped you, consider giving the repo a ⭐
-It helps more developers discover the project.
+If this helped you, consider giving the repo a ⭐. It helps more developers discover the project.
+
+For any issues or support contact: sameerprajapati066@gmail.com
