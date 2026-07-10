@@ -302,6 +302,22 @@ http://localhost:3000/api/profile?username=SamXop123
 
 ---
 
+## GitHub API Integration
+
+SamDev Pulse uses the GitHub REST API and GraphQL API to retrieve:
+
+- User profile information
+- Repository statistics
+- Languages
+- Contributions
+- Commit activity
+- Followers
+- Stars
+
+The data is processed and rendered into a live SVG dashboard that developers can embed anywhere.
+
+---
+
 # 🐳 Docker Development (Alternative)
 
 Prefer a containerized environment? Use Docker to run the app without installing Node.js or any dependencies locally.
@@ -576,3 +592,5 @@ MIT © [SamXop123](https://github.com/SamXop123)
 If this helped you, consider giving the repo a ⭐. It helps more developers discover the project.
 
 For any issues or support contact: sameerprajapati066@gmail.com
+
+Built with ❤️ using GitHub APIs
