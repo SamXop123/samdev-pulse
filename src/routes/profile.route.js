@@ -97,25 +97,31 @@ router.get('/', async (req, res) => {
 
   let showRepositoryStats = !shouldRenderLeetCode;
 
-    const result = await getGitHubUserData(username);
-    if (!result.success) {
-      return sendGracefulErrorSvg(res, {
-        code: result.code || GitHubErrorCode.API_ERROR,
-        username,
-        detail: result.error,
-      });
-    }
-    const { data } = result;
-
-    const contributionResult = await getContributionData(username, data.createdAt);
-    const contributionData = contributionResult.success ? contributionResult.data : null;
-
-    const [leetcodeResult, codeforcesResult, codechefResult] = await Promise.all([
+    // Fetch all user data sources in parallel
+    const [
+      githubResult,
+      contributionResult,
+      leetcodeResult,
+      codeforcesResult,
+      codechefResult,
+    ] = await Promise.all([
+      getGitHubUserData(username),
+      getContributionData(username), // Fetches userCreatedAt inside the service when needed
       shouldRenderLeetCode ? getLeetCodeData(leetcode) : null,
       codeforces ? getCodeforcesData(codeforces) : null,
       codechef ? getCodeChefData(codechef) : null,
     ]);
 
+    if (!githubResult.success) {
+      return sendGracefulErrorSvg(res, {
+        code: githubResult.code || GitHubErrorCode.API_ERROR,
+        username,
+        detail: githubResult.error,
+      });
+    }
+    const { data } = githubResult;
+
+    const contributionData = contributionResult.success ? contributionResult.data : null;
     const leetcodeData = leetcodeResult?.success ? leetcodeResult.data : null;
     if (shouldRenderLeetCode && !leetcodeData) {
       showRepositoryStats = true;

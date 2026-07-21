@@ -93,27 +93,32 @@ async function fetchUserProfile(username) {
 
 /* fetch public repos for a user */
 async function fetchUserRepos(username) {
-  const repos = [];
-  let page = 1;
   const perPage = 100;
-  const MAX_PAGES = 3;
 
-  while (page <= MAX_PAGES) {
-    const response = await httpRequest(
-      `${GITHUB_API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`,
-      { headers: getHeaders() }
+  // Fetch first page
+  const response1 = await httpRequest(
+    `${GITHUB_API_BASE}/users/${username}/repos?per_page=${perPage}&page=1&sort=updated`,
+    { headers: getHeaders() }
+  );
+  await assertOk(response1);
+  const repos = response1.data || [];
+
+  // If first page has exactly 100 items, fetch pages 2 and 3 in parallel
+  if (repos.length === perPage) {
+    const promises = [2, 3].map(page =>
+      httpRequest(
+        `${GITHUB_API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`,
+        { headers: getHeaders() }
+      )
     );
 
-    await assertOk(response);
-
-    const data = response.data;
-    repos.push(...data);
-
-    if (data.length < perPage) {
-      break;
+    const responses = await Promise.all(promises);
+    for (const res of responses) {
+      await assertOk(res);
+      if (res.data && res.data.length > 0) {
+        repos.push(...res.data);
+      }
     }
-
-    page++;
   }
 
   return repos;
@@ -132,7 +137,7 @@ async function fetchAvatarDataUri(avatarUrl) {
 
   // Use GitHub CDN to request 96×96 image (keeps response small)
   const resizedUrl = `${avatarUrl}&s=96`;
-  const AVATAR_TIMEOUT_MS = 8000;
+  const AVATAR_TIMEOUT_MS = 2000;
   const MAX_SIZE_BYTES = 100 * 1024; // 100 KB safety limit
 
   try {
