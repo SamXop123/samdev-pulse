@@ -136,7 +136,8 @@ async function fetchAvatarDataUri(avatarUrl) {
   }
 
   // Use GitHub CDN to request 96×96 image (keeps response small)
-  const resizedUrl = `${avatarUrl}&s=96`;
+  const separator = avatarUrl.includes('?') ? '&' : '?';
+  const resizedUrl = `${avatarUrl}${separator}s=96`;
   const AVATAR_TIMEOUT_MS = 2000;
   const MAX_SIZE_BYTES = 100 * 1024; // 100 KB safety limit
 

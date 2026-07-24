@@ -1,21 +1,6 @@
 // SVG Layout System
 // src/renderers/svg.renderer.js
 
-export function getColors() {
-  return {
-    background: '#0f172a',
-    cardBg: '#111827',
-    border: '#1f2937',
-
-    primaryText: '#f9fafb',
-    secondaryText: '#d1d5db',
-    mutedText: '#9ca3af',
-
-    success: '#22c55e',
-    warning: '#f59e0b',
-    danger: '#ef4444',
-  };
-}
 import darkTheme from '../themes/dark.theme.js';
 import lightTheme from '../themes/light.theme.js';
 import draculaTheme from '../themes/dracula.theme.js';
