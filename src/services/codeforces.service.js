@@ -51,3 +51,5 @@ export async function getCodeforcesData(handle) {
     return { success: false, error: "Codeforces API error" };
   }
 }
+
+.catch(err => console.error("Promise.all failed:", err));
