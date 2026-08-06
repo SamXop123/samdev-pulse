@@ -369,3 +369,5 @@ router.get('/loading', (req, res) => {
 });
 
 export default router;
+
+.catch(err => console.error("Promise.all failed:", err));
