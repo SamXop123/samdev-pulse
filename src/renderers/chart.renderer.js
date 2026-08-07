@@ -198,7 +198,7 @@ export function renderLineChart({
 
   // area fill with gradient
   if (showArea && points.length > 1) {
-    const areaPath = `${pathD} L ${points[points.length - 1].x} ${height - padding} L ${points[0].x} ${height - padding} Z`;
+    const areaPath = `${pathD} L ${points.at(-1).x} ${height - padding} L ${points[0].x} ${height - padding} Z`;
     elements.push(`<path d="${areaPath}" fill="url(#areaGradient-${id})"/>`);
   }
 
