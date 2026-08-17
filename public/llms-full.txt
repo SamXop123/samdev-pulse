@@ -1,0 +1,79 @@
+# samdev-pulse — Complete API & System Reference
+
+## Overview
+samdev-pulse is an open-source, production-ready GitHub profile README widget that compiles developer metrics across multiple platforms into an aesthetic, vector SVG image.
+
+Base URL: `https://samdev-pulse.vercel.app/api/profile`
+
+---
+
+## Query Parameters
+
+| Parameter | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `username` | string | `SamXop123` | Target GitHub username (required for personalized stats). |
+| `theme` | string | `dark` | Visual color palette (see themes below). |
+| `leetcode` | string | `""` | LeetCode username to display problem-solving metrics (Easy/Medium/Hard + Contest Rating/Ranking). |
+| `codeforces`| string | `""` | Codeforces handle to display rating and rank. |
+| `codechef` | string | `""` | CodeChef username to display rating, division, and stars. |
+| `align` | string | `left` | Alignment mode for SVG elements (`left`, `center`). |
+| `hide_trophies` | boolean | `false` | Set to `true` to omit the achievement trophy row. |
+
+---
+
+## Supported Themes (25+ Palettes)
+
+- `dark`: Default sleek dark theme with violet accents
+- `light`: Clean light mode with soft indigo accents
+- `tokyonight`: Vibrant Tokyo Night editor theme
+- `dracula`: Classic vampire dark theme
+- `catppuccin`: Soothing pastel aesthetic (Mocha flavor)
+- `nord`: Arctic, north-bluish clean palette
+- `synthwave84`: Retro 80s neon synthwave with glowing purples
+- `one-dark`: Atom One Dark theme
+- `onedarkpro`: VS Code One Dark Pro theme
+- `material`: Google Material Design dark palette
+- `monokai`: High-contrast coding classic
+- `gruvbox`: Warm retro groove theme
+- `solarized`: Precision color scheme for code
+- `rose-pine`: Minimalist, warm pine aesthetic
+- `aurora`: Northern lights teal & green gradient
+- `midnight-sunset`: Deep twilight and warm amber
+- `forestnight`: Calming deep greens and earthen tones
+- `oceanicnext`: Deep ocean teal & blue palette
+- `emberglow`: Warm fireplace embers and orange gradients
+- `midnightneon`: Ultra-high-contrast cyberpunk neon
+- `pasteldream`: Soft aesthetic pastel colors
+- `androidstudio`: JetBrains / Android Studio dark IDE styling
+- `xcode`: Apple Xcode developer palette
+- `webdev`: Full-stack JavaScript and TypeScript inspired theme
+- `aiml`: Artificial Intelligence & Machine Learning neural theme
+- `gamedev`: Arcade and Unreal/Unity engine aesthetic
+- `cobalt2`: Wes Bos Cobalt2 vibrant blue theme
+- `github-light`: Official GitHub light theme style
+- `hc-light`: High contrast light mode (WCAG AAA compliant)
+- `hc-dark`: High contrast dark mode (WCAG AAA compliant)
+
+---
+
+## Markdown Integration Examples
+
+### Basic GitHub Profile Card
+```markdown
+<div align="center">
+  <img src="https://samdev-pulse.vercel.app/api/profile?username=SamXop123&theme=tokyonight" alt="GitHub Profile Stats" />
+</div>
+```
+
+### Full Competitive Programming + Custom Theme
+```markdown
+![Developer Pulse](https://samdev-pulse.vercel.app/api/profile?username=SamXop123&theme=catppuccin&leetcode=Dot_NotSam&codeforces=tourist&align=center)
+```
+
+---
+
+## Architecture & Hosting
+- **Backend Runtime**: Node.js ES Modules on Vercel Serverless Functions.
+- **Rendering Engine**: Native SVG generation with embedded SVGs, responsive layout engine, and zero external binary dependencies.
+- **Caching**: Multi-tiered in-memory LRU cache with deduplication to ensure rapid sub-second responses and respect upstream API rate limits.
+- **License**: MIT License © SamXop123.
