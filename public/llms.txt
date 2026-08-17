@@ -1,0 +1,22 @@
+# samdev-pulse
+
+> samdev-pulse is a dynamic, high-performance GitHub profile README generator that renders real-time GitHub activity, contribution streaks, LeetCode, Codeforces, and CodeChef statistics, achievement trophies, top languages, and custom domain insights into a unified, responsive SVG card.
+
+## Documentation & Endpoints
+
+- [Full LLM Documentation](https://samdev-pulse.vercel.app/llms-full.txt): Complete API query parameters, theme references, and markdown examples.
+- [Live Generator & Preview](https://samdev-pulse.vercel.app/): Interactive web UI to customize and preview profile cards.
+- [Theme Gallery](https://samdev-pulse.vercel.app/theme-comparison): Side-by-side visual comparison of 25+ themes.
+- [GitHub Repository](https://github.com/SamXop123/samdev-pulse): Open-source source code, issues, and contributing guide.
+
+## Quick Usage
+
+Render standard profile card in Markdown:
+```markdown
+![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_GITHUB_USERNAME)
+```
+
+With LeetCode stats and a custom theme:
+```markdown
+![samdev-pulse](https://samdev-pulse.vercel.app/api/profile?username=YOUR_GITHUB_USERNAME&theme=tokyonight&leetcode=YOUR_LEETCODE_USERNAME)
+```
