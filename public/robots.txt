@@ -1,0 +1,14 @@
+# robots.txt for samdev-pulse (https://samdev-pulse.vercel.app/)
+
+User-agent: *
+Allow: /
+Allow: /theme-comparison
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /sitemap.xml
+
+# Protect internal cache stats endpoint from search engine indexing
+Disallow: /api/cache/
+
+# Sitemaps & LLM context
+Sitemap: https://samdev-pulse.vercel.app/sitemap.xml
