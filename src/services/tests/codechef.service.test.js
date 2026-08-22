@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, jest, test } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { githubCache } from '../../utils/cache.js';
 import { getCodeChefData } from '../codechef.service.js';
 
 // ---------------------------------------------------------------------------
@@ -23,6 +24,9 @@ function jsonResponse(data, init = {}) {
 // ---------------------------------------------------------------------------
 
 describe('codechef.service.js', () => {
+  beforeEach(() => {
+    githubCache.clear();
+  });
   afterEach(() => {
     delete globalThis.fetch;
   });

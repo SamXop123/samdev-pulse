@@ -1,3 +1,4 @@
+import { githubCache } from '../utils/cache.js';
 import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
 
 function getDivision(rating) {
@@ -8,6 +9,21 @@ function getDivision(rating) {
 }
 
 export async function getCodeChefData(handle) {
+  if (!handle) {
+    return {
+      success: false,
+      error: 'CodeChef handle not provided',
+    };
+  }
+
+  const cacheKey = `codechef:${handle}`;
+
+  // Check cache first
+  const cached = githubCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   try {
     const safeHandle = encodeURIComponent(handle);
 
@@ -27,7 +43,7 @@ export async function getCodeChefData(handle) {
 
     const currentRating = data.rating_number ?? 0;
 
-    return {
+    const result = {
       success: true,
       data: {
         handle: data.username ?? handle,
@@ -36,9 +52,14 @@ export async function getCodeChefData(handle) {
         globalRank: data.globalRank ?? data.global_rank ?? 'N/A',
         problemsSolved: data.problemsSolved ?? data.problems_solved ?? 0,
         division: getDivision(currentRating),
-      }
+      },
     };
+
+    // Store successful result in cache
+    githubCache.set(cacheKey, result);
+
+    return result;
   } catch (err) {
-    return { success: false, error: "CodeChef API error" };
+    return { success: false, error: 'CodeChef API error' };
   }
 }
