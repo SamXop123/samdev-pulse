@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, jest, test } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { githubCache } from '../../utils/cache.js';
 import { getCodeforcesData } from '../codeforces.service.js';
 
 // ---------------------------------------------------------------------------
@@ -31,6 +32,9 @@ function errorResponse(status) {
 // ---------------------------------------------------------------------------
 
 describe('codeforces.service.js', () => {
+  beforeEach(() => {
+    githubCache.clear();
+  });
   afterEach(() => {
     delete globalThis.fetch;
   });
