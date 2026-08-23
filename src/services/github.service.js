@@ -93,32 +93,26 @@ async function fetchUserProfile(username) {
 
 /* fetch public repos for a user */
 async function fetchUserRepos(username) {
+  const repos = [];
+  let page = 1;
   const perPage = 100;
 
-  // Fetch first page
-  const response1 = await httpRequest(
-    `${GITHUB_API_BASE}/users/${username}/repos?per_page=${perPage}&page=1&sort=updated`,
-    { headers: getHeaders() }
-  );
-  await assertOk(response1);
-  const repos = response1.data || [];
-
-  // If first page has exactly 100 items, fetch pages 2 and 3 in parallel
-  if (repos.length === perPage) {
-    const promises = [2, 3].map(page =>
-      httpRequest(
-        `${GITHUB_API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`,
-        { headers: getHeaders() }
-      )
+  while (true) {
+    const response = await httpRequest(
+      `${GITHUB_API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`,
+      { headers: getHeaders() }
     );
 
-    const responses = await Promise.all(promises);
-    for (const res of responses) {
-      await assertOk(res);
-      if (res.data && res.data.length > 0) {
-        repos.push(...res.data);
-      }
+    await assertOk(response);
+
+    const data = Array.isArray(response.data) ? response.data : [];
+    repos.push(...data);
+
+    if (data.length < perPage) {
+      break;
     }
+
+    page++;
   }
 
   return repos;

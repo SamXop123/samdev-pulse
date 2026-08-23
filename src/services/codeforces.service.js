@@ -1,6 +1,22 @@
+import { githubCache } from '../utils/cache.js';
 import { HttpErrorCode, httpRequest } from '../utils/http-client.js';
 
 export async function getCodeforcesData(handle) {
+  if (!handle) {
+    return {
+      success: false,
+      error: 'Codeforces handle not provided',
+    };
+  }
+
+  const cacheKey = `codeforces:${handle}`;
+
+  // Check cache first
+  const cached = githubCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   try {
     const safeHandle = encodeURIComponent(handle);
 
@@ -36,7 +52,7 @@ export async function getCodeforcesData(handle) {
       problemsSolved = solved.size;
     }
 
-    return {
+    const result = {
       success: true,
       data: {
         handle: user.handle,
@@ -45,9 +61,14 @@ export async function getCodeforcesData(handle) {
         rank: user.rank ?? 'unrated',
         maxRank: user.maxRank ?? 'unrated',
         problemsSolved,
-      }
+      },
     };
+
+    // Store successful result in cache
+    githubCache.set(cacheKey, result);
+
+    return result;
   } catch (err) {
-    return { success: false, error: "Codeforces API error" };
+    return { success: false, error: 'Codeforces API error' };
   }
 }
