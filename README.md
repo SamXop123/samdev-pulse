@@ -206,7 +206,9 @@ A visual trophy system highlighting GitHub milestones:
 | 🐛 Issues        | Issues opened       |
 | 📦 Repositories  | Public repos        |
 | ⭐ Stars          | Total stars         |
-| 👥 Followers     | GitHub followers    |<details>
+| 👥 Followers     | GitHub followers    |
+
+<details>
 <summary>📊 Trophy tier requirements</summary>
 
 * 🥉 Bronze: Entry level (1+)
