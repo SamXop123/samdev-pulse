@@ -218,8 +218,15 @@ export async function getGitHubUserData(username) {
   try {
     const profilePromise = fetchUserProfile(username);
     const reposPromise = fetchUserRepos(username);
-    const [profile, repos] = await Promise.all([profilePromise, reposPromise]);
-    const avatarDataUri = await fetchAvatarDataUri(profile.avatar_url);
+    const avatarPromise = profilePromise
+      .then((profile) => (profile?.avatar_url ? fetchAvatarDataUri(profile.avatar_url) : null))
+      .catch(() => null);
+
+    const [profile, repos, avatarDataUri] = await Promise.all([
+      profilePromise,
+      reposPromise,
+      avatarPromise,
+    ]);
 
     const result = {
       success: true,
