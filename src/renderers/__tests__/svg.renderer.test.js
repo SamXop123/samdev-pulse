@@ -135,6 +135,19 @@ describe('svg.renderer.js', () => {
       expect(card).toContain('GITHUB ACTIVITY');
     });
 
+    test('renders bracketed suffix in title as a smaller tspan', () => {
+      const card = renderCard({
+        x: 0,
+        y: 0,
+        width: 300,
+        height: 100,
+        title: 'GitHub Activity (Last 1 Year)',
+      });
+      expect(card).toContain('GITHUB ACTIVITY');
+      expect(card).toContain('<tspan font-size="10" font-weight="500"');
+      expect(card).toContain('(LAST 1 YEAR)</tspan>');
+    });
+
     test('positions card correctly', () => {
       const card = renderCard({
         x: 50,
