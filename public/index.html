@@ -851,7 +851,14 @@
             </div>
           </div>
           <div class="input-row">
-            <div class="input-group" style="flex-direction: row; align-items: center; justify-content: flex-start;">
+            <div class="input-group">
+              <label for="activity-select">Activity Scope</label>
+              <select id="activity-select">
+                <option value="year" selected>Last 1 Year (Default)</option>
+                <option value="all">Lifetime (All-Time)</option>
+              </select>
+            </div>
+            <div class="input-group" style="flex-direction: row; align-items: center; justify-content: flex-start; padding-top: 28px;">
               <input id="hide-trophies" name="hide_trophies" type="checkbox"
                 style="width: 18px; height: 18px; cursor: pointer; margin-right: 4px;" />
               <label for="hide-trophies" style="margin-bottom: 0; cursor: pointer;">Hide Trophies</label>
@@ -1034,6 +1041,12 @@
               <td><code>false</code></td>
               <td>Hide the achievement trophies row</td>
             </tr>
+            <tr>
+              <td><code>activity</code></td>
+              <td>string</td>
+              <td><code>year</code></td>
+              <td>Activity timeframe: <code>year</code> (past 12 months, faster load) or <code>all</code> (complete lifetime history)</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -1047,7 +1060,7 @@
         <div class="developer-text">
           <h2 class="developer-title">Meet the Creator</h2>
           <p class="developer-description">
-            Hi, I'm <strong>SamXop123</strong>—a passionate developer who believes your GitHub profile
+            Hi, I'm <strong>SamXop123</strong>, a passionate developer who believes your GitHub profile
             should be as unique as your code. I built samdev-pulse because I wanted a single,
             beautiful way to showcase everything that matters: stats, streaks, skills, and achievements.
           </p>
@@ -1210,7 +1223,7 @@
                 <li><a
                     href="https://github.com/SamXop123/samdev-pulse?tab=coc-ov-file#contributor-covenant-code-of-conduct"
                     class="nav-link">› CODE OF CONDUCT</a></li>
-                <li><a href="#themes" class="nav-link">› LICENSE</a></li>
+                <li><a href="https://github.com/SamXop123/samdev-pulse/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="nav-link">› LICENSE</a></li>
               </ul>
             </div>
           </div>

@@ -241,6 +241,7 @@ When using a domain-specific theme, trophy titles dynamically change to match yo
 | `codechef`      | string / false | –           | CodeChef username                   |
 | `align`         | string         | `left`      | Header alignment (`left`, `center`, `right`) |
 | `hide_trophies` | boolean        | `false`     | Hide the achievements trophies row  |
+| `activity`      | string         | `year`      | Activity timeframe: `year` (past 12 months) or `all` (lifetime) |
 | `bg`            | string         | –           | Custom background color override (hex) |
 | `card_bg`       | string         | –           | Custom card background color override (hex) |
 | `border`        | string         | –           | Custom border color override (hex)  |
@@ -414,6 +415,7 @@ Returns the main profile SVG dashboard with GitHub stats, contribution activity,
 | `leetcode` | `string` / `false` | —    | LeetCode username (omit or set to `false` to skip)   |
 | `codeforces` | `string`    | —        | Codeforces username                                  |
 | `codechef` | `string`      | —        | CodeChef username                                    |
+| `activity` | `string`      | `year`   | Activity scope: `year` (last 1 year) or `all` (lifetime) |
 
 ### Custom Theme Overrides
 

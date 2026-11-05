@@ -73,6 +73,7 @@
   const codechefInput = document.getElementById('codechef');
   const themeSelect = document.getElementById('theme-select');
   const alignSelect = document.getElementById('align-select');
+  const activitySelect = document.getElementById('activity-select');
   const previewImg = document.getElementById('preview-img');
   const snippet = document.getElementById('snippet');
   const copyButtons = document.querySelectorAll('.copy-btn');
@@ -94,6 +95,7 @@
     const theme = themeSelect.value;
     const align = alignSelect.value;
     const hideTrophies = hideTrophiesCheck ? hideTrophiesCheck.checked : false;
+    const activity = activitySelect ? activitySelect.value : 'year';
 
     // Build query parameters
     const params = new URLSearchParams({ username });
@@ -103,6 +105,7 @@
     if (codechef) params.append('codechef', codechef);
     if (align && align !== 'left') params.append('align', align);
     if (hideTrophies) params.append('hide_trophies', 'true');
+    if (activity === 'all') params.append('activity', 'all');
 
     // Cache-busting timestamp for local preview
     const localUrl = `/api/profile?${params.toString()}&t=${Date.now()}`;
@@ -135,6 +138,7 @@
     const theme = themeSelect.value;
     const align = alignSelect.value;
     const hideTrophies = hideTrophiesCheck ? hideTrophiesCheck.checked : false;
+    const activity = activitySelect ? activitySelect.value : 'year';
 
     const params = new URLSearchParams({ username });
     if (theme) params.append('theme', theme);
@@ -143,6 +147,7 @@
     if (codechef) params.append('codechef', codechef);
     if (align && align !== 'left') params.append('align', align);
     if (hideTrophies) params.append('hide_trophies', 'true');
+    if (activity === 'all') params.append('activity', 'all');
 
     const publicUrl = `${deployUrl}/api/profile?${params.toString()}`;
 
@@ -313,6 +318,10 @@
         hideTrophiesCheck.checked = false;
       }
 
+      if (activitySelect) {
+        activitySelect.selectedIndex = 0;
+      }
+
       const errorMsg = document.getElementById('username-error');
 
       if (errorMsg) {
@@ -448,6 +457,9 @@
     }
     if (hideTrophiesCheck) {
       hideTrophiesCheck.addEventListener('change', updateSnippetOnly);
+    }
+    if (activitySelect) {
+      activitySelect.addEventListener('change', updateSnippetOnly);
     }
   }
 

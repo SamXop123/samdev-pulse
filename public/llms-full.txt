@@ -18,6 +18,7 @@ Base URL: `https://samdev-pulse.vercel.app/api/profile`
 | `codechef` | string | `""` | CodeChef username to display rating, division, and stars. |
 | `align` | string | `left` | Alignment mode for SVG elements (`left`, `center`). |
 | `hide_trophies` | boolean | `false` | Set to `true` to omit the achievement trophy row. |
+| `activity` | string | `year` | Activity timeframe: `year` (last 365 days / past 1 year) or `all` (lifetime contributions across all years). |
 
 ---
 
