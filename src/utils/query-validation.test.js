@@ -1,6 +1,7 @@
 import { describe, test, expect } from '@jest/globals';
 import {
   normalizeAlign,
+  normalizeActivity,
   normalizeBoolean,
   normalizeCPHandle,
   normalizeGitHubUsername,
@@ -23,6 +24,18 @@ describe('query-validation.js', () => {
     expect(normalizeTheme('unknown-theme')).toBe('dark');
     expect(normalizeAlign(' CENTER ')).toBe('center');
     expect(normalizeAlign('middle')).toBe('left');
+  });
+
+  test('normalizeActivity normalizes year and all activities correctly', () => {
+    expect(normalizeActivity('all')).toBe('all');
+    expect(normalizeActivity('LIFETIME')).toBe('all');
+    expect(normalizeActivity('total')).toBe('all');
+    expect(normalizeActivity('all-time')).toBe('all');
+    expect(normalizeActivity('year')).toBe('year');
+    expect(normalizeActivity('1y')).toBe('year');
+    expect(normalizeActivity('')).toBe('year');
+    expect(normalizeActivity(undefined)).toBe('year');
+    expect(normalizeActivity('unknown')).toBe('year');
   });
 
   test('normalizeGitHubUsername validates usernames correctly (lookahead rules, hyphens, and lengths)', () => {
@@ -78,6 +91,7 @@ describe('query-validation.js', () => {
       codechef: 'chef-user',
       shouldRenderLeetCode: false,
       customThemeOverrides: {},
+      activity: 'year',
     });
   });
 

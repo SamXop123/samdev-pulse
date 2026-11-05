@@ -6,6 +6,7 @@ const DEFAULT_ALIGN = 'left';
 const ALIGNMENTS = Object.freeze(['left', 'center', 'right']);
 const TRUE_VALUES = Object.freeze(['true', '1', 'yes']);
 const FALSE_VALUES = Object.freeze(['false', '0', 'no']);
+const ALL_ACTIVITY_SYNONYMS = Object.freeze(['all', 'lifetime', 'total', 'all-time']);
 const GITHUB_USERNAME_REGEX = /^(?!.*--)[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/;
 const HANDLE_SAFE_CHARS_REGEX = /[^a-zA-Z0-9_.-]/g;
 
@@ -36,6 +37,14 @@ export function normalizeTheme(value) {
 export function normalizeAlign(value) {
   const align = normalizeString(value).toLowerCase();
   return ALIGNMENTS.includes(align) ? align : DEFAULT_ALIGN;
+}
+
+export function normalizeActivity(value) {
+  const normalized = normalizeString(value).toLowerCase();
+  if (ALL_ACTIVITY_SYNONYMS.includes(normalized)) {
+    return 'all';
+  }
+  return 'year';
 }
 
 export function normalizeGitHubUsername(value) {
@@ -118,5 +127,6 @@ export function normalizeProfileQuery(query) {
     codechef,
     shouldRenderLeetCode: Boolean(leetcode),
     customThemeOverrides,
+    activity: normalizeActivity(query.activity || query.range),
   };
 }
