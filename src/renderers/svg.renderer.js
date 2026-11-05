@@ -220,7 +220,7 @@ export function renderBackground(width, height) {
 export function renderCardFrame({ x, y, width, height, title, titleId, glowColor, glowOpacity = 0.03, gradOpacity = 0.3, borderOpacity = 0.4, titleY = 28, accentWidth = 28, accentY = 36, accentOpacity = 0.7, centerTitle = false, titleComment = '<!-- title -->', accentComment = '<!-- title accent -->' }) {
   const { colors } = currentTheme;
   const glow = glowColor || colors.glow;
-  const safeTitle = sanitizeSvgValue(String(title).toUpperCase());
+  const bracketMatch = String(title).match(/^(.*?)\s*(\(.*?\))$/);
   const tId = titleId || `card-${String(title).toLowerCase().replace(/[^a-z0-9]/g, '-')}-${x}-${y}-title`;
   const titleX = centerTitle ? x + width / 2 : x + 20;
   const accentX = centerTitle ? x + width / 2 - accentWidth / 2 : x + 20;
@@ -236,7 +236,9 @@ export function renderCardFrame({ x, y, width, height, title, titleId, glowColor
     '<!-- border -->',
     `<rect x="${x + 0.5}" y="${y + 0.5}" width="${width - 1}" height="${height - 1}" rx="${LAYOUT.cardRadius}" ry="${LAYOUT.cardRadius}" fill="none" stroke="${colors.borderLight}" stroke-width="1" opacity="${borderOpacity}"/>`,
     titleComment,
-    `<text id="${tId}" x="${titleX}" y="${y + titleY}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5"${textAnchor}>${safeTitle}</text>`,
+    bracketMatch
+      ? `<text id="${tId}" x="${titleX}" y="${y + titleY}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5"${textAnchor}>${sanitizeSvgValue(bracketMatch[1].toUpperCase())} <tspan font-size="10" font-weight="500" fill="${colors.mutedText}" letter-spacing="0.3">${sanitizeSvgValue(bracketMatch[2].toUpperCase())}</tspan></text>`
+      : `<text id="${tId}" x="${titleX}" y="${y + titleY}" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="600" fill="${colors.secondaryText}" letter-spacing="0.5"${textAnchor}>${sanitizeSvgValue(String(title).toUpperCase())}</text>`,
     accentComment,
     `<rect x="${accentX}" y="${y + accentY}" width="${accentWidth}" height="2" rx="1" fill="url(#accentGradient)" opacity="${accentOpacity}"/>`,
   ].filter(Boolean);
