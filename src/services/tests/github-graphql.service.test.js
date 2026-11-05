@@ -424,8 +424,8 @@ describe('github-graphql.service.js', () => {
 
     expect(user1.data.totalContributions).toBe(100);
     expect(user2.data.totalContributions).toBe(200);
-    expect(githubCache.get('contributions:user1')).not.toBeNull();
-    expect(githubCache.get('contributions:user2')).not.toBeNull();
+    expect(githubCache.get('contributions:user1:year')).not.toBeNull();
+    expect(githubCache.get('contributions:user2:year')).not.toBeNull();
   });
 
   test('aggregates multi-year contribution data and calculates correct all-time streak', async () => {
@@ -485,7 +485,7 @@ describe('github-graphql.service.js', () => {
       .mockResolvedValueOnce(jsonResponse(firstResponse))
       .mockResolvedValueOnce(jsonResponse(secondResponse));
 
-    const result = await getContributionData('multiyear-user');
+    const result = await getContributionData('multiyear-user', null, 'all');
 
     expect(result.success).toBe(true);
     // Aggregated stats:
@@ -514,5 +514,34 @@ describe('github-graphql.service.js', () => {
     expect(result.data.currentStreak).toBe(2);
     expect(result.data.longestStreak).toBe(2);
     expect(result.data.totalContributionDays).toBe(5);
+  });
+
+  test('fetches only 1-year contribution data by default for multi-year user without second query', async () => {
+    const defaultResponse = {
+      data: {
+        user: {
+          createdAt: '2024-05-15T00:00:00Z',
+          contributionsCollection: {
+            totalCommitContributions: 40,
+            totalPullRequestContributions: 5,
+            totalPullRequestReviewContributions: 2,
+            totalIssueContributions: 1,
+            restrictedContributionsCount: 0,
+            contributionCalendar: buildCalendar([0, 1, 1], '2026-06-11'),
+          },
+          pullRequests: { totalCount: 15 },
+          issues: { totalCount: 5 },
+        },
+      },
+    };
+
+    globalThis.fetch = jest.fn().mockResolvedValueOnce(jsonResponse(defaultResponse));
+
+    const result = await getContributionData('default-user');
+
+    expect(result.success).toBe(true);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+    expect(result.data.totalCommits).toBe(40);
+    expect(result.data.totalPRs).toBe(5);
   });
 });

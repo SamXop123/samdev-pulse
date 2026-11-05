@@ -301,8 +301,9 @@ function normalizeMultiYearData(userData, initialUserData, startYear, currentYea
 }
 
 /* fetch and normalize contribution data for a user */
-export async function getContributionData(username, createdAt = null) {
-  const cacheKey = `contributions:${username}`;
+export async function getContributionData(username, createdAt = null, activity = 'year') {
+  const normalizedActivity = activity === 'all' ? 'all' : 'year';
+  const cacheKey = `contributions:${username}:${normalizedActivity}`;
 
   // check cache first
   const cached = githubCache.get(cacheKey);
@@ -327,7 +328,7 @@ export async function getContributionData(username, createdAt = null) {
     let resultData;
 
     // if the user has contribution history in previous years, fetch them
-    if (userCreatedAt && startYear && startYear < currentYear) {
+    if (normalizedActivity === 'all' && userCreatedAt && startYear && startYear < currentYear) {
       const multiYearData = await fetchAllYearsData(username, startYear, currentYear);
       resultData = normalizeMultiYearData(multiYearData, userData, startYear, currentYear);
     } else {

@@ -76,6 +76,7 @@ router.get('/', async (req, res) => {
     codechef,
     shouldRenderLeetCode,
     customThemeOverrides,
+    activity,
   } = normalizeProfileQuery(req.query);
 
   let activeTheme = setTheme(theme);
@@ -106,7 +107,7 @@ router.get('/', async (req, res) => {
       codechefResult,
     ] = await Promise.all([
       getGitHubUserData(username),
-      getContributionData(username), // Fetches userCreatedAt inside the service when needed
+      getContributionData(username, null, activity),
       shouldRenderLeetCode ? getLeetCodeData(leetcode) : null,
       codeforces ? getCodeforcesData(codeforces) : null,
       codechef ? getCodeChefData(codechef) : null,
@@ -149,7 +150,9 @@ router.get('/', async (req, res) => {
 
   const fullWidth = width - (LAYOUT.padding * 2);
 
-  const card1Title = 'GitHub Activity';
+  const card1Title = activity === 'all'
+    ? 'GitHub Activity (Lifetime)'
+    : 'GitHub Activity (Last 1 Year)';
   const card1Stats = [
     { label: 'Contributions', value: contributionData ? formatNumber(contributionData.totalContributions) : '-' },
     { label: 'PRs Opened', value: contributionData ? formatNumber(contributionData.totalPRs) : '-' },
