@@ -1,6 +1,6 @@
 {
   "name": "samdev_pulse",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "The perfect README generator for GitHub profiles",
   "main": "src/server.js",
   "type": "module",
